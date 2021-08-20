@@ -1,0 +1,75 @@
+﻿<Window x:Class="BrewUI.Views.DebugWindowView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BrewUI.Views"
+        mc:Ignorable="d"
+        Title="Debug Window" Height="600" Width="450"
+        WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10"/>
+        </Grid.RowDefinitions>
+        
+        <!--Receive fake command from brewery-->
+        <TextBox x:Name="ReceiveText" Grid.Row="1" Grid.Column="1"/>
+        <Button x:Name="ReceiveCommand" Content="Receive command" Grid.Column="3" Grid.Row="1" Height="20"/>
+
+        <!--Session info-->
+        <TextBlock Text="Session running:" Grid.Row="3" Grid.Column="1"/>
+        <TextBlock x:Name="SessionRunning" Grid.Row="3" Grid.Column="3"/>
+
+        <TextBlock Text="Current process:" Grid.Row="5" Grid.Column="1"/>
+        <TextBlock x:Name="CurrentProcess" Grid.Row="5" Grid.Column="3"/>
+
+        <TextBlock Text="Current step:" Grid.Row="7" Grid.Column="1"/>
+        <TextBlock x:Name="CurrentStep" Grid.Row="7" Grid.Column="3"/>
+
+        <TextBlock Text="Mash running:" Grid.Row="9" Grid.Column="1"/>
+        <TextBlock x:Name="MashRunning" Grid.Row="9" Grid.Column="3"/>
+
+        <TextBlock Text="Sparge running:" Grid.Row="11" Grid.Column="1"/>
+        <TextBlock x:Name="SpargeRunning" Grid.Row="11" Grid.Column="3"/>
+
+        <TextBlock Text="Boil running:" Grid.Row="13" Grid.Column="1"/>
+        <TextBlock x:Name="BoilRunning" Grid.Row="13" Grid.Column="3"/>
+        
+        <!-- Serial data log-->
+        <TextBlock Text="Received data:" Grid.Row="15" Grid.Column="1"/>
+        <TextBox x:Name="ReceivedData" Grid.Row="16" Grid.Column="1"/>
+
+        <TextBlock Text="Sent data:" Grid.Row="15" Grid.Column="3"/>
+        <TextBox x:Name="SentData" Grid.Row="16" Grid.Column="3"/>
+        
+        <!-- Debug data log -->
+        <TextBlock Text="Debug log:" Grid.Row="15" Grid.Column="5"/>
+        <TextBox x:Name="DebugText" Grid.Row="16" Grid.Column="5"/>
+    </Grid>
+</Window>

@@ -1,0 +1,66 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BrewUI.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="BatchSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="HeaterEffect" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="TapTemp" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">12</Value>
+    </Setting>
+    <Setting Name="STD_BatchSize" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="STD_HeaterEffect" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="STD_TapTemp" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">12</Value>
+    </Setting>
+    <Setting Name="EquipmentLoss" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="MashThickness" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1.33</Value>
+    </Setting>
+    <Setting Name="GrainAbsorption" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1.1</Value>
+    </Setting>
+    <Setting Name="STD_EquipmentLoss" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="STD_MashThickness" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1.33</Value>
+    </Setting>
+    <Setting Name="STD_GrainAbsorption" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1.1</Value>
+    </Setting>
+    <Setting Name="PumpOnDuration" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="STD_PumpOnDuration" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="PumpOffDuration" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="STD_PumpOffDuration" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="PathHopsDB" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\Database\Hops.bdb</Value>
+    </Setting>
+    <Setting Name="PathGrainsDB" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\Database\Grains.bdb</Value>
+    </Setting>
+    <Setting Name="PathStylesDB" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\Database\Styles.bdb</Value>
+    </Setting>
+    <Setting Name="PathRecipesFolder" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\Database\Recipes\</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

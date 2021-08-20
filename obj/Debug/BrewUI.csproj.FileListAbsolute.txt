@@ -1,0 +1,363 @@
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\BrewUI.exe.config
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\BrewUI.exe
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\BrewUI.pdb
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.Platform.Core.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.Platform.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.xml
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.Platform.xml
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.Platform.Core.xml
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.csprojAssemblyReference.cache
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\Views\ShellView.g.cs
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\App.g.cs
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\BrewUI_MarkupCompile.cache
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\BrewUI_MarkupCompile.lref
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\App.baml
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\Views\ShellView.baml
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.g.resources
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.Properties.Resources.resources
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.csproj.GenerateResource.cache
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.csproj.CopyComplete
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.exe
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.pdb
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\Views\ManualView.g.cs
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\Views\ManualView.baml
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.VS2010.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.Toolkit.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\de\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\es\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\fr\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\hu\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\it\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\pt-BR\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\ro\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\Views\SessionSettingsView.g.cs
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\Views\SessionSettingsView.baml
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\Views\SessionView.g.cs
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\obj\Debug\Views\SessionView.baml
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\ControlzEx.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\MahApps.Metro.dll
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\ControlzEx.pdb
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\MahApps.Metro.pdb
+C:\Users\jan-erik.runge\Documents\Visual Studio 2019\Projects\BrewSystem 2019\BrewUI\bin\Debug\MahApps.Metro.xml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\BrewUI.exe.config
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\BrewUI.exe
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\BrewUI.pdb
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.Platform.Core.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.Platform.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\ControlzEx.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MahApps.Metro.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.VS2010.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.Toolkit.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.xml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.Platform.xml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.Platform.Core.xml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\ControlzEx.pdb
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MahApps.Metro.pdb
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MahApps.Metro.xml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\de\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\es\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\fr\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\hu\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\it\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\pt-BR\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\ro\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.csprojAssemblyReference.cache
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\SessionSettingsView.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\ManualView.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\SessionView.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\ShellView.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\App.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI_MarkupCompile.cache
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI_MarkupCompile.lref
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\App.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\SessionSettingsView.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\ManualView.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\SessionView.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\ShellView.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.g.resources
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.Properties.Resources.resources
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.csproj.GenerateResource.cache
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.csproj.CopyComplete
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.exe
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\BrewUI.exe.config
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\BrewUI.exe
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\BrewUI.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.Platform.Core.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.Platform.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\ControlzEx.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MahApps.Metro.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.VS2010.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Xceed.Wpf.Toolkit.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.xml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.Platform.xml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\Caliburn.Micro.Platform.Core.xml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\ControlzEx.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MahApps.Metro.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MahApps.Metro.xml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\de\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\es\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\fr\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\hu\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\it\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\pt-BR\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\ro\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.csprojAssemblyReference.cache
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\SessionSettingsView.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\ManualView.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\SessionView.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\ShellView.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\App.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI_MarkupCompile.cache
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI_MarkupCompile.lref
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\App.baml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\SessionSettingsView.baml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\ManualView.baml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\SessionView.baml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\ShellView.baml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.g.resources
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.Properties.Resources.resources
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.csproj.GenerateResource.cache
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.csproj.CoreCompileInputs.cache
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.csproj.CopyComplete
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.exe
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\BrewUI.pdb
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\BrewerySettingsView.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\BrewerySettingsView.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MaterialDesignColors.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MaterialDesignColors.pdb
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MaterialDesignColors.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\BrewerySettingsView.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2019\BrewUI\obj\Debug\Views\BrewerySettingsView.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\BrewUI.exe.config
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\BrewUI.exe
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\BrewUI.pdb
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.Platform.Core.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.Platform.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\ControlzEx.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MahApps.Metro.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignColors.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.VS2010.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Xceed.Wpf.Toolkit.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.xml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.Platform.xml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.Platform.Core.xml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\ControlzEx.pdb
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MahApps.Metro.pdb
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MahApps.Metro.xml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignColors.pdb
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\de\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\es\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\fr\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\hu\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\it\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\pt-BR\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\ro\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.csprojAssemblyReference.cache
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\BrewerySettingsView.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\SessionSettingsView.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\ManualView.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\SessionView.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\ShellView.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\App.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI_MarkupCompile.cache
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI_MarkupCompile.lref
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\App.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\BrewerySettingsView.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\SessionSettingsView.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\ManualView.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\SessionView.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\ShellView.baml
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.g.resources
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.Properties.Resources.resources
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.csproj.GenerateResource.cache
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.csproj.CopyComplete
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.exe
+C:\Users\jan-erik.runge\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\BrewUI.exe.config
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\BrewUI.exe
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\BrewUI.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.Platform.Core.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.Platform.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\ControlzEx.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MahApps.Metro.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignColors.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Aero.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.Metro.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Xceed.Wpf.AvalonDock.Themes.VS2010.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Xceed.Wpf.Toolkit.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.xml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.Platform.xml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.Platform.Core.xml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\ControlzEx.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MahApps.Metro.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MahApps.Metro.xml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\de\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\es\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\fr\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\hu\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\it\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\pt-BR\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\ro\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.csprojAssemblyReference.cache
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\BrewerySettingsView.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\SessionSettingsView.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\ManualView.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\SessionView.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\ShellView.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\App.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI_MarkupCompile.cache
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI_MarkupCompile.lref
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\App.baml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\BrewerySettingsView.baml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\SessionSettingsView.baml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\ManualView.baml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\SessionView.baml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\Views\ShellView.baml
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.g.resources
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.Properties.Resources.resources
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.csproj.GenerateResource.cache
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.csproj.CoreCompileInputs.cache
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.csproj.CopyComplete
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.exe
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.pdb
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\InTheHand.Net.Personal.dll
+C:\Users\Jan-Erik\Dropbox\BrewSystem 2020\BrewUI\bin\Debug\InTheHand.Net.Personal.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\BrewerySettingsView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\SessionSettingsView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\ManualView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\SessionView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\ShellView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\App.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\BrewUI_MarkupCompile.cache
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\BrewUI_MarkupCompile.lref
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\BrewUI.exe.config
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\BrewUI.exe
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\BrewUI.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.Platform.Core.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.Platform.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\ControlzEx.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\InTheHand.Net.Personal.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\MahApps.Metro.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignColors.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.Platform.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Caliburn.Micro.Platform.Core.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\ControlzEx.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\InTheHand.Net.Personal.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\MahApps.Metro.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\MahApps.Metro.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\App.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\BrewerySettingsView.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\SessionSettingsView.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\ManualView.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\SessionView.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\ShellView.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.g.resources
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.Properties.Resources.resources
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.csproj.GenerateResource.cache
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.csproj.CoreCompileInputs.cache
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.csproj.CopyComplete
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.exe
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.csprojAssemblyReference.cache
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\LiveCharts.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\LiveCharts.Wpf.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\LiveCharts.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\LiveCharts.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\LiveCharts.Wpf.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\LiveCharts.Wpf.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\BrewUI_Content.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Database\Hops.bdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Database\Grains.bdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Microsoft.Expression.Interactions.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\en\Microsoft.Expression.Interactions.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\es\Microsoft.Expression.Interactions.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\fr\Microsoft.Expression.Interactions.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\it\Microsoft.Expression.Interactions.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\ja\Microsoft.Expression.Interactions.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\ko\Microsoft.Expression.Interactions.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\ru\Microsoft.Expression.Interactions.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\zh-Hans\Microsoft.Expression.Interactions.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\zh-Hant\Microsoft.Expression.Interactions.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\en\System.Windows.Interactivity.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\es\System.Windows.Interactivity.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\fr\System.Windows.Interactivity.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\it\System.Windows.Interactivity.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\ja\System.Windows.Interactivity.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\ko\System.Windows.Interactivity.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\ru\System.Windows.Interactivity.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Database\Styles.bdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\WPFTextBoxAutoComplete.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\WPFTextBoxAutoComplete.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\AddGrainsView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\AddGrainsView.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Alarm.wav
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\DebugWindowView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\DebugWindowView.baml

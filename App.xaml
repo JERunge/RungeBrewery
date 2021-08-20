@@ -1,0 +1,81 @@
+﻿<Application x:Class="BrewUI.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:BrewUI">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                
+                <!-- MVVM CALIBURN SETUP -->
+                <ResourceDictionary>
+                    <local:Bootstrapper x:Key="Bootstrapper"/>
+                </ResourceDictionary>
+                
+                <!-- GLOBAL STYLES -->
+                <ResourceDictionary>
+
+                    <!--Colors-->
+                    <SolidColorBrush x:Key="AccentColor" Color="#2cc0be"/>
+                    <SolidColorBrush x:Key="GrayDark" Color="#303030"/>
+                    <SolidColorBrush x:Key="GrayLight" Color="#d9d9d9"/>
+                    <SolidColorBrush x:Key="ButtonSelected" Color="#414141"/>
+                    <SolidColorBrush x:Key="GrayHover" Color="#303030"/>
+
+                    <!--Fonts-->
+                    <Style x:Key="Header1" TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="18"/>
+                        <Setter Property="FontFamily" Value="Calibri"/>
+                        <Setter Property="FontWeight" Value="UltraLight"/>
+                        <Setter Property="Typography.Capitals" Value="AllSmallCaps"/>
+                    </Style>
+                    <Style x:Key="Header2" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="DarkSlateGray" />
+                        <Setter Property="FontSize" Value="14"/>
+                        <Setter Property="FontFamily" Value="Calibri"/>
+                        <Setter Property="FontWeight" Value="UltraLight"/>
+                    </Style>
+
+                    <!--Regular button-->
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="{StaticResource AccentColor}"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Padding" Value="10 0"/>
+                        <Setter Property="Height" Value="30"/>
+                    </Style>
+                    
+                    <!--Content border-->
+                    <Style TargetType="Border" x:Key="ContentBorder">
+                        <Setter Property="Padding" Value="10"/>
+                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="BorderBrush" Value="LightGray"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="CornerRadius" Value="3" />
+                    </Style>
+                    
+                    <!--Unit block-->
+                    <Style x:Key="UnitBlock" TargetType="TextBlock">
+                        <Setter Property="Background" Value="{StaticResource GrayLight}"/>
+                        <Setter Property="Foreground" Value="{StaticResource GrayDark}"/>
+                        <Setter Property="Height" Value="18"/>
+                        <Setter Property="FontSize" Value="10"/>
+                        <Setter Property="VerticalAlignment" Value="Center"/>
+                        <Setter Property="TextAlignment" Value="Center"/>
+                        <Setter Property="Width" Value="25" />
+                    </Style>
+                    
+                    <!--Datagrid-->
+                    <!--<Style TargetType="DataGrid">
+                        <Setter Property="AlternatingRowBackground" Value="{StaticResource GrayLight}"/>
+                        <Setter Property="IsReadOnly" Value="True"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Background" Value="{StaticResource GrayDark}"/>
+                        <Setter Property="Foreground" Value="White"/>
+                    </Style>-->
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
