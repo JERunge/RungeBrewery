@@ -527,7 +527,7 @@
         <Button x:Name="BackButton" Grid.Column="0" Grid.Row="5" Width="70" HorizontalAlignment="Left">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="NavigateBefore" Margin="-4 0 0 0" VerticalAlignment="Bottom"/>
+                    <materialDesign:PackIcon Kind="NavigateBefore" Margin="-4 1 0 0" VerticalAlignment="Bottom"/>
                     <TextBlock Text="Back"/>
                 </StackPanel>
             </Button.Content>

@@ -992,7 +992,6 @@ namespace BrewUI.ViewModels
                 }
                 Task.Delay(100).Wait();
             }
-            MessageBox.Show("Boil preheat finished");
             continueTask = false;
 
             #region Perform boil steps
@@ -1056,7 +1055,8 @@ namespace BrewUI.ViewModels
             bool finished = true;
             foreach(BoilStep boilStep in BoilSteps)
             {
-                if (boilStep.added = false)
+                MessageBox.Show(boilStep.added.ToString());
+                if (boilStep.added == false)
                 {
                     finished = false;
                 }
@@ -1104,11 +1104,21 @@ namespace BrewUI.ViewModels
         private void CloseBoil()
         {
             CurrentProcess = "";
+            CurrentStep = "";
             BoilRunning = false;
             TargetTemp = 0;
             TargetDuration = 0;
             SendToArduino('H', "0");
             SendToArduino('P', "0");
+            BoilStatus = "-";
+            try
+            {
+                boilTimer.Stop();
+            }
+            catch
+            {
+
+            }
             continueTask = false;
         }
 
@@ -1432,6 +1442,7 @@ namespace BrewUI.ViewModels
                 _batchSize = message.BreweryRecipe.sessionInfo.BatchSize;
                 MashSteps = message.BreweryRecipe.mashSteps;
                 TotalSessionTime = Calculations.SessionDuration(currentRecipe, CurrentTemp);
+                MessageBox.Show(TotalSessionTime.TotalMinutes.ToString());
 
                 MashMouseOver = false;
 
