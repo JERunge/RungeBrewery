@@ -1,0 +1,16 @@
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\BrewUI.csprojAssemblyReference.cache
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\Views\SessionSettingsView.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\Views\ManualView.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\Views\SessionView.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\Views\AddGrainsView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\Views\BrewerySettingsView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\Views\DebugWindowView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\Views\SessionSettingsView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\Views\ManualView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\Views\SessionView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\Views\ShellView.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\App.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\BrewUI_Content.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\GeneratedInternalTypeHelper.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\BrewUI_MarkupCompile.cache
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Release\BrewUI_MarkupCompile.lref
