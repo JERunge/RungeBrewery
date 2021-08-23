@@ -142,7 +142,7 @@
                     </Border.Style>
                     
                     <StackPanel Orientation="Vertical">
-                        <Grid>
+                        <Grid Cursor="Hand">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -159,7 +159,7 @@
                                     <i:InvokeCommandAction Command="{Binding MashMouseLeftCommand}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                            <TextBlock Text="Mash" Style="{StaticResource Header1}" Grid.Column="0" Margin="0 0 0 10"/>
+                            <TextBlock Text="Mash" Style="{StaticResource Header1}" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 0 0 10"/>
                             <TextBlock Grid.Column="1"/>
                             <materialDesign:PackIcon Margin="0 0 0 0" Grid.Column="2" Foreground="{StaticResource GrayDark}">
                                 <materialDesign:PackIcon.Style>
@@ -289,8 +289,13 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="Sparge" Style="{StaticResource Header1}"
+                        <Grid Grid.Row="0" Grid.ColumnSpan="3" Cursor="Hand">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Sparge" Style="{StaticResource Header1}"
                                    Grid.Row="0" Grid.ColumnSpan="3">
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="MouseLeftButtonDown">
@@ -303,21 +308,23 @@
                                     <i:InvokeCommandAction Command="{Binding SpargeMouseLeftCommand}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                        </TextBlock>
-                        <materialDesign:PackIcon Margin="0 0 0 0" HorizontalAlignment="Right" Grid.Column="2" Foreground="{StaticResource GrayDark}">
-                            <materialDesign:PackIcon.Style>
-                                <Style TargetType="materialDesign:PackIcon">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SpargeOpen}" Value="True">
-                                            <Setter Property="Kind" Value="ArrowTopCircleOutline"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding SpargeOpen}" Value="False">
-                                            <Setter Property="Kind" Value="ArrowBottomCircleOutline"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </materialDesign:PackIcon.Style>
-                        </materialDesign:PackIcon>
+                            </TextBlock>
+                            <materialDesign:PackIcon Margin="0 0 0 0" HorizontalAlignment="Right" Grid.Column="2" Foreground="{StaticResource GrayDark}">
+                                <materialDesign:PackIcon.Style>
+                                    <Style TargetType="materialDesign:PackIcon">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SpargeOpen}" Value="True">
+                                                <Setter Property="Kind" Value="ArrowTopCircleOutline"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding SpargeOpen}" Value="False">
+                                                <Setter Property="Kind" Value="ArrowBottomCircleOutline"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </materialDesign:PackIcon.Style>
+                            </materialDesign:PackIcon>
+                        </Grid>
+                        
                         <StackPanel Orientation="Horizontal" Grid.Row="2">
                             <TextBlock Text="{Binding Path=SpargeTemp, StringFormat={}Target temperature: {0} °C}" Margin="0 0 30 0"/>
                             <TextBlock Text="{Binding Path=SpargeTimerText, StringFormat={}Duration: {0}}"/>
@@ -366,7 +373,7 @@
                     
 
                     <StackPanel Orientation="Vertical">
-                        <Grid>
+                        <Grid Cursor="Hand">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="10"/>
@@ -388,7 +395,7 @@
                                     <i:InvokeCommandAction Command="{Binding BoilMouseLeftCommand}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
-                            <TextBlock Text="Boil" Style="{StaticResource Header1}" Grid.Column="0"/>
+                            <TextBlock Text="Boil" Style="{StaticResource Header1}" Grid.Column="0" Grid.ColumnSpan="3"/>
                             <materialDesign:PackIcon Margin="0 0 0 0" VerticalAlignment="Center" Grid.Column="2" Foreground="{StaticResource GrayDark}">
                                 <materialDesign:PackIcon.Style>
                                     <Style TargetType="materialDesign:PackIcon">

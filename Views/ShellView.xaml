@@ -185,14 +185,14 @@
         </StackPanel>
 
         <!--MAIN CONTENT-->
-        <ScrollViewer Grid.Row="2" Grid.Column="2" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+        <ScrollViewer Grid.Row="2" Grid.Column="2" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden" >
             <ContentControl x:Name="ActiveItem" Margin="0 0 0 0" Grid.Row="2" Grid.Column="2"/>
         </ScrollViewer>
 
 
         <!--SECONDARY CONTENT-->
-        <Border BorderBrush="Gray" BorderThickness="1" Background="{StaticResource GrayDark}" CornerRadius="3"
-                Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="4" TextElement.Foreground="White" Margin="0,0.2,19.6,19.8" Grid.RowSpan="2">
+        <Border BorderThickness="1" Background="{StaticResource GrayDark}" CornerRadius="3"
+                Grid.Row="4" Grid.Column="2" Grid.ColumnSpan="1" TextElement.Foreground="White"  Grid.RowSpan="1">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="20" />

@@ -308,6 +308,7 @@ namespace BrewUI.ViewModels
             {
                 _targetTemp = value;
                 NotifyOfPropertyChange(() => TargetTemp);
+                SendToArduino('t', TargetTemp.ToString());
             }
         }
 

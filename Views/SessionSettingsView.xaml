@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behaviors="clr-namespace:WPFTextBoxAutoComplete;assembly=WPFTextBoxAutoComplete"
              mc:Ignorable="d" 
              Height="Auto" HorizontalAlignment="Stretch">
 
@@ -160,7 +161,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <ComboBox x:Name="GrainDB" Grid.Column="0" Width="150" Margin="0" Height="25" SelectedItem="{Binding SelectedGrain}">
+                        <ComboBox x:Name="GrainDB" Grid.Column="0" Width="150" Margin="0" Height="25" 
+                                  SelectedItem="{Binding SelectedGrain}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding grainName}"/>
@@ -168,13 +170,6 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                         <StackPanel Orientation="Horizontal" Grid.Column="2">
-                            <TextBox x:Name="GrainsSearchText" Width="100">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseLeftButtonDown">
-                                        <i:InvokeCommandAction Command="{Binding GrainSearchClicked}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
-                            </TextBox>
                             <TextBox x:Name="GrainAmount" Width="50"/>
                             <TextBlock Text="g" Style="{StaticResource UnitBlock}"/>
                         </StackPanel>
@@ -183,7 +178,9 @@
                             <Button x:Name="RemoveGrains" Content="Remove"/>
                         </StackPanel>
                     </Grid>
+
                     
+
                     <!--ADDED GRAINS LIST/TABLE-->
                     <ItemsControl ItemsSource="{Binding AddedGrains}" Margin="0 10 0 0">
                         <ItemsControl.ItemsPanel>

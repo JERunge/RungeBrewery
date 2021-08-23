@@ -34,7 +34,7 @@
             <Setter Property="TextAlignment" Value="Center"/>
         </Style>
         <Style TargetType="Button" >
-            <Setter Property="Background" Value="#00b894"/>
+            <Setter Property="Background" Value="{StaticResource AccentColor}"/>
             <Setter Property="Margin" Value="10 0 0 0" />
             <Setter Property="Width" Value="50"/>
             <Setter Property="Foreground" Value="White" />

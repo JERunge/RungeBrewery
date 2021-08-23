@@ -15,17 +15,17 @@
                 <ResourceDictionary>
 
                     <!--Colors-->
-                    <SolidColorBrush x:Key="AccentColor" Color="#2cc0be"/>
-                    <SolidColorBrush x:Key="GrayDark" Color="#303030"/>
-                    <SolidColorBrush x:Key="GrayLight" Color="#d9d9d9"/>
-                    <SolidColorBrush x:Key="ButtonSelected" Color="#414141"/>
-                    <SolidColorBrush x:Key="GrayHover" Color="#303030"/>
+                    <SolidColorBrush x:Key="AccentColor" Color="#FFD523"/>
+                    <SolidColorBrush x:Key="GrayDark" Color="#2C2E43"/>
+                    <SolidColorBrush x:Key="GrayLight" Color="#B2B1B9"/>
+                    <SolidColorBrush x:Key="ButtonSelected" Color="#B2B1B9"/>
+                    <SolidColorBrush x:Key="GrayHover" Color="#595260"/>
 
                     <!--Fonts-->
                     <Style x:Key="Header1" TargetType="TextBlock">
                         <Setter Property="FontSize" Value="18"/>
                         <Setter Property="FontFamily" Value="Calibri"/>
-                        <Setter Property="FontWeight" Value="UltraLight"/>
+                        <Setter Property="FontWeight" Value="Normal"/>
                         <Setter Property="Typography.Capitals" Value="AllSmallCaps"/>
                     </Style>
                     <Style x:Key="Header2" TargetType="TextBlock">
@@ -38,7 +38,7 @@
                     <!--Regular button-->
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="{StaticResource AccentColor}"/>
-                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Foreground" Value="{StaticResource GrayDark}"/>
                         <Setter Property="BorderThickness" Value="0" />
                         <Setter Property="Padding" Value="10 0"/>
                         <Setter Property="Height" Value="30"/>
@@ -49,14 +49,14 @@
                         <Setter Property="Padding" Value="10"/>
                         <Setter Property="Background" Value="White"/>
                         <Setter Property="BorderBrush" Value="LightGray"/>
-                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="BorderThickness" Value="0"/>
                         <Setter Property="CornerRadius" Value="3" />
                     </Style>
                     
                     <!--Unit block-->
                     <Style x:Key="UnitBlock" TargetType="TextBlock">
                         <Setter Property="Background" Value="{StaticResource GrayLight}"/>
-                        <Setter Property="Foreground" Value="{StaticResource GrayDark}"/>
+                        <Setter Property="Foreground" Value="White"/>
                         <Setter Property="Height" Value="18"/>
                         <Setter Property="FontSize" Value="10"/>
                         <Setter Property="VerticalAlignment" Value="Center"/>
