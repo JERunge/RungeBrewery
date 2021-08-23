@@ -484,8 +484,7 @@ namespace BrewUI.ViewModels
         #region GUI METHODS
         public void StartButton()
         {
-            //if (CanStart == true)
-            if(true)
+            if (CanStart == true)
             {
                 breweryRecipe = UIToRecipe();
 

@@ -384,6 +384,10 @@ namespace BrewUI.ViewModels
             }
         }
 
+        public int numberofSteps { get; set; }
+
+        public int stepCount { get; set; }
+
         // Measured data
         private double _currentTemp;
         public double CurrentTemp
@@ -607,10 +611,13 @@ namespace BrewUI.ViewModels
         #region UI Methods
         public void BackButton()
         {
-            MessageBoxResult answer = MessageBox.Show("This will abort the current brew session. Continue?", "Warning", MessageBoxButton.YesNo);
-            if(answer == MessageBoxResult.No)
+            if (!BoilFinished)
             {
-                return;
+                MessageBoxResult answer = MessageBox.Show("This will abort the current brew session. Continue?", "Warning", MessageBoxButton.YesNo);
+                if (answer == MessageBoxResult.No)
+                {
+                    return;
+                }
             }
             _events.PublishOnUIThread(new SessionRunningEvent { SessionRunning = false });
         }
@@ -625,7 +632,7 @@ namespace BrewUI.ViewModels
 
         public async Task Mash()
         {
-            SessionProgressTimer.Start();
+            //SessionProgressTimer.Start();
 
             CurrentProcess = "Mash";
             startTime = DateTime.Now;
@@ -786,6 +793,8 @@ namespace BrewUI.ViewModels
                 item.Status = "Finished";
                 item.stepTimer.Stop();
                 item.TimerText = item.stepDuration.ToString("hh\\:mm\\:ss");
+
+                UpdateProgressionBar();
             }
 
             #endregion
@@ -799,8 +808,14 @@ namespace BrewUI.ViewModels
             MashOpen = false;
             SpargeOpen = true;
 
-            SessionProgressTimer.Stop();
+            //SessionProgressTimer.Stop();
             ProcessFinishedTime = DateTime.Now;
+        }
+
+        private void UpdateProgressionBar()
+        {
+            stepCount += 1;
+            SessionProgress = 100 / numberofSteps * stepCount;
         }
 
         private bool MashStepCancelled(MashStep ms, String itemStatus = "")
@@ -873,7 +888,7 @@ namespace BrewUI.ViewModels
                 }
             }
 
-            SessionProgressTimer.Start();
+            //SessionProgressTimer.Start();
 
             // Start sparge
             CurrentProcess = "Sparge";
@@ -946,7 +961,8 @@ namespace BrewUI.ViewModels
             SpargeOpen = false;
             BoilOpen = true;
 
-            SessionProgressTimer.Stop();
+            //SessionProgressTimer.Stop();
+            UpdateProgressionBar();
             ProcessFinishedTime = DateTime.Now;
         }
 
@@ -1043,6 +1059,7 @@ namespace BrewUI.ViewModels
                             FileInteraction.PlaySound("Alarm.wav");
                             MessageBox.Show("Add the following hops and press Ok.\n\n" + tempStr, "Add hops");
                             boilStep.added = true;
+                            UpdateProgressionBar();
                         }
                     }
                     now = DateTime.Now;
@@ -1136,11 +1153,11 @@ namespace BrewUI.ViewModels
             SpargeTimerText = spargeDur.ToString("hh\\:mm\\:ss");
         }
 
-        private void SessionProgressTimer_Tick(object sender, EventArgs e)
-        {
-            ElapsedSessionTime += -TimeSpan.FromSeconds(1);
-            SessionProgress = Convert.ToInt32(Math.Round((TotalSessionTime.TotalMinutes - ElapsedSessionTime.TotalMinutes)/TotalSessionTime.TotalMinutes));
-        }
+        //private void SessionProgressTimer_Tick(object sender, EventArgs e)
+        //{
+        //    ElapsedSessionTime += -TimeSpan.FromSeconds(1);
+        //    SessionProgress = Convert.ToInt32(Math.Round((TotalSessionTime.TotalMinutes - ElapsedSessionTime.TotalMinutes)/TotalSessionTime.TotalMinutes));
+        //}
 
         public void MashClicked()
         {
@@ -1426,6 +1443,28 @@ namespace BrewUI.ViewModels
             chartValues.Add(new TemperatureMeasure { measureTemp = 0, measureTime = TimeSpan.Zero });
         }
         
+        private int SetStepProgressionShares()
+        {
+            int stepCount = 0;
+
+            // Mash steps
+            foreach (MashStep mashStep in MashSteps)
+            {
+                stepCount += 1;
+            }
+
+            // Sparge
+            stepCount += 1;
+
+            // Boil
+            foreach(BoilStep bs in BoilSteps)
+            {
+                stepCount += 1;
+            }
+
+            return stepCount;
+        }
+
         #endregion
 
         #region Event handlers
@@ -1441,14 +1480,13 @@ namespace BrewUI.ViewModels
                 _beerStyle = message.BreweryRecipe.sessionInfo.style.Name;
                 _batchSize = message.BreweryRecipe.sessionInfo.BatchSize;
                 MashSteps = message.BreweryRecipe.mashSteps;
-                TotalSessionTime = Calculations.SessionDuration(currentRecipe, CurrentTemp);
-                MessageBox.Show(TotalSessionTime.TotalMinutes.ToString());
+                //TotalSessionTime = Calculations.SessionDuration(currentRecipe, CurrentTemp);
 
                 MashMouseOver = false;
 
-                SessionProgressTimer = new DispatcherTimer();
-                SessionProgressTimer.Interval = TimeSpan.FromSeconds(1);
-                SessionProgressTimer.Tick += SessionProgressTimer_Tick;
+                //SessionProgressTimer = new DispatcherTimer();
+                //SessionProgressTimer.Interval = TimeSpan.FromSeconds(1);
+                //SessionProgressTimer.Tick += SessionProgressTimer_Tick;
 
                 strikeWaterAdded = false;
 
@@ -1489,6 +1527,8 @@ namespace BrewUI.ViewModels
                     BoilSteps[i].added = false;
                     prevBoilTime = hops.BoilTime;
                 }
+
+                numberofSteps =  SetStepProgressionShares();
             }
             else
             {

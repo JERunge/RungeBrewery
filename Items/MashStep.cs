@@ -9,6 +9,7 @@ namespace BrewUI.Items
         public string stepName { get; set; }
         public int index { get; set; }
         public double stepTemp { get; set; }
+        public int progressShare { get; set; }
 
         public TimeSpan stepDuration { get; set; }
 
