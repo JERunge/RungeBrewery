@@ -40,6 +40,9 @@
             <!--Boil-->
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="20"/>
+            <!--Cooldown-->
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="20"/>
             <!--Start button-->
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -523,9 +526,31 @@
             </Grid>
         </Border>
 
+        <!-- NewRegion -->
+        <Border Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Cooldown"  Grid.Row="0" Style="{StaticResource Header1}"/>
+                <StackPanel Orientation="Horizontal"
+                            Grid.Row="1">
+                    <TextBlock Text="Target temperature: " VerticalAlignment="Center"/>
+                    <TextBox x:Name="CDTargetTemp" Width="30"/>
+                    <TextBlock Text=" &#186;C " Style="{StaticResource UnitBlock}"/>
+                    <CheckBox Content="Run cooldown" IsChecked="{Binding RunCooldown}" Margin="30 0 0 0"/>
+                </StackPanel>
+            </Grid>
+        </Border>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
-                    Grid.Row="8" Grid.Column="0">
+                    Grid.Row="10" Grid.Column="0">
             <TextBlock x:Name="CurrentStep" Width="100" />
             <Button x:Name="StartButton" Height="30" VerticalAlignment="Top">
                 <Button.Content>

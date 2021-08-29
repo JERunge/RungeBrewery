@@ -388,6 +388,19 @@ namespace BrewUI.ViewModels
 
         public int stepCount { get; set; }
 
+        private double _cdTargetTemp;
+
+        public double CDTargetTemp
+        {
+            get { return _cdTargetTemp; }
+            set 
+            { 
+                _cdTargetTemp = value;
+                NotifyOfPropertyChange(() => CDTargetTemp);
+            }
+        }
+
+
         // Measured data
         private double _currentTemp;
         public double CurrentTemp
@@ -1009,6 +1022,7 @@ namespace BrewUI.ViewModels
                 Task.Delay(100).Wait();
             }
             continueTask = false;
+            SendToArduino('P', "0");
 
             #region Perform boil steps
 
@@ -1072,7 +1086,6 @@ namespace BrewUI.ViewModels
             bool finished = true;
             foreach(BoilStep boilStep in BoilSteps)
             {
-                MessageBox.Show(boilStep.added.ToString());
                 if (boilStep.added == false)
                 {
                     finished = false;
@@ -1528,6 +1541,8 @@ namespace BrewUI.ViewModels
                     prevBoilTime = hops.BoilTime;
                 }
 
+                CDTargetTemp = message.BreweryRecipe.cooldownTargetTemp;
+                MessageBox.Show(CDTargetTemp.ToString());
                 numberofSteps =  SetStepProgressionShares();
             }
             else

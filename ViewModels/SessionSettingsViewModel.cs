@@ -143,7 +143,6 @@ namespace BrewUI.ViewModels
             }
         }
 
-
         private int _totalBoilTime;
         public int TotalBoilTime
         {
@@ -355,22 +354,41 @@ namespace BrewUI.ViewModels
             }
         }
 
-        #endregion
+        private double _cdTargetTemp;
+        public double CDTargetTemp
+        {
+            get { return _cdTargetTemp; }
+            set { 
+                _cdTargetTemp = value;
+                NotifyOfPropertyChange(() => CDTargetTemp); 
+            }
+        }
 
-        private IEventAggregator _events;
-
-        private BreweryRecipe breweryRecipe = new BreweryRecipe();
+        private bool _runCooldown;
+        public bool RunCooldown
+        {
+            get { return _runCooldown; }
+            set { 
+                _runCooldown = value;
+                NotifyOfPropertyChange(() => RunCooldown);
+            }
+        }
 
         private bool _canStart;
         public bool CanStart
         {
             get { return _canStart; }
-            set 
-            { 
+            set
+            {
                 _canStart = value;
                 NotifyOfPropertyChange(() => CanStart);
             }
         }
+        #endregion
+
+        private IEventAggregator _events;
+
+        private BreweryRecipe breweryRecipe = new BreweryRecipe();
 
         // Let the app know which window is active
         protected override void OnActivate()
@@ -416,6 +434,8 @@ namespace BrewUI.ViewModels
             GrainDB = FileInteraction.GrainsFromDB();
             AddedGrains = new ObservableCollection<Grain>();
             SelectedGrain = GrainDB[0];
+
+            CDTargetTemp = 20.0;
 
             SessionNameBorder = false;
             #endregion
@@ -484,7 +504,8 @@ namespace BrewUI.ViewModels
         #region GUI METHODS
         public void StartButton()
         {
-            if (CanStart == true)
+            //if (CanStart == true)
+            if(true)
             {
                 breweryRecipe = UIToRecipe();
 
@@ -598,6 +619,11 @@ namespace BrewUI.ViewModels
                 step.TimerText = step.stepDuration.ToString("hh\\:mm\\:ss");
             }
             br.hopsList = AddedHops;
+
+            if (RunCooldown)
+            {
+                br.cooldownTargetTemp = CDTargetTemp;
+            }
 
             return br;
         }

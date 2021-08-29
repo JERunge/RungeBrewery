@@ -15,11 +15,11 @@
                 <ResourceDictionary>
 
                     <!--Colors-->
-                    <SolidColorBrush x:Key="AccentColor" Color="#FFD523"/>
-                    <SolidColorBrush x:Key="GrayDark" Color="#2C2E43"/>
-                    <SolidColorBrush x:Key="GrayLight" Color="#B2B1B9"/>
-                    <SolidColorBrush x:Key="ButtonSelected" Color="#B2B1B9"/>
-                    <SolidColorBrush x:Key="GrayHover" Color="#595260"/>
+                    <SolidColorBrush x:Key="AccentColor" Color="#00b894"/>
+                    <SolidColorBrush x:Key="GrayDark" Color="#2d3436"/>
+                    <SolidColorBrush x:Key="GrayLight" Color="#636e72"/>
+                    <SolidColorBrush x:Key="ButtonSelected" Color="#636e72"/>
+                    <SolidColorBrush x:Key="GrayHover" Color="#b2bec3"/>
 
                     <!--Fonts-->
                     <Style x:Key="Header1" TargetType="TextBlock">
@@ -38,7 +38,7 @@
                     <!--Regular button-->
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="{StaticResource AccentColor}"/>
-                        <Setter Property="Foreground" Value="{StaticResource GrayDark}"/>
+                        <Setter Property="Foreground" Value="White"/>
                         <Setter Property="BorderThickness" Value="0" />
                         <Setter Property="Padding" Value="10 0"/>
                         <Setter Property="Height" Value="30"/>

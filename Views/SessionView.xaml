@@ -122,6 +122,8 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="10"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <!--Mash steps-->
                 <Border Grid.Row="0">
@@ -140,7 +142,7 @@
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
-                    
+
                     <StackPanel Orientation="Vertical">
                         <Grid Cursor="Hand">
                             <Grid.ColumnDefinitions>
@@ -257,7 +259,7 @@
                     </StackPanel>
 
                 </Border>
-                
+
                 <!--Sparge-->
                 <Border Grid.Row="2">
                     <!--UI Interaction-->
@@ -276,7 +278,7 @@
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
-                    
+
                     <!--Content-->
                     <Grid>
                         <Grid.RowDefinitions>
@@ -324,7 +326,7 @@
                                 </materialDesign:PackIcon.Style>
                             </materialDesign:PackIcon>
                         </Grid>
-                        
+
                         <StackPanel Orientation="Horizontal" Grid.Row="2">
                             <TextBlock Text="{Binding Path=SpargeTemp, StringFormat={}Target temperature: {0} °C}" Margin="0 0 30 0"/>
                             <TextBlock Text="{Binding Path=SpargeTimerText, StringFormat={}Duration: {0}}"/>
@@ -351,8 +353,8 @@
                             </Button.Style>
                         </Button>
                     </Grid>
-                </Border> 
-               
+                </Border>
+
                 <!--BOIL-->
                 <Border Grid.Row="4">
                     <Border.Style>
@@ -370,7 +372,7 @@
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
-                    
+
 
                     <StackPanel Orientation="Vertical">
                         <Grid Cursor="Hand">
@@ -411,7 +413,7 @@
                                 </materialDesign:PackIcon.Style>
                             </materialDesign:PackIcon>
                         </Grid>
-                        
+
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Path=BoilStatus, StringFormat={}Status: {0}}" Margin="0 0 30 0"/>
                             <TextBlock Text="{Binding Path=BoilTimerText, StringFormat={}Time left: {0}}"/>
@@ -471,7 +473,7 @@
                                             </ItemsControl>
                                         </Grid>
                                     </Border>
-                                    
+
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -498,12 +500,10 @@
                             </Button.Style>
                         </Button>
                     </StackPanel>
-                    
-                    
                 </Border>
             </Grid>
         </StackPanel>
-        
+
         <!--Data-->
         <lvc:CartesianChart Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4"
                             Hoverable="True" DataTooltip="{x:Null}" 
@@ -524,7 +524,7 @@
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
 
-        <Button x:Name="BackButton" Grid.Column="0" Grid.Row="5" Width="70" HorizontalAlignment="Left">
+        <Button x:Name="BackButton" Grid.Column="0" Grid.Row="7" Width="70" HorizontalAlignment="Left">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="NavigateBefore" Margin="-4 1 0 0" VerticalAlignment="Bottom"/>

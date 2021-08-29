@@ -579,11 +579,11 @@ namespace BrewUI.ViewModels
             int timedOutCounter = 0;
             foreach (BluetoothDeviceInfo d in devices)
             {
+                MessageBox.Show($"{d.DeviceName}");
                 if (d.DeviceName == BTName)
                 {
                     if (d.Authenticated)
                     {
-                        MessageBox.Show("Brewery found");
                         _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = "Connecting" });
                         BTClient.BeginConnect(d.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(Connect), d);
 

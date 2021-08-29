@@ -15,5 +15,6 @@ namespace BrewUI.Items
         public ObservableCollection<MashStep> mashSteps { get; set; }
         public SpargeStep spargeStep { get; set; }
         public ObservableCollection<Hops> hopsList { get; set; }
+        public double cooldownTargetTemp { get; set; }
     }
 }
