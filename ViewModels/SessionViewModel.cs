@@ -1624,7 +1624,7 @@ namespace BrewUI.ViewModels
 
         public void Handle(ConnectionEvent message)
         {
-            if(message.ConnectionStatus == "Connected")
+            if(message.ConnectionStatus == MyEnums.ConnectionStatus.Connected)
             {
                 Connected = true;
             }

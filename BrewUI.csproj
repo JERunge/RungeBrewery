@@ -138,7 +138,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Bluetooth.cs" />
     <Compile Include="EventArgs.cs" />
     <Compile Include="EventModels\ActiveWindowEvent.cs" />
     <Compile Include="EventModels\AddingGrainsEvent.cs" />
@@ -168,6 +167,7 @@
     <Compile Include="EventModels\SerialReceivedEvent.cs" />
     <Compile Include="EventModels\SessionRunningEvent.cs" />
     <Compile Include="Models\Calculations.cs" />
+    <Compile Include="Models\MyEnums.cs" />
     <Compile Include="Models\FileInteraction.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Settings.cs" />

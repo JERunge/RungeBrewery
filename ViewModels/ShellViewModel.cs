@@ -336,8 +336,10 @@ namespace BrewUI.ViewModels
             }
         }
 
-        private string _connectionStatus;
-        public string ConnectionStatus
+        public DateTime pingTimeStamp { get; set; }
+
+        private MyEnums.ConnectionStatus _connectionStatus;
+        public MyEnums.ConnectionStatus ConnectionStatus
         {
             get { return _connectionStatus; }
             set
@@ -498,7 +500,7 @@ namespace BrewUI.ViewModels
             Connected = false;
             ConnectionIsBusy = false;
             ConnectionText = "Connect";
-            ConnectionStatus = "Disconnected";
+            ConnectionStatus = MyEnums.ConnectionStatus.Disconnected;
             _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = ConnectionStatus });
             _heaterStatus = "Off";
             _pumpStatus = "Off";
@@ -513,24 +515,13 @@ namespace BrewUI.ViewModels
         #region UI Methods
         public void ConnectButton()
         {
-            if (ConnectionStatus == "Disconnected")
+            if (ConnectionStatus == MyEnums.ConnectionStatus.Disconnected)
             {
                 ArduinoConnect();
             }
             else
             {
                 ArduinoDisconnect();
-            }
-        }
-
-        public void TestSendButton()
-        {
-            BTStream = BTClient.GetStream();
-            if (BTClient.Connected && BTStream != null)
-            {
-                var buffer = System.Text.Encoding.UTF8.GetBytes(ArduinoParse.ToParse(TestOutgoing));
-                BTStream.Write(buffer, 0, buffer.Length);
-                BTStream.Flush();
             }
         }
         #endregion
@@ -557,72 +548,44 @@ namespace BrewUI.ViewModels
             }
         }
 
-        public bool connectionDone;
+        public bool connectionDone { get; set; }
 
         public async Task ArduinoConnect()
         {
+            _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Connecting });
+            BTClient = new BluetoothClient();
+            BluetoothDeviceInfo[] devices = await Task.Run(() => BTClient.DiscoverDevices());
+            BluetoothDeviceInfo device = null;
+
+            foreach (var dev in devices)
+            {
+                if(dev.DeviceName == BTName)
+                {
+                    device = dev;
+                    break;
+                }
+            }
+
+            if (!device.Authenticated)
+            {
+                BluetoothSecurity.PairRequest(device.DeviceAddress, "0000");
+            }
+
+            device.Refresh();
+            _events.PublishOnUIThread(new DebugDataUpdatedEvent { index = $"Authenticated: {device.Authenticated.ToString()}"});
+
             try
             {
-                BTClient = new BluetoothClient();
+                await Task.Run(() => BTClient.Connect(device.DeviceAddress, BluetoothService.SerialPort));
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                MessageBox.Show("Please enable bluetooth on your PC before connecting.", "Bluetooth disabled");
+                MessageBox.Show(e.Message, "Connection failed");
+                _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Disconnected });
                 return;
             }
 
-            _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = "Searching" });
-            List<string> items = new List<string>();
-            BluetoothDeviceInfo[] devices = await Task.Run(() => BTClient.DiscoverDevicesInRange());
-
-            // Check if any of the discovered devices are the Runge Brewery and then connect
-            int timedOutCounter = 0;
-            foreach (BluetoothDeviceInfo d in devices)
-            {
-                MessageBox.Show($"{d.DeviceName}");
-                if (d.DeviceName == BTName)
-                {
-                    if (d.Authenticated)
-                    {
-                        _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = "Connecting" });
-                        BTClient.BeginConnect(d.DeviceAddress, BluetoothService.SerialPort, new AsyncCallback(Connect), d);
-
-                        connectionDone = false;
-                        while (!connectionDone)
-                        {
-                            await Task.Delay(100);
-                            connectionDone = BTClient.Connected;
-                            timedOutCounter += 100;
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("Device not authenticated");
-                    }
-                }
-            }
-            if(BTClient.Connected == false)
-            {
-                if (timedOutCounter < 10000)
-                {
-                    MessageBox.Show("Runge Brewery could not be found. Please make sure that the device is turned on.");
-                }
-                else
-                {
-                    MessageBox.Show("Connection attempt timed out. Please try again.");
-                }
-                BTClient.Close();
-                _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = "Disconnected" });
-            }
-            else
-            {
-                _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = "Connected" });
-            }
-        }
-
-        private void Connect(IAsyncResult result)
-        {
-
+            _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Connected });
         }
 
         private void ArduinoDisconnect()
@@ -631,7 +594,7 @@ namespace BrewUI.ViewModels
             Thread.Sleep(100);
             SendToArduino("P0");
             Thread.Sleep(100);
-            _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = "Disconnected" });
+            _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Disconnected });
             BTClient.Close();
         }
 
@@ -643,6 +606,12 @@ namespace BrewUI.ViewModels
 
             while (Connected == true)
             {
+                //if (DateTime.Now - pingTimeStamp > TimeSpan.FromSeconds(5)) // Check if connection is lost. If so, try to reconnect.
+                //{
+                //    BTClient.Close();
+                //    _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = "Reconnecting" });
+                //}
+
                 if (BW_ReceiveData.CancellationPending) // Check if cancellation is pending and exit if so.
                 {
                     return;
@@ -715,7 +684,7 @@ namespace BrewUI.ViewModels
                 {
                     return;
                 }
-                SendToArduino("T");
+                SendToArduino("T"); // Request temperature. Also functions as ping to brewery.
                 Thread.Sleep(1000);
             }
         }
@@ -742,7 +711,7 @@ namespace BrewUI.ViewModels
         {
             ConnectionStatus = message.ConnectionStatus;
 
-            if (ConnectionStatus == "Disconnected")
+            if (ConnectionStatus == MyEnums.ConnectionStatus.Disconnected)
             {
                 Connected = false;
                 ConnectionIsBusy = false;
@@ -753,7 +722,7 @@ namespace BrewUI.ViewModels
                 BluetoothIcon = PackIconKind.BluetoothOff;
                 CurrentTemp = 0;
             }
-            else if (ConnectionStatus == "Searching")
+            else if (ConnectionStatus == MyEnums.ConnectionStatus.Searching)
             {
                 Connected = false;
                 ConnectionIsBusy = true;
@@ -761,13 +730,17 @@ namespace BrewUI.ViewModels
                 ConnectButtonEnabled = false;
                 BluetoothIcon = PackIconKind.BluetoothSearching;
             }
-            else if (ConnectionStatus == "Connecting")
+            else if (ConnectionStatus == MyEnums.ConnectionStatus.Connecting)
             {
                 Connected = false;
                 ConnectionIsBusy = true;
                 ConnectionText = "Cancel";
                 ConnectButtonEnabled = false;
                 BluetoothIcon = PackIconKind.BluetoothSearching;
+            }
+            else if(ConnectionStatus == MyEnums.ConnectionStatus.Reconnecting)
+            {
+                ArduinoConnect();
             }
             else // Connected
             {
@@ -795,6 +768,7 @@ namespace BrewUI.ViewModels
                     try
                     {
                         CurrentTemp = Calculations.StringToDouble(_value);
+                        pingTimeStamp = DateTime.Now;
                     }
                     catch
                     {

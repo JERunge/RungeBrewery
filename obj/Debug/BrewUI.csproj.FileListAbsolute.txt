@@ -361,3 +361,15 @@ C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\AddG
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Alarm.wav
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\DebugWindowView.g.cs
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\Views\DebugWindowView.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\ConsoleTables.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\InTheHand.Devices.Bluetooth.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\InTheHand.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Network.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\System.ValueTuple.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\ConsoleTables.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\InTheHand.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\InTheHand.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\InTheHand.Devices.Bluetooth.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\InTheHand.Devices.Bluetooth.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Network.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\System.ValueTuple.xml

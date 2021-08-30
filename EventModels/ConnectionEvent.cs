@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using BrewUI.Models;
+using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,8 @@ namespace BrewUI.EventModels
 {
     public class ConnectionEvent : Conductor<object>
     {
-        private string _connectionStatus;
-
-        public string ConnectionStatus
+        private MyEnums.ConnectionStatus _connectionStatus;
+        public MyEnums.ConnectionStatus ConnectionStatus
         {
             get { return _connectionStatus; }
             set 
