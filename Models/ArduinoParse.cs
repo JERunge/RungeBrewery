@@ -12,11 +12,11 @@ namespace BrewUI.Models
     {
         private static string _message { get; set; }
 
-        public static string ToParse(object _input)
+        public static string ToParse(ArduinoMessage _input)
         {
             try
             {
-                _message = "<" + _input.ToString() + ">";
+                _message = "<" + _input.AIndex.ToString() + _input.AMessage + ">";
             }
             catch (NullReferenceException e)
             {

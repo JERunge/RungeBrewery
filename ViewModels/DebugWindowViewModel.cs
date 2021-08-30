@@ -199,7 +199,6 @@ namespace BrewUI.ViewModels
             char index = message.arduinoMessage.AIndex;
             string value = message.arduinoMessage.AMessage;
             string timeStamp = DateTime.Now.ToString("hh\\:mm\\:ss");
-
             ReceivedData += timeStamp + ": " + index + " " + value + "\n";
         }
 

@@ -166,6 +166,7 @@
     <Compile Include="EventModels\ConnectionEvent.cs" />
     <Compile Include="EventModels\SerialReceivedEvent.cs" />
     <Compile Include="EventModels\SessionRunningEvent.cs" />
+    <Compile Include="Models\BreweryConnection.cs" />
     <Compile Include="Models\Calculations.cs" />
     <Compile Include="Models\MyEnums.cs" />
     <Compile Include="Models\FileInteraction.cs" />
