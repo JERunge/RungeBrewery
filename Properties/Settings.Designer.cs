@@ -12,7 +12,7 @@ namespace BrewUI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.5.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -25,7 +25,7 @@ namespace BrewUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("16")]
         public double BatchSize {
             get {
                 return ((double)(this["BatchSize"]));
@@ -61,7 +61,7 @@ namespace BrewUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        [global::System.Configuration.DefaultSettingValueAttribute("16")]
         public double STD_BatchSize {
             get {
                 return ((double)(this["STD_BatchSize"]));
@@ -97,19 +97,7 @@ namespace BrewUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public double EquipmentLoss {
-            get {
-                return ((double)(this["EquipmentLoss"]));
-            }
-            set {
-                this["EquipmentLoss"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.33")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2.5")]
         public double MashThickness {
             get {
                 return ((double)(this["MashThickness"]));
@@ -133,19 +121,7 @@ namespace BrewUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
-        public double STD_EquipmentLoss {
-            get {
-                return ((double)(this["STD_EquipmentLoss"]));
-            }
-            set {
-                this["STD_EquipmentLoss"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.33")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2.5")]
         public double STD_MashThickness {
             get {
                 return ((double)(this["STD_MashThickness"]));
@@ -248,6 +224,54 @@ namespace BrewUI.Properties {
         public string PathRecipesFolder {
             get {
                 return ((string)(this["PathRecipesFolder"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public double EquipmentLoss {
+            get {
+                return ((double)(this["EquipmentLoss"]));
+            }
+            set {
+                this["EquipmentLoss"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public double STD_EquipmentLoss {
+            get {
+                return ((double)(this["STD_EquipmentLoss"]));
+            }
+            set {
+                this["STD_EquipmentLoss"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2.7")]
+        public double STD_MashRatio {
+            get {
+                return ((double)(this["STD_MashRatio"]));
+            }
+            set {
+                this["STD_MashRatio"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2.7")]
+        public double MashRatio {
+            get {
+                return ((double)(this["MashRatio"]));
+            }
+            set {
+                this["MashRatio"] = value;
             }
         }
     }

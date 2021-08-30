@@ -27,7 +27,7 @@ namespace BrewUI.Models
             return strikeTemp;
         }
 
-        public static double MashWater(double grainBill, double batchSize, TimeSpan boilTime)
+        public static double TotalWater(double grainBill, double batchSize, TimeSpan boilTime)
         {
             // Grain absorption
             double grainAbsorption = grainBill / 1000 * Properties.Settings.Default.GrainAbsorption;
@@ -38,9 +38,21 @@ namespace BrewUI.Models
             // Equipment loss
             double equipmentLoss = Properties.Settings.Default.EquipmentLoss;
 
-            double mashWater = Math.Round(grainAbsorption + boilOff + equipmentLoss + batchSize, 1);
+            double totalWater = Math.Round(grainAbsorption + boilOff + equipmentLoss + batchSize, 1);
 
-            return mashWater;
+            return totalWater;
+        }
+
+        public static double MashWater(double grainBill)
+        {
+            double ms = Properties.Settings.Default.MashRatio * grainBill / 1000;
+            return ms;
+        }
+
+        public static double SpargeWater(double grainBill)
+        {
+            double sw = Math.Round(grainBill * Properties.Settings.Default.MashRatio / 1000,1);
+            return sw;
         }
 
         public static double StringToDouble(string message)
@@ -84,7 +96,7 @@ namespace BrewUI.Models
             }
 
             // Add sparge duration
-            duration += breweryRecipe.spargeStep.spargeDur;
+            //duration += breweryRecipe.spargeStep.spargeDur;
 
             // Calculate sparge preheating duration
             duration += HeatDuration(previousMashStep.stepTemp, breweryRecipe.spargeStep.spargeTemp, breweryRecipe.sessionInfo.BatchSize);

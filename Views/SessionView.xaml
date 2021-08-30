@@ -39,7 +39,7 @@
         <!--Session info-->
         <Border Grid.Column="0" Grid.Row="0" Style="{StaticResource ContentBorder}">
             <StackPanel Orientation="Vertical">
-                <TextBlock x:Name="SessionName" FontSize="16" Margin="0 0 0 15" FontWeight="Bold"/>
+                <TextBlock x:Name="SessionName" FontSize="16" Margin="0 0 0 15" FontWeight="Bold" TextWrapping="Wrap"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding Path=BatchSize, StringFormat={}{0} L}" />
                 </StackPanel>
@@ -329,10 +329,9 @@
 
                         <StackPanel Orientation="Horizontal" Grid.Row="2">
                             <TextBlock Text="{Binding Path=SpargeTemp, StringFormat={}Target temperature: {0} °C}" Margin="0 0 30 0"/>
-                            <TextBlock Text="{Binding Path=SpargeTimerText, StringFormat={}Duration: {0}}"/>
-                            <TextBlock Text="{Binding Path=SpargeStatus, StringFormat={}Status: {0}}" Margin="30 0 30 0"/>
+                            <TextBlock Text="{Binding Path=SpargeWaterAmount, StringFormat={}Water amount: {0} L}"/>
                         </StackPanel>
-                        <Button x:Name="StartSparge" Width="90" Grid.Column="2" Grid.Row="2">
+                        <!--<Button x:Name="StartSparge" Width="90" Grid.Column="2" Grid.Row="2">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                     <Style.Triggers>
@@ -351,7 +350,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
-                        </Button>
+                        </Button>-->
                     </Grid>
                 </Border>
 

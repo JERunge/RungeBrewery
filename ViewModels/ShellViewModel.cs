@@ -162,7 +162,7 @@ namespace BrewUI.ViewModels
 
                     #region Add sparge step
 
-                    recipeText += "<SPARGESTEP>\n" + FileInteraction.AddProperty("TEMPERATURE", currentRecipe.spargeStep.spargeTemp.ToString()) + FileInteraction.AddProperty("DURATION", currentRecipe.spargeStep.spargeDur.TotalMinutes.ToString()) + "</SPARGESTEP>\n";
+                    recipeText += "<SPARGESTEP>\n" + FileInteraction.AddProperty("TEMPERATURE", currentRecipe.spargeStep.spargeTemp.ToString()) + FileInteraction.AddProperty("AMOUNT", currentRecipe.spargeStep.spargeWaterAmount.ToString()) + "</AMOUNT>\n";
 
                     #endregion
 
@@ -278,10 +278,6 @@ namespace BrewUI.ViewModels
         private string _currentStep;
         private bool _sessionRunning = false;
         private WindowState _customWindowState;
-        //private BluetoothClient BTClient;
-        //private NetworkStream BTStream;
-        //private readonly BackgroundWorker BW_ReceiveData = new BackgroundWorker();
-        //private readonly BackgroundWorker BW_RequestData = new BackgroundWorker();
         private DateTime _timeLastReceived;
         private MediaPlayer MP;
         private BreweryRecipe currentRecipe;

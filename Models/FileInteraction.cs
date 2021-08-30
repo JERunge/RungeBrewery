@@ -54,13 +54,13 @@ namespace BrewUI.Models
             // Read name
             si.sessionName = GetDataInbetween("<NAME>", siText);
 
-            // Read name
+            // Read batch size
             si.BatchSize = Convert.ToDouble(GetDataInbetween("<BATCHSIZE>", siText));
 
-            // Read name
+            // Read brew method
             si.BrewMethod = GetDataInbetween("<BREWMETHOD>", siText);
 
-            // Read name
+            // Read beer style
             BeerStyle bs = new BeerStyle();
             bs.Name = GetDataInbetween("<STYLE>", siText);
             si.style = bs;
@@ -121,8 +121,11 @@ namespace BrewUI.Models
 
             SpargeStep ss = new SpargeStep();
             string spargeText = GetDataInbetween("<SPARGESTEP>", recipeText);
-            ss.spargeTemp = Convert.ToDouble(GetDataInbetween("<TEMPERATURE>", spargeText));
-            ss.spargeDur = TimeSpan.FromMinutes(Convert.ToDouble(GetDataInbetween("<DURATION>", spargeText)));
+            NumberFormatInfo provider = new NumberFormatInfo();
+            provider.NumberDecimalSeparator = ",";
+            ss.spargeTemp = Convert.ToDouble(GetDataInbetween("<TEMPERATURE>", spargeText),provider);
+            ss.spargeWaterAmount = Convert.ToDouble(GetDataInbetween("<AMOUNT>", spargeText),provider);
+            //ss.spargeDur = TimeSpan.FromMinutes(Convert.ToDouble(GetDataInbetween("<DURATION>", spargeText)));
 
             #endregion
 
@@ -198,14 +201,13 @@ namespace BrewUI.Models
             NumberFormatInfo provider = new NumberFormatInfo();
             provider.NumberDecimalSeparator = ".";
             si.BatchSize = Math.Round(Convert.ToDouble(GetDataInbetween("<F_E_BATCH_VOL>", recipeText), provider) / 34.86875, 1);
-            return BR;
 
             // Read name
-            si.BrewMethod = GetDataInbetween("<BREWMETHOD>", recipeText);
+            //si.BrewMethod = GetDataInbetween("<BREWMETHOD>", recipeText);
 
             // Read name
             BeerStyle bs = new BeerStyle();
-            bs.Name = GetDataInbetween("<STYLE>", recipeText);
+            //bs.Name = GetDataInbetween("<STYLE>", recipeText);
             si.style = bs;
 
             #endregion
@@ -213,20 +215,22 @@ namespace BrewUI.Models
             #region Read grains
 
             ObservableCollection<Grain> grains = new ObservableCollection<Grain>();
-            string grainsText = GetDataInbetween("<GRAINLIST>", recipeText);
-            string[] grainsArray = grainsText.Split(new string[] { "<GRAIN>" }, StringSplitOptions.RemoveEmptyEntries);
+            string grainsText = GetDataInbetween("<Data><Grain>",recipeText, "<Hops>");
+            string[] grainsArray = grainsText.Split(new string[] { "<Grain>" }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string grainText in grainsArray)
             {
-                if (grainText.Contains("</GRAIN>"))
+                if (grainText.Contains("</F_G_NAME>"))
                 {
+                    MessageBox.Show(grainText);
                     Grain grain = new Grain();
 
                     // Read name
-                    grain.grainName = GetDataInbetween("<NAME>", grainText);
+                    grain.grainName = GetDataInbetween("<F_G_NAME>", grainText);
 
                     // Read amount
-                    grain.amount = Convert.ToDouble(GetDataInbetween("<AMOUNT>", grainText));
+                    MessageBox.Show(GetDataInbetween("<F_G_AMOUNT>", grainText));
+                    grain.amount = Convert.ToDouble(GetDataInbetween("<F_G_AMOUNT>", grainText), provider);
 
                     grains.Add(grain);
                 }
@@ -234,61 +238,32 @@ namespace BrewUI.Models
 
             #endregion
 
-            #region Read mash steps
-
-            ObservableCollection<MashStep> mashSteps = new ObservableCollection<MashStep>();
-            string mashText = GetDataInbetween("<MASHSTEPS>", recipeText);
-            string[] mashArray = mashText.Split(new string[] { "<MASHSTEP>" }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (string mt in mashArray)
-            {
-                if (mt.Contains("</MASHSTEP>"))
-                {
-                    MashStep ms = new MashStep();
-
-                    //Read name
-                    ms.stepName = GetDataInbetween("<NAME>", mt);
-
-                    // Read temperature
-                    ms.stepTemp = Convert.ToDouble(GetDataInbetween("<TEMPERATURE>", mt));
-
-                    // Read duration
-                    ms.stepDuration = TimeSpan.FromMinutes(Convert.ToDouble(GetDataInbetween("<DURATION>", mt)));
-
-                    mashSteps.Add(ms);
-                }
-            }
-            #endregion
-
             #region Read sparge
 
             SpargeStep ss = new SpargeStep();
-            string spargeText = GetDataInbetween("<SPARGESTEP>", recipeText);
-            ss.spargeTemp = Convert.ToDouble(GetDataInbetween("<TEMPERATURE>", spargeText));
-            ss.spargeDur = TimeSpan.FromMinutes(Convert.ToDouble(GetDataInbetween("<DURATION>", spargeText)));
+            ss.spargeTemp = Convert.ToDouble(GetDataInbetween("<F_MH_SPARGE_TEMP>", recipeText), provider);
 
             #endregion
 
             #region Read hops
 
             ObservableCollection<Hops> hopsList = new ObservableCollection<Hops>();
-            string hopsText = GetDataInbetween("<HOPSLIST>", recipeText);
-            string[] hopsArray = hopsText.Split(new string[] { "<HOPS>" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] hopsArray = recipeText.Split(new string[] { "<Hops>" }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string ht in hopsArray)
             {
-                if (ht.Contains("</HOPS>"))
+                if (ht.Contains("</Hops>"))
                 {
                     Hops hops = new Hops();
 
                     // Read name
-                    hops.Name = GetDataInbetween("<NAME>", ht);
+                    hops.Name = GetDataInbetween("<F_H_NAME>", ht);
 
                     // Read name
-                    hops.Amount = Convert.ToDouble(GetDataInbetween("<AMOUNT>", ht));
+                    hops.Amount = Convert.ToDouble(GetDataInbetween("<F_H_AMOUNT>", ht),provider);
 
                     // Read name
-                    hops.BoilTime = TimeSpan.FromMinutes(Convert.ToDouble(GetDataInbetween("<BOILTIME>", ht)));
+                    hops.BoilTime = TimeSpan.FromMinutes(Convert.ToDouble(GetDataInbetween("<F_H_BOIL_TIME>", ht), provider));
 
                     hopsList.Add(hops);
                 }
@@ -298,7 +273,6 @@ namespace BrewUI.Models
 
             BR.grainList = grains;
             BR.sessionInfo = si;
-            BR.mashSteps = mashSteps;
             BR.spargeStep = ss;
             BR.hopsList = hopsList;
 

@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="BatchSize" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">20</Value>
+      <Value Profile="(Default)">16</Value>
     </Setting>
     <Setting Name="HeaterEffect" Type="System.Double" Scope="User">
       <Value Profile="(Default)">2</Value>
@@ -12,7 +12,7 @@
       <Value Profile="(Default)">12</Value>
     </Setting>
     <Setting Name="STD_BatchSize" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">20</Value>
+      <Value Profile="(Default)">16</Value>
     </Setting>
     <Setting Name="STD_HeaterEffect" Type="System.Double" Scope="User">
       <Value Profile="(Default)">2</Value>
@@ -20,20 +20,14 @@
     <Setting Name="STD_TapTemp" Type="System.Double" Scope="User">
       <Value Profile="(Default)">12</Value>
     </Setting>
-    <Setting Name="EquipmentLoss" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1</Value>
-    </Setting>
     <Setting Name="MashThickness" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1.33</Value>
+      <Value Profile="(Default)">2.5</Value>
     </Setting>
     <Setting Name="GrainAbsorption" Type="System.Double" Scope="User">
       <Value Profile="(Default)">1.1</Value>
     </Setting>
-    <Setting Name="STD_EquipmentLoss" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1</Value>
-    </Setting>
     <Setting Name="STD_MashThickness" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1.33</Value>
+      <Value Profile="(Default)">2.5</Value>
     </Setting>
     <Setting Name="STD_GrainAbsorption" Type="System.Double" Scope="User">
       <Value Profile="(Default)">1.1</Value>
@@ -61,6 +55,18 @@
     </Setting>
     <Setting Name="PathRecipesFolder" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\Database\Recipes\</Value>
+    </Setting>
+    <Setting Name="EquipmentLoss" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="STD_EquipmentLoss" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+    <Setting Name="STD_MashRatio" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2.7</Value>
+    </Setting>
+    <Setting Name="MashRatio" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">2.7</Value>
     </Setting>
   </Settings>
 </SettingsFile>

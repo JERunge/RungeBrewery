@@ -298,6 +298,17 @@ namespace BrewUI.ViewModels
 
         public SpargeStep spargeStep { get; set; }
 
+        private double _spargeWaterAmount;
+        public double SpargeWaterAmount
+        {
+            get { return _spargeWaterAmount; }
+            set 
+            { 
+                _spargeWaterAmount = value;
+                NotifyOfPropertyChange(() => SpargeWaterAmount);
+            }
+        }
+
         public bool grainsAdded;
 
         private double _targetTemp;
@@ -381,6 +392,18 @@ namespace BrewUI.ViewModels
             {
                 _boilStatus = value;
                 NotifyOfPropertyChange(() => BoilStatus);
+            }
+        }
+
+        private double _boilWaterAddition;
+
+        public double BoilWaterAddition
+        {
+            get { return _boilWaterAddition; }
+            set 
+            { 
+                _boilWaterAddition = value;
+                NotifyOfPropertyChange(() => BoilWaterAddition);
             }
         }
 
@@ -645,8 +668,6 @@ namespace BrewUI.ViewModels
 
         public async Task Mash()
         {
-            //SessionProgressTimer.Start();
-
             CurrentProcess = "Mash";
             startTime = DateTime.Now;
             chartStartTime = startTime;
@@ -669,13 +690,13 @@ namespace BrewUI.ViewModels
                 }
             }
 
-            double waterAmount = Calculations.MashWater(grainWeight, BatchSize, boilDuration);
+            double waterAmount = Math.Round(Calculations.MashWater(grainWeight),1);
 
             // Add strike water and heat to strike temp
             if (!strikeWaterAdded)
             {
-                TargetTemp = Calculations.StrikeTemp(BatchSize, MashSteps[0].stepTemp, grainWeight);
-                MessageBoxResult answer = MessageBox.Show(string.Format("Strike temperature calculated to {0}°C.\n\nAdd {1}L of water and press OK.", TargetTemp, waterAmount), "Add strike water", MessageBoxButton.OKCancel);
+                double strikeTemp = Math.Round(Calculations.StrikeTemp(waterAmount, MashSteps[0].stepTemp, grainWeight),1);
+                MessageBoxResult answer = MessageBox.Show(string.Format("Strike temperature calculated to {0}°C.\n\nAdd {1}L of water and press OK.", strikeTemp, waterAmount), "Add strike water", MessageBoxButton.OKCancel);
 
                 if (answer == MessageBoxResult.Cancel)
                 {
@@ -690,6 +711,7 @@ namespace BrewUI.ViewModels
                 strikeWaterAdded = true;
                 startTime = DateTime.Now;
                 continueTask = false;
+                TargetTemp = MashSteps[0].stepTemp;
 
                 CancellationTokenSource source = new CancellationTokenSource();
                 source.CancelAfter(TimeSpan.FromSeconds(1));
@@ -884,100 +906,100 @@ namespace BrewUI.ViewModels
             Mash();
         }
 
-        public async void StartSparge()
-        {
-            // Initiate cancellation token for async tasks
-            CancellationTokenSource source = new CancellationTokenSource();
-            source.CancelAfter(TimeSpan.FromSeconds(1));
+        //public async void StartSparge()
+        //{
+        //    // Initiate cancellation token for async tasks
+        //    CancellationTokenSource source = new CancellationTokenSource();
+        //    source.CancelAfter(TimeSpan.FromSeconds(1));
 
-            // Cancel sparge if ongoing
-            if (SpargeRunning)
-            {
-                MessageBoxResult msganswer = MessageBox.Show("This will abort the ongoing sparge.\n\nContinue?", "Cancel sparge", MessageBoxButton.YesNo, MessageBoxImage.Information);
-                if(msganswer == MessageBoxResult.Yes)
-                {
-                    CloseSparge();
-                    return;
-                }
-            }
+        //    // Cancel sparge if ongoing
+        //    if (SpargeRunning)
+        //    {
+        //        MessageBoxResult msganswer = MessageBox.Show("This will abort the ongoing sparge.\n\nContinue?", "Cancel sparge", MessageBoxButton.YesNo, MessageBoxImage.Information);
+        //        if(msganswer == MessageBoxResult.Yes)
+        //        {
+        //            CloseSparge();
+        //            return;
+        //        }
+        //    }
 
-            //SessionProgressTimer.Start();
+        //    //SessionProgressTimer.Start();
 
-            // Start sparge
-            CurrentProcess = "Sparge";
-            chartStartTime = DateTime.Now;
+        //    // Start sparge
+        //    CurrentProcess = "Sparge";
+        //    chartStartTime = DateTime.Now;
 
-            spargeStep = currentRecipe.spargeStep;
-            SpargeStatus = "Preheating";
-            spargeDur = spargeStep.spargeDur;
-            SpargeTemp = spargeStep.spargeTemp;
+        //    spargeStep = currentRecipe.spargeStep;
+        //    SpargeStatus = "Preheating";
+        //    spargeDur = spargeStep.spargeDur;
+        //    SpargeTemp = spargeStep.spargeTemp;
 
-            TargetDuration = spargeDur.TotalMinutes;
-            TargetTemp = SpargeTemp;
+        //    TargetDuration = spargeDur.TotalMinutes;
+        //    TargetTemp = SpargeTemp;
 
-            // Preheat
-            Task heatAndKeep = Task.Run(() => HeatAndKeepAsync(TimeSpan.Zero), source.Token);
-            await heatAndKeep;
+        //    // Preheat
+        //    Task heatAndKeep = Task.Run(() => HeatAndKeepAsync(TimeSpan.Zero), source.Token);
+        //    await heatAndKeep;
 
-            while (!continueTask)
-            {
-                // Check if process is exited
-                if (!SessionRunning || CurrentProcess.Length < 1)
-                {
-                    CloseSparge();
-                    return;
-                }
-                await Task.Delay(100);
-            }
-            continueTask = false;
+        //    while (!continueTask)
+        //    {
+        //        // Check if process is exited
+        //        if (!SessionRunning || CurrentProcess.Length < 1)
+        //        {
+        //            CloseSparge();
+        //            return;
+        //        }
+        //        await Task.Delay(100);
+        //    }
+        //    continueTask = false;
 
-            FileInteraction.PlaySound("Alarm.wav");
-            MessageBoxResult answer =  MessageBox.Show("Sparge temperature reached. Please carry out the following steps.\n\n1. Lift up mash container above water level\n2. Grab hose to apply sparge water on mash (caution, hot)\n3. Press OK to initiate sparge", "Prepare sparge", MessageBoxButton.OKCancel);
-            if(answer != MessageBoxResult.OK)
-            {
-                CloseSparge();
-                return;
-            }
+        //    FileInteraction.PlaySound("Alarm.wav");
+        //    MessageBoxResult answer =  MessageBox.Show("Sparge temperature reached. Please carry out the following steps.\n\n1. Lift up mash container above water level\n2. Grab hose to apply sparge water on mash (caution, hot)\n3. Press OK to initiate sparge", "Prepare sparge", MessageBoxButton.OKCancel);
+        //    if(answer != MessageBoxResult.OK)
+        //    {
+        //        CloseSparge();
+        //        return;
+        //    }
 
-            SpargeStatus = "Sparging";
-            spargeStep.startTime = DateTime.Now;
-            spargeEndTime = spargeStep.startTime + spargeDur;
+        //    SpargeStatus = "Sparging";
+        //    spargeStep.startTime = DateTime.Now;
+        //    spargeEndTime = spargeStep.startTime + spargeDur;
 
-            // Initialize sparge timer
-            SpargeTimer.Interval = TimeSpan.FromSeconds(1);
-            SpargeTimer.Tick += SpargeTimer_Tick;
-            SpargeTimer.Start();
+        //    // Initialize sparge timer
+        //    SpargeTimer.Interval = TimeSpan.FromSeconds(1);
+        //    SpargeTimer.Tick += SpargeTimer_Tick;
+        //    SpargeTimer.Start();
 
-            SendToArduino('P', "1");
-            Task heaterController = Task.Run(() => HeaterController(spargeDur, source.Token));
-            await heaterController;
+        //    SendToArduino('P', "1");
+        //    Task heaterController = Task.Run(() => HeaterController(spargeDur, source.Token));
+        //    await heaterController;
 
-            while (!continueTask)
-            {
-                // Check if process is exited
-                if (!SessionRunning || CurrentProcess.Length < 1)
-                {
-                    CloseSparge();
-                    return;
-                }
-                await Task.Delay(100);
-            }
+        //    while (!continueTask)
+        //    {
+        //        // Check if process is exited
+        //        if (!SessionRunning || CurrentProcess.Length < 1)
+        //        {
+        //            CloseSparge();
+        //            return;
+        //        }
+        //        await Task.Delay(100);
+        //    }
 
-            SendToArduino('P', "0");
-            SpargeTimer.Stop();
-            SpargeTimerText = TimeSpan.FromMinutes(TargetDuration).ToString("hh\\:mm\\:ss");
-            SpargeStatus = "Finished";
-            FileInteraction.PlaySound("Alarm.wav");
-            MessageBox.Show("Sparge finished!");
-            SpargeFinished = true;
-            CurrentProcess = "";
-            SpargeOpen = false;
-            BoilOpen = true;
+        //    SendToArduino('P', "0");
+        //    SpargeTimer.Stop();
+        //    SpargeTimerText = TimeSpan.FromMinutes(TargetDuration).ToString("hh\\:mm\\:ss");
+        //    SpargeStatus = "Finished";
+        //    FileInteraction.PlaySound("Alarm.wav");
+        //    MessageBox.Show("Sparge finished!");
+        //    SpargeFinished = true;
+        //    CurrentProcess = "";
+        //    SpargeOpen = false;
+        //    BoilOpen = true;
 
-            //SessionProgressTimer.Stop();
-            UpdateProgressionBar();
-            ProcessFinishedTime = DateTime.Now;
-        }
+        //    //SessionProgressTimer.Stop();
+        //    UpdateProgressionBar();
+        //    ProcessFinishedTime = DateTime.Now;
+        //}
 
         public async void StartBoil()
         {
@@ -992,19 +1014,37 @@ namespace BrewUI.ViewModels
                 }
             }
 
+            // Add water to reach correct boil amount
+
+            foreach (Hops hops in HopsList)
+            {
+                if (hops.BoilTime.TotalMinutes > TargetDuration)
+                {
+                    TargetDuration = hops.BoilTime.TotalMinutes;
+                }
+            }
+
+            double grainBill = 0;
+
+            foreach(Grain grain in GrainList)
+            {
+                grainBill += grain.amount;
+            }
+
+            BoilWaterAddition = Math.Round(Calculations.TotalWater(grainBill, BatchSize, TimeSpan.FromMinutes(TargetDuration))- Calculations.MashWater(grainBill)-SpargeWaterAmount, 1);
+
             CurrentProcess = "Boil";
             chartStartTime = DateTime.Now;
 
             TargetTemp = 100;
             TargetDuration = 0;
 
-            // Get total boil time
-            foreach(Hops hops in HopsList)
+            MessageBoxResult messageBoxResult = MessageBox.Show($"Add {BoilWaterAddition} liter of water to the vort and press OK", "Add water",MessageBoxButton.OKCancel);
+
+            if(messageBoxResult != MessageBoxResult.OK)
             {
-                if(hops.BoilTime.TotalMinutes > TargetDuration)
-                {
-                    TargetDuration = hops.BoilTime.TotalMinutes;
-                }
+                CloseBoil();
+                return;
             }
 
             // Preheat
@@ -1512,8 +1552,7 @@ namespace BrewUI.ViewModels
 
                 GrainList = message.BreweryRecipe.grainList;
                 spargeStep = message.BreweryRecipe.spargeStep;
-                spargeDur = spargeStep.spargeDur;
-                SpargeTimerText = spargeDur.ToString("hh\\:mm\\:ss");
+                SpargeWaterAmount = spargeStep.spargeWaterAmount;
                 SpargeTemp = spargeStep.spargeTemp;
 
                 // Retrieve hops list and create boil steps
@@ -1540,9 +1579,7 @@ namespace BrewUI.ViewModels
                     BoilSteps[i].added = false;
                     prevBoilTime = hops.BoilTime;
                 }
-
                 CDTargetTemp = message.BreweryRecipe.cooldownTargetTemp;
-                MessageBox.Show(CDTargetTemp.ToString());
                 numberofSteps =  SetStepProgressionShares();
             }
             else

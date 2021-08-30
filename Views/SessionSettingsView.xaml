@@ -428,10 +428,11 @@
                     <TextBlock Text="Temperature: " VerticalAlignment="Center"/>
                     <TextBox x:Name="SpargeTemp" Width="30"/>
                     <TextBlock Text="&#186;C" Style="{StaticResource UnitBlock}" />
-                    <TextBlock Text="Duration: " Margin="30 0 0 0"/>
-                    <TextBox x:Name="SpargeDur" Width="30"/>
-                    <TextBlock Text="min" Style="{StaticResource UnitBlock}"/>
+                    <TextBlock Text="Sparge water amount: " Margin="30 0 0 0" VerticalAlignment="Center"/>
+                    <TextBox x:Name="SpargeWaterAmount" Width="30"/>
+                    <TextBlock Text="liter" Style="{StaticResource UnitBlock}"/>
                 </StackPanel>
+                <Button x:Name="CalculateSpargeWaterAmount" Content="Calculate amount" Grid.Row="1" Grid.Column="1" Width="120" HorizontalAlignment="Right"/>
             </Grid>
         </Border>
 

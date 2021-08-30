@@ -233,14 +233,14 @@ namespace BrewUI.ViewModels
             }
         }
 
-        private double _spargeDur;
-        public double SpargeDur
+        private double _spargeWaterAmount;
+        public double SpargeWaterAmount
         {
-            get { return _spargeDur; }
-            set
-            {
-                _spargeDur = value;
-                NotifyOfPropertyChange(() => SpargeDur);
+            get { return _spargeWaterAmount; }
+            set 
+            { 
+                _spargeWaterAmount = value;
+                NotifyOfPropertyChange(() => SpargeWaterAmount);
             }
         }
 
@@ -331,6 +331,8 @@ namespace BrewUI.ViewModels
                 NotifyOfPropertyChange(() => GrainAmount);
             }
         }
+
+        public double grainBill { get; set; }
 
         private Grain _selectedGrain;
         public Grain SelectedGrain
@@ -504,7 +506,7 @@ namespace BrewUI.ViewModels
         #region GUI METHODS
         public void StartButton()
         {
-            //if (CanStart == true)
+            //if (CanStart)
             if(true)
             {
                 breweryRecipe = UIToRecipe();
@@ -520,7 +522,6 @@ namespace BrewUI.ViewModels
         public void MouseEntered()
         {
             SessionNameBorder = true;
-            MessageBox.Show("Border");
         }
 
         public void AddGrainItem()
@@ -568,6 +569,17 @@ namespace BrewUI.ViewModels
                 }
             }
         }
+
+        public void CalculateSpargeWaterAmount()
+        {
+            grainBill = 0;
+
+            foreach(Grain grain in AddedGrains)
+            {
+                grainBill += grain.amount;
+            }
+            SpargeWaterAmount = Calculations.SpargeWater(grainBill);
+        }
         #endregion
 
         public void UpdateSessionInfoList()
@@ -611,7 +623,7 @@ namespace BrewUI.ViewModels
             br.grainList = AddedGrains;
             SpargeStep spargeStep = new SpargeStep();
             spargeStep.spargeTemp = SpargeTemp;
-            spargeStep.spargeDur = TimeSpan.FromMinutes(SpargeDur);
+            spargeStep.spargeWaterAmount = SpargeWaterAmount;
             br.spargeStep = spargeStep;
             br.hopsList = AddedHops;
             foreach(MashStep step in br.mashSteps)
@@ -703,10 +715,8 @@ namespace BrewUI.ViewModels
             #endregion
 
             #region Sparge step
-
-            SpargeDur = breweryRecipe.spargeStep.spargeDur.TotalMinutes;
             SpargeTemp = breweryRecipe.spargeStep.spargeTemp;
-
+            SpargeWaterAmount = breweryRecipe.spargeStep.spargeWaterAmount;
             #endregion
 
             #region Hops list

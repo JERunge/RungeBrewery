@@ -27,9 +27,9 @@ namespace BrewUI.Models
         private readonly BackgroundWorker BW_RequestData = new BackgroundWorker();
 
         private ArduinoMessage AM = new ArduinoMessage();
-
         private string BTName = "Runge Brewery";
-        ArduinoMessage arduinoMessage = new ArduinoMessage();
+        public DateTime pingTimeStamp { get; set; }
+
         #endregion
 
         public BreweryConnection(IEventAggregator events)
@@ -67,11 +67,20 @@ namespace BrewUI.Models
 
             if (!device.Authenticated)
             {
-                BluetoothSecurity.PairRequest(device.DeviceAddress, "0000");
+                try
+                {
+                    await Task.Run(() => BluetoothSecurity.PairRequest(device.DeviceAddress, "0000"));
+                }
+                catch
+                {
+                    MessageBox.Show("Could not pair to Brewery. Please try again.", "Pairing failed");
+                    _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Disconnected });
+                    return;
+                }
+                
             }
 
             device.Refresh();
-            _events.PublishOnUIThread(new DebugDataUpdatedEvent { index = $"Authenticated: {device.Authenticated.ToString()}" });
 
             try
             {
@@ -106,14 +115,14 @@ namespace BrewUI.Models
         {
             TimeSpan _discTimeSpan = TimeSpan.FromMilliseconds(2000);
             BTStream = BTClient.GetStream();
-            BTStream.ReadTimeout = 1000;
+            BTStream.ReadTimeout = 300;
 
             while (BTClient.Connected == true)
             {
                 //if (DateTime.Now - pingTimeStamp > TimeSpan.FromSeconds(5)) // Check if connection is lost. If so, try to reconnect.
                 //{
-                //    BTClient.Close();
-                //    _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = "Reconnecting" });
+                //    _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Reconnecting });
+                //    return;
                 //}
 
                 if (BW_ReceiveData.CancellationPending) // Check if cancellation is pending and exit if so.
@@ -164,6 +173,7 @@ namespace BrewUI.Models
 
                             // Publish message on event
                             _events.PublishOnUIThread(new SerialReceivedEvent { arduinoMessage = _arduinoMessage });
+                            pingTimeStamp = DateTime.Now;
                         }
                     }
                 }
@@ -234,6 +244,12 @@ namespace BrewUI.Models
                 case MyEnums.ConnectionStatus.Disconnected:
                     BW_ReceiveData.CancelAsync();
                     BW_RequestData.CancelAsync();
+                    break;
+                case MyEnums.ConnectionStatus.Reconnecting:
+                    BW_ReceiveData.CancelAsync();
+                    BW_RequestData.CancelAsync();
+                    BTClient.Close();
+                    ArduinoConnect();
                     break;
             }
         }
