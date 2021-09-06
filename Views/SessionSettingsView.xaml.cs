@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BrewUI.Models;
 using Caliburn.Micro;
 
 namespace BrewUI.Views
@@ -32,55 +33,32 @@ namespace BrewUI.Views
         #region Colapse containers
         private void MouseDown_Mash(object sender, MouseButtonEventArgs e)
         {
-            ToggleContainerHeight(MashContainer);
+            GUI.ToggleContainerHeight(MashContainer);
         }
 
         private void MouseDown_Sparge(object sender, MouseButtonEventArgs e)
         {
-            ToggleContainerHeight(SpargeContainer);
+            GUI.ToggleContainerHeight(SpargeContainer);
         }
 
         private void MouseDown_Boil(object sender, MouseButtonEventArgs e)
         {
-            ToggleContainerHeight(BoilContainer);
+            GUI.ToggleContainerHeight(BoilContainer);
         }
 
         private void MouseDown_Cooldown(object sender, MouseButtonEventArgs e)
         {
-            ToggleContainerHeight(CooldownContainer);
+            GUI.ToggleContainerHeight(CooldownContainer);
         }
 
-        private static void ToggleContainerHeight(Border border)
-        {
-            if (border.Height == 45)
-            {
-                border.Height = Double.NaN;
-            }
-            else
-            {
-                border.Height = 45;
-            }
-        }
+        
 
         #endregion
 
         #region Toggle hover color
-        private void SetColorFromResource(Border border, string resourceName)
-        {
-            Brush r = Brushes.White;
-            try
-            {
-                r = this.TryFindResource(resourceName) as Brush;
-            }
-            catch
-            {
-            }
-            border.Background = r;
-        }
-
         private void MouseEnter_Mash(object sender, MouseEventArgs e)
         {
-            SetColorFromResource(MashContainer, "GrayHover");
+            GUI.SetColorFromResource(MashContainer, "GrayHover");
         }
 
         private void MouseLeave_Mash(object sender, MouseEventArgs e)
@@ -90,7 +68,7 @@ namespace BrewUI.Views
 
         private void MouseEnter_Sparge(object sender, MouseEventArgs e)
         {
-            SetColorFromResource(SpargeContainer, "GrayHover");
+            GUI.SetColorFromResource(SpargeContainer, "GrayHover");
         }
 
         private void MouseLeave_Sparge(object sender, MouseEventArgs e)
@@ -100,7 +78,7 @@ namespace BrewUI.Views
 
         private void MouseEnter_Boil(object sender, MouseEventArgs e)
         {
-            SetColorFromResource(BoilContainer, "GrayHover");
+            GUI.SetColorFromResource(BoilContainer, "GrayHover");
         }
 
         private void MouseLeave_Boil(object sender, MouseEventArgs e)
@@ -110,7 +88,7 @@ namespace BrewUI.Views
 
         private void MouseEnter_Cooldown(object sender, MouseEventArgs e)
         {
-            SetColorFromResource(CooldownContainer, "GrayHover");
+            GUI.SetColorFromResource(CooldownContainer, "GrayHover");
         }
 
         private void MouseLeave_Cooldown(object sender, MouseEventArgs e)

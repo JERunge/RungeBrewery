@@ -146,6 +146,16 @@ namespace BrewUI.ViewModels
             }
         }
 
+        private bool _cooldownRunning;
+        public bool CooldownRunning
+        {
+            get { return _cooldownRunning; }
+            set { 
+                _cooldownRunning = value;
+                NotifyOfPropertyChange(() => CooldownRunning);
+            }
+        }
+
         private bool _mashFinished;
         public bool MashFinished
         {
@@ -434,7 +444,6 @@ namespace BrewUI.ViewModels
             }
         }
 
-
         // Measured data
         private double _currentTemp;
         public double CurrentTemp
@@ -477,205 +486,6 @@ namespace BrewUI.ViewModels
         public DateTime startTime { get; set; }
         private DateTime chartStartTime;
 
-        // UI variables
-        #region Process clicked
-        private ICommand _mashClickedCommand;
-        public ICommand MashClickedCommand
-        {
-            get
-            {
-                return _mashClickedCommand ?? (_mashClickedCommand = new RelayCommand(x => { MashClicked(); }));
-
-            }
-            set { _mashClickedCommand = value; }
-        }
-
-        private bool _mashOpen;
-        public bool MashOpen
-        {
-            get { return _mashOpen; }
-            set
-            {
-                _mashOpen = value;
-                NotifyOfPropertyChange(() => MashOpen);
-            }
-        }
-
-        private ICommand _spargeClickedCommand;
-        public ICommand SpargeClickedCommand
-        {
-            get
-            {
-                return _spargeClickedCommand ?? (_spargeClickedCommand = new RelayCommand(x => { SpargeClicked(); }));
-
-            }
-            set { _spargeClickedCommand = value; }
-        }
-
-        private bool _spargeOpen;
-        public bool SpargeOpen
-        {
-            get { return _spargeOpen; }
-            set
-            {
-                _spargeOpen = value;
-                NotifyOfPropertyChange(() => SpargeOpen);
-            }
-        }
-
-        private ICommand _boilClickedCommand;
-        public ICommand BoilClickedCommand
-        {
-            get { return _boilClickedCommand ?? (_boilClickedCommand = new RelayCommand(x => { BoilClicked(); })); ; }
-            set { _boilClickedCommand = value; }
-        }
-
-        private bool _boilOpen;
-        public bool BoilOpen
-        {
-            get { return _boilOpen; }
-            set
-            {
-                _boilOpen = value;
-                NotifyOfPropertyChange(() => BoilOpen);
-            }
-        }
-
-        private ICommand _cooldownClickedCommand;
-        public ICommand CooldownClickedCommand
-        {
-            get { return _cooldownClickedCommand ?? (_cooldownClickedCommand = new RelayCommand(x => { CooldownClicked(); })); ; }
-            set { _cooldownClickedCommand = value; }
-        }
-
-        private bool _cooldownOpen;
-        public bool CooldownOpen
-        {
-            get { return _cooldownOpen; }
-            set
-            {
-                _cooldownOpen = value;
-                NotifyOfPropertyChange(() => CooldownOpen);
-            }
-        }
-
-        #endregion
-
-        #region Mouse over process
-        private ICommand _mashMouseEnteredCommand;
-        public ICommand MashMouseEnteredCommand
-        {
-            get { return _mashMouseEnteredCommand ?? (_mashMouseEnteredCommand = new RelayCommand(x => { MashColorToggle(true); })); ; }
-            set { _mashMouseEnteredCommand = value; }
-        }
-
-        private ICommand _mashMouseLeftCommand;
-        public ICommand MashMouseLeftCommand
-        {
-            get { return _mashMouseLeftCommand ?? (_mashMouseLeftCommand = new RelayCommand(x => { MashColorToggle(false); })); ; }
-            set { _mashMouseLeftCommand = value; }
-        }
-
-        private bool _mashMouseOver;
-        public bool MashMouseOver
-        {
-            get { return _mashMouseOver; }
-            set
-            {
-                _mashMouseOver = value;
-                NotifyOfPropertyChange(() => MashMouseOver);
-            }
-        }
-
-        private ICommand _spargeMouseEnteredCommand;
-        public ICommand SpargeMouseEnteredCommand
-        {
-            get { return _spargeMouseEnteredCommand ?? (_spargeMouseEnteredCommand = new RelayCommand(x => { SpargeColorToggle(true); })); ; }
-            set { _spargeMouseEnteredCommand = value; }
-        }
-
-        private ICommand _spargeMouseLeftCommand;
-        public ICommand SpargeMouseLeftCommand
-        {
-            get { return _spargeMouseLeftCommand ?? (_spargeMouseLeftCommand = new RelayCommand(x => { SpargeColorToggle(false); })); ; }
-            set { _spargeMouseLeftCommand = value; }
-        }
-
-        private bool _spargeMouseOver;
-        public bool SpargeMouseOver
-        {
-            get { return _spargeMouseOver; }
-            set
-            {
-                _spargeMouseOver = value;
-                NotifyOfPropertyChange(() => SpargeMouseOver);
-            }
-        }
-
-        private ICommand _boilMouseEnteredCommand;
-        public ICommand BoilMouseEnteredCommand
-        {
-            get { return _boilMouseEnteredCommand ?? (_boilMouseEnteredCommand = new RelayCommand(x => { BoilColorToggle(true); })); ; }
-            set { _boilMouseEnteredCommand = value; }
-        }
-
-        private ICommand _boilMouseLeftCommand;
-        public ICommand BoilMouseLeftCommand
-        {
-            get { return _boilMouseLeftCommand ?? (_boilMouseLeftCommand = new RelayCommand(x => { BoilColorToggle(false); })); ; }
-            set { _boilMouseLeftCommand = value; }
-        }
-
-        private bool _boilMouseOver;
-        public bool BoilMouseOver
-        {
-            get { return _boilMouseOver; }
-            set
-            {
-                _boilMouseOver = value;
-                NotifyOfPropertyChange(() => BoilMouseOver);
-            }
-        }
-
-        private ICommand _cooldownMouseEnteredCommand;
-        public ICommand CooldownMouseEnteredCommand
-        {
-            get { return _cooldownMouseEnteredCommand ?? (_cooldownMouseEnteredCommand = new RelayCommand(x => { CooldownColorToggle(true); })); ; }
-            set { _cooldownMouseEnteredCommand = value; }
-        }
-
-        private ICommand _cooldownMouseLeftCommand;
-        public ICommand CooldownMouseLeftCommand
-        {
-            get { return _cooldownMouseLeftCommand ?? (_cooldownMouseLeftCommand = new RelayCommand(x => { CooldownColorToggle(false); })); ; }
-            set { _cooldownMouseLeftCommand = value; }
-        }
-
-        private bool _cooldownMouseOver;
-        public bool CooldownMouseOver
-        {
-            get { return _cooldownMouseOver; }
-            set
-            {
-                _cooldownMouseOver = value;
-                NotifyOfPropertyChange(() => CooldownMouseOver);
-            }
-        }
-
-        private bool _cooldownRunning;
-        public bool CooldownRunning
-        {
-            get { return _cooldownRunning; }
-            set
-            {
-                _cooldownRunning = value;
-                NotifyOfPropertyChange(() => CooldownRunning);
-            }
-        }
-
-
-        #endregion
-
         #endregion
 
         public SessionViewModel(IEventAggregator events, AddGrainsViewModel addGrainsVM)
@@ -695,11 +505,8 @@ namespace BrewUI.ViewModels
             InitializeChart();
 
             // Set start values
-            MashOpen = true;
-            SpargeOpen = false;
             MashFinished = false;
             SpargeCanStart = false;
-            CooldownOpen = false;
             RunCooldown = false;
 
             // Initialize recipe data
@@ -911,8 +718,6 @@ namespace BrewUI.ViewModels
             MessageBox.Show("Mash finished!");
             MashFinished = true;
             SpargeCanStart = true;
-            MashOpen = false;
-            SpargeOpen = true;
 
             //SessionProgressTimer.Stop();
             ProcessFinishedTime = DateTime.Now;
@@ -922,6 +727,7 @@ namespace BrewUI.ViewModels
         {
             stepCount += 1;
             SessionProgress = 100 / numberofSteps * stepCount;
+            SendToArduino('p', SessionProgress.ToString());
         }
 
         private bool MashStepCancelled(MashStep ms, String itemStatus = "")
@@ -1329,45 +1135,6 @@ namespace BrewUI.ViewModels
         //    SessionProgress = Convert.ToInt32(Math.Round((TotalSessionTime.TotalMinutes - ElapsedSessionTime.TotalMinutes)/TotalSessionTime.TotalMinutes));
         //}
 
-        public void MashClicked()
-        {
-            MashOpen = !MashOpen;
-        }
-
-        public void SpargeClicked()
-        {
-            SpargeOpen = !SpargeOpen;
-        }
-
-        public void BoilClicked()
-        {
-            BoilOpen = !BoilOpen;
-        }
-
-        public void CooldownClicked()
-        {
-            CooldownOpen = !CooldownOpen;
-        }
-
-        public void MashColorToggle(bool mouseOver)
-        {
-            MashMouseOver = mouseOver;
-        }
-
-        public void SpargeColorToggle(bool mouseOver)
-        {
-            SpargeMouseOver = mouseOver;
-        }
-
-        public void BoilColorToggle(bool mouseOver)
-        {
-            BoilMouseOver = mouseOver;
-        }
-
-        public void CooldownColorToggle(bool mouseOver)
-        {
-            CooldownMouseOver = mouseOver;
-        }
         #endregion
 
         #region Methods
@@ -1661,8 +1428,6 @@ namespace BrewUI.ViewModels
                 _batchSize = message.BreweryRecipe.sessionInfo.BatchSize;
                 MashSteps = message.BreweryRecipe.mashSteps;
                 //TotalSessionTime = Calculations.SessionDuration(currentRecipe, CurrentTemp);
-
-                MashMouseOver = false;
 
                 //SessionProgressTimer = new DispatcherTimer();
                 //SessionProgressTimer.Interval = TimeSpan.FromSeconds(1);

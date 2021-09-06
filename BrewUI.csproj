@@ -168,6 +168,7 @@
     <Compile Include="EventModels\SessionRunningEvent.cs" />
     <Compile Include="Models\BreweryConnection.cs" />
     <Compile Include="Models\Calculations.cs" />
+    <Compile Include="Models\GUI.cs" />
     <Compile Include="Models\MyEnums.cs" />
     <Compile Include="Models\FileInteraction.cs" />
     <Compile Include="RelayCommand.cs" />

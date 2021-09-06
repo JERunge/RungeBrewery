@@ -126,56 +126,17 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <!--Mash steps-->
-                <Border Grid.Row="0">
-                    <Border.Style>
-                        <Style TargetType="Border" BasedOn="{StaticResource ContentBorder}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding MashOpen}" Value="True">
-                                    <Setter Property="Height" Value="Auto"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding MashOpen}" Value="False">
-                                    <Setter Property="Height" Value="45"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding MashMouseOver}" Value="True">
-                                    <Setter Property="Background" Value="{StaticResource GrayHover}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
+                <Border x:Name="MashContainer" Grid.Row="0" Style="{StaticResource ContentBorder}">
                     <StackPanel Orientation="Vertical">
-                        <Grid Cursor="Hand">
+                        <Grid Cursor="Hand" MouseDown="MouseDown_Mash" MouseEnter="MouseEnter_Mash" MouseLeave="MouseLeave_Mash">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding MashClickedCommand}"/>
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="MouseEnter">
-                                    <i:InvokeCommandAction Command="{Binding MashMouseEnteredCommand}"/>
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="MouseLeave">
-                                    <i:InvokeCommandAction Command="{Binding MashMouseLeftCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
                             <TextBlock Text="Mash" Style="{StaticResource Header1}" Grid.Column="0" Grid.ColumnSpan="3" Margin="0 0 0 10"/>
                             <TextBlock Grid.Column="1"/>
-                            <materialDesign:PackIcon Margin="0 0 0 0" Grid.Column="2" Foreground="{StaticResource GrayDark}">
-                                <materialDesign:PackIcon.Style>
-                                    <Style TargetType="materialDesign:PackIcon">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding MashOpen}" Value="True">
-                                                <Setter Property="Kind" Value="ArrowTopCircleOutline"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding MashOpen}" Value="False">
-                                                <Setter Property="Kind" Value="ArrowBottomCircleOutline"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </materialDesign:PackIcon.Style>
+                            <materialDesign:PackIcon x:Name="MashIcon" Margin="0 0 0 0" Grid.Column="2" Foreground="{StaticResource GrayDark}" Kind="ArrowTopCircleOutline">
                             </materialDesign:PackIcon>
                         </Grid>
                         <ItemsControl ItemsSource="{Binding MashSteps}">
@@ -201,28 +162,6 @@
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="30"/>
                                         </Grid.RowDefinitions>
-                                        <Grid.Style>
-                                            <Style TargetType="Grid">
-                                                <Setter Property="Background" Value="{StaticResource GrayLight}"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Status}" Value="Preheating">
-                                                        <Setter Property="Background" Value="{StaticResource GrayDark}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Status}" Value="Mashing">
-                                                        <Setter Property="Background" Value="{StaticResource GrayDark}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Status}" Value="Paused">
-                                                        <Setter Property="Background" Value="{StaticResource GrayDark}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Status}" Value="Waiting">
-                                                        <Setter Property="Background" Value="{StaticResource GrayLight}"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Status}" Value="Finished">
-                                                        <Setter Property="Background" Value="{StaticResource GrayLight}"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
                                         <TextBlock Text="{Binding stepName}" Grid.Column="1" 
                                                        Margin="10 0 0 0" Foreground="White" VerticalAlignment="Center"/>
                                         <TextBlock Text="{Binding Status}" Grid.Column="3"
@@ -261,24 +200,7 @@
                 </Border>
 
                 <!--Sparge-->
-                <Border Grid.Row="2">
-                    <!--UI Interaction-->
-                    <Border.Style>
-                        <Style TargetType="Border" BasedOn="{StaticResource ContentBorder}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding SpargeOpen}" Value="True">
-                                    <Setter Property="Height" Value="Auto"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding SpargeOpen}" Value="False">
-                                    <Setter Property="Height" Value="45"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding SpargeMouseOver}" Value="True">
-                                    <Setter Property="Background" Value="{StaticResource GrayHover}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
+                <Border x:Name="SpargeContainer" Grid.Row="2" Style="{StaticResource ContentBorder}">
                     <!--Content-->
                     <Grid>
                         <Grid.RowDefinitions>
@@ -291,39 +213,15 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Row="0" Grid.ColumnSpan="3" Cursor="Hand">
+                        <Grid Grid.Row="0" Grid.ColumnSpan="3" Cursor="Hand" MouseDown="MouseDown_Sparge" MouseEnter="MouseEnter_Sparge" MouseLeave="MouseLeave_Sparge">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Sparge" Style="{StaticResource Header1}"
-                                   Grid.Row="0" Grid.ColumnSpan="3">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding SpargeClickedCommand}"/>
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="MouseEnter">
-                                    <i:InvokeCommandAction Command="{Binding SpargeMouseEnteredCommand}"/>
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="MouseLeave">
-                                    <i:InvokeCommandAction Command="{Binding SpargeMouseLeftCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            </TextBlock>
-                            <materialDesign:PackIcon Margin="0 0 0 0" HorizontalAlignment="Right" Grid.Column="2" Foreground="{StaticResource GrayDark}">
-                                <materialDesign:PackIcon.Style>
-                                    <Style TargetType="materialDesign:PackIcon">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding SpargeOpen}" Value="True">
-                                                <Setter Property="Kind" Value="ArrowTopCircleOutline"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding SpargeOpen}" Value="False">
-                                                <Setter Property="Kind" Value="ArrowBottomCircleOutline"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </materialDesign:PackIcon.Style>
+                                   Grid.Row="0" Grid.ColumnSpan="3"/>
+                            <materialDesign:PackIcon x:Name="SpargeIcon" Margin="0 0 0 0" HorizontalAlignment="Right" Grid.Column="2" Foreground="{StaticResource GrayDark}" Kind="ArrowTopCircleOutline" >
                             </materialDesign:PackIcon>
                         </Grid>
 
@@ -331,48 +229,11 @@
                             <TextBlock Text="{Binding Path=SpargeTemp, StringFormat={}Target temperature: {0} °C}" Margin="0 0 30 0"/>
                             <TextBlock Text="{Binding Path=SpargeWaterAmount, StringFormat={}Water amount: {0} L}"/>
                         </StackPanel>
-                        <!--<Button x:Name="StartSparge" Width="90" Grid.Column="2" Grid.Row="2">
-                            <Button.Style>
-                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SpargeRunning}" Value="True">
-                                            <Setter Property="Content" Value="Cancel"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding SpargeRunning}" Value="False">
-                                            <Setter Property="Content" Value="Start"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding SpargeFinished}" Value="True">
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding SpargeFinished}" Value="False">
-                                            <Setter Property="IsEnabled" Value="True"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>-->
                     </Grid>
                 </Border>
 
                 <!--BOIL-->
-                <Border Grid.Row="4">
-                    <Border.Style>
-                        <Style TargetType="Border" BasedOn="{StaticResource ContentBorder}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding BoilOpen}" Value="True">
-                                    <Setter Property="Height" Value="Auto"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding BoilOpen}" Value="False">
-                                    <Setter Property="Height" Value="45"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding BoilMouseOver}" Value="True">
-                                    <Setter Property="Background" Value="{StaticResource GrayHover}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
-
+                <Border x:Name="BoilContainer" Grid.Row="4" Style="{StaticResource ContentBorder}">
                     <StackPanel Orientation="Vertical">
                         <Grid Cursor="Hand">
                             <Grid.RowDefinitions>
@@ -385,31 +246,8 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding BoilClickedCommand}"/>
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="MouseEnter">
-                                    <i:InvokeCommandAction Command="{Binding BoilMouseEnteredCommand}"/>
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="MouseLeave">
-                                    <i:InvokeCommandAction Command="{Binding BoilMouseLeftCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <TextBlock Text="Boil" Style="{StaticResource Header1}" Grid.Column="0" Grid.ColumnSpan="3"/>
-                            <materialDesign:PackIcon Margin="0 0 0 0" VerticalAlignment="Center" Grid.Column="2" Foreground="{StaticResource GrayDark}">
-                                <materialDesign:PackIcon.Style>
-                                    <Style TargetType="materialDesign:PackIcon">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding BoilOpen}" Value="True">
-                                                <Setter Property="Kind" Value="ArrowTopCircleOutline"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding BoilOpen}" Value="False">
-                                                <Setter Property="Kind" Value="ArrowBottomCircleOutline"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </materialDesign:PackIcon.Style>
+                            <TextBlock Text="Boil" Style="{StaticResource Header1}" Grid.Column="0" Grid.ColumnSpan="3" MouseDown="MouseDown_Boil" MouseEnter="MouseEnter_Boil" MouseLeave="MouseLeave_Boil"/>
+                            <materialDesign:PackIcon x:Name="BoilIcon" Margin="0 0 0 0" VerticalAlignment="Center" Grid.Column="2" Foreground="{StaticResource GrayDark}" Kind="ArrowTopCircleOutline">
                             </materialDesign:PackIcon>
                         </Grid>
 
@@ -501,29 +339,7 @@
                 </Border>
                 
                 <!-- Cooldown-->
-                <Border Grid.Row="6">
-                    <Border.Style>
-                        <Style TargetType="Border" BasedOn="{StaticResource ContentBorder}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding CooldownOpen}" Value="True">
-                                    <Setter Property="Height" Value="Auto"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding CooldownOpen}" Value="False">
-                                    <Setter Property="Height" Value="45"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding CooldownMouseOver}" Value="True">
-                                    <Setter Property="Background" Value="{StaticResource GrayHover}"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding RunCooldown}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible"/>
-                                </DataTrigger>
-                                <DataTrigger Binding="{Binding RunCooldown}" Value="False">
-                                    <Setter Property="Visibility" Value="Hidden"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-
+                <Border x:Name="CooldownContainer" Grid.Row="6" Style="{StaticResource ContentBorder}">
                     <StackPanel Orientation="Vertical">
                         <Grid Cursor="Hand">
                             <Grid.RowDefinitions>
@@ -536,32 +352,9 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="MouseLeftButtonDown">
-                                    <i:InvokeCommandAction Command="{Binding CooldownClickedCommand}"/>
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="MouseEnter">
-                                    <i:InvokeCommandAction Command="{Binding CooldownMouseEnteredCommand}"/>
-                                </i:EventTrigger>
-                                <i:EventTrigger EventName="MouseLeave">
-                                    <i:InvokeCommandAction Command="{Binding CooldownMouseLeftCommand}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
 
-                            <TextBlock Text="Cooldown" Style="{StaticResource Header1}" Grid.Column="0" Grid.ColumnSpan="3"/>
-                            <materialDesign:PackIcon Margin="0 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2" Foreground="{StaticResource GrayDark}">
-                                <materialDesign:PackIcon.Style>
-                                    <Style TargetType="materialDesign:PackIcon">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding CooldownOpen}" Value="True">
-                                                <Setter Property="Kind" Value="ArrowTopCircleOutline"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding CooldownOpen}" Value="False">
-                                                <Setter Property="Kind" Value="ArrowBottomCircleOutline"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </materialDesign:PackIcon.Style>
+                            <TextBlock Text="Cooldown" Style="{StaticResource Header1}" Grid.Column="0" Grid.ColumnSpan="3" MouseDown="MouseDown_Cooldown" MouseEnter="MouseEnter_Cooldown" MouseLeave="MouseLeave_Cooldown"/>
+                            <materialDesign:PackIcon x:Name="CooldownIcon" Margin="0 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2" Foreground="{StaticResource GrayDark}" Kind="ArrowTopCircleOutline">
                             </materialDesign:PackIcon>
 
                         </Grid>
@@ -573,14 +366,6 @@
                             <Button x:Name="StartCooldown" Width="90" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="2">
                                 <Button.Style>
                                     <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding CooldownRunning}" Value="True">
-                                                <Setter Property="Content" Value="Cancel"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding CooldownRunning}" Value="False">
-                                                <Setter Property="Content" Value="Start"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
                                     </Style>
                                 </Button.Style>
                             </Button>
