@@ -477,8 +477,7 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <Button x:Name="StartBoil" HorizontalAlignment="
-                                Right" Margin="0 10 0 0" Width="90">
+                        <Button x:Name="StartBoil" HorizontalAlignment="Right" Margin="0 10 0 0" Width="90">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                     <Style.Triggers>
@@ -498,6 +497,94 @@
                                 </Style>
                             </Button.Style>
                         </Button>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Cooldown-->
+                <Border Grid.Row="6">
+                    <Border.Style>
+                        <Style TargetType="Border" BasedOn="{StaticResource ContentBorder}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding CooldownOpen}" Value="True">
+                                    <Setter Property="Height" Value="Auto"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CooldownOpen}" Value="False">
+                                    <Setter Property="Height" Value="45"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding CooldownMouseOver}" Value="True">
+                                    <Setter Property="Background" Value="{StaticResource GrayHover}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding RunCooldown}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding RunCooldown}" Value="False">
+                                    <Setter Property="Visibility" Value="Hidden"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+
+                    <StackPanel Orientation="Vertical">
+                        <Grid Cursor="Hand">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="10"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding CooldownClickedCommand}"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseEnter">
+                                    <i:InvokeCommandAction Command="{Binding CooldownMouseEnteredCommand}"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="MouseLeave">
+                                    <i:InvokeCommandAction Command="{Binding CooldownMouseLeftCommand}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+
+                            <TextBlock Text="Cooldown" Style="{StaticResource Header1}" Grid.Column="0" Grid.ColumnSpan="3"/>
+                            <materialDesign:PackIcon Margin="0 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Right" Grid.Column="2" Foreground="{StaticResource GrayDark}">
+                                <materialDesign:PackIcon.Style>
+                                    <Style TargetType="materialDesign:PackIcon">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CooldownOpen}" Value="True">
+                                                <Setter Property="Kind" Value="ArrowTopCircleOutline"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CooldownOpen}" Value="False">
+                                                <Setter Property="Kind" Value="ArrowBottomCircleOutline"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </materialDesign:PackIcon.Style>
+                            </materialDesign:PackIcon>
+
+                        </Grid>
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" Grid.Row="3">
+                                <TextBlock Text="Cooldown target temperature: "/>
+                                <TextBlock x:Name="CDTargetTemp"/>
+                            </StackPanel>
+                            <Button x:Name="StartCooldown" Width="90" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="2">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CooldownRunning}" Value="True">
+                                                <Setter Property="Content" Value="Cancel"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CooldownRunning}" Value="False">
+                                                <Setter Property="Content" Value="Start"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Grid>
                     </StackPanel>
                 </Border>
             </Grid>

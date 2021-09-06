@@ -135,6 +135,16 @@ namespace BrewUI.ViewModels
             }
         }
 
+        private bool _runCooldown;
+        public bool RunCooldown
+        {
+            get { return _runCooldown; }
+            set { 
+                _runCooldown = value;
+                NotifyOfPropertyChange(() => RunCooldown);
+            }
+        }
+
         private bool _mashFinished;
         public bool MashFinished
         {
@@ -529,6 +539,25 @@ namespace BrewUI.ViewModels
                 NotifyOfPropertyChange(() => BoilOpen);
             }
         }
+
+        private ICommand _cooldownClickedCommand;
+        public ICommand CooldownClickedCommand
+        {
+            get { return _cooldownClickedCommand ?? (_cooldownClickedCommand = new RelayCommand(x => { CooldownClicked(); })); ; }
+            set { _cooldownClickedCommand = value; }
+        }
+
+        private bool _cooldownOpen;
+        public bool CooldownOpen
+        {
+            get { return _cooldownOpen; }
+            set 
+            { 
+                _cooldownOpen = value;
+                NotifyOfPropertyChange(() => CooldownOpen);
+            }
+        }
+
         #endregion
 
         #region Mouse over process
@@ -606,6 +635,42 @@ namespace BrewUI.ViewModels
             }
         }
 
+        private ICommand _cooldownMouseEnteredCommand;
+        public ICommand CooldownMouseEnteredCommand
+        {
+            get { return _cooldownMouseEnteredCommand ?? (_cooldownMouseEnteredCommand = new RelayCommand(x => { CooldownColorToggle(true); })); ; }
+            set { _cooldownMouseEnteredCommand = value; }
+        }
+
+        private ICommand _cooldownMouseLeftCommand;
+        public ICommand CooldownMouseLeftCommand
+        {
+            get { return _cooldownMouseLeftCommand ?? (_cooldownMouseLeftCommand = new RelayCommand(x => { CooldownColorToggle(false); })); ; }
+            set { _cooldownMouseLeftCommand = value; }
+        }
+
+        private bool _cooldownMouseOver;
+        public bool CooldownMouseOver
+        {
+            get { return _cooldownMouseOver; }
+            set
+            {
+                _cooldownMouseOver = value;
+                NotifyOfPropertyChange(() => CooldownMouseOver);
+            }
+        }
+
+        private bool _cooldownRunning;
+        public bool CooldownRunning
+        {
+            get { return _cooldownRunning; }
+            set { 
+                _cooldownRunning = value;
+                NotifyOfPropertyChange(() => CooldownRunning);
+            }
+        }
+
+
         #endregion
 
         #endregion
@@ -631,6 +696,8 @@ namespace BrewUI.ViewModels
             SpargeOpen = false;
             MashFinished = false;
             SpargeCanStart = false;
+            CooldownOpen = false;
+            RunCooldown = false;
 
             // Initialize recipe data
             GrainList = new ObservableCollection<Grain>();
@@ -1147,6 +1214,44 @@ namespace BrewUI.ViewModels
             #endregion
         }
 
+        public void StartCooldown()
+        {
+            if (CooldownRunning)
+            {
+                CloseCooldown();
+            }
+            else
+            {
+                Cooldown();
+            }
+        }
+
+        private async Task Cooldown()
+        {
+            CooldownRunning = true;
+            TargetTemp = currentRecipe.cooldownTargetTemp;
+            CurrentProcess = "Cooldown";
+
+            MessageBoxResult result = MessageBox.Show($"Target temperature for cooldown is set to {TargetTemp}. ","Prepare cooldown",MessageBoxButton.OKCancel);
+
+            if(result != MessageBoxResult.OK)
+            {
+                CloseCooldown();
+                return;
+            }
+
+            while(TargetTemp<CurrentTemp){
+                if (!CooldownRunning)
+                {
+                    return;
+                }
+                await Task.Delay(1000);
+            }
+
+            MessageBox.Show("Cooldown temperature reached. Brew session finished.", "Cooldown temperature reached");
+            CloseCooldown();
+        }
+
         private void CloseMash()
         {
             CurrentProcess = "";
@@ -1192,6 +1297,13 @@ namespace BrewUI.ViewModels
             continueTask = false;
         }
 
+        private void CloseCooldown()
+        {
+            CooldownRunning = false;
+            TargetTemp = 0;
+            CurrentProcess = "";
+        }
+
         private void BoilTimer_Tick(object sender, EventArgs e)
         {
             if(DateTime.Now <= boilEndTime)
@@ -1227,6 +1339,11 @@ namespace BrewUI.ViewModels
             BoilOpen = !BoilOpen;
         }
 
+        public void CooldownClicked()
+        {
+            CooldownOpen = !CooldownOpen;
+        }
+
         public void MashColorToggle(bool mouseOver)
         {
             MashMouseOver = mouseOver;
@@ -1240,6 +1357,11 @@ namespace BrewUI.ViewModels
         public void BoilColorToggle(bool mouseOver)
         {
             BoilMouseOver = mouseOver;
+        }
+
+        public void CooldownColorToggle(bool mouseOver)
+        {
+            CooldownMouseOver = mouseOver;
         }
         #endregion
 
@@ -1580,6 +1702,14 @@ namespace BrewUI.ViewModels
                     prevBoilTime = hops.BoilTime;
                 }
                 CDTargetTemp = message.BreweryRecipe.cooldownTargetTemp;
+                if (CDTargetTemp > 0)
+                {
+                    RunCooldown = true;
+                }
+                else
+                {
+                    RunCooldown = false;
+                }
                 numberofSteps =  SetStepProgressionShares();
             }
             else
@@ -1634,21 +1764,31 @@ namespace BrewUI.ViewModels
                     MashRunning = true;
                     SpargeRunning = false;
                     BoilRunning = false;
+                    CooldownRunning = false;
                     break;
                 case "Sparge":
                     MashRunning = false;
                     SpargeRunning = true;
                     BoilRunning = false;
+                    CooldownRunning = false;
                     break;
                 case "Boil":
                     MashRunning = false;
                     SpargeRunning = false;
                     BoilRunning = true;
+                    CooldownRunning = false;
+                    break;
+                case "Cooldown":
+                    MashRunning = false;
+                    SpargeRunning = false;
+                    BoilRunning = false;
+                    CooldownRunning = true;
                     break;
                 default:
                     MashRunning = false;
                     SpargeRunning = false;
                     BoilRunning = false;
+                    CooldownRunning = false;
                     break;
             }
             chartValues.Clear();
