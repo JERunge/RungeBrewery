@@ -12,7 +12,7 @@
                 </ResourceDictionary>
                 
                 <!-- GLOBAL STYLES -->
-                <ResourceDictionary>
+                <ResourceDictionary x:Name="UIResource">
 
                     <!--Colors-->
                     <SolidColorBrush x:Key="AccentColor" Color="#00b894"/>

@@ -8,20 +8,20 @@ using LiveCharts.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Dynamic;
+using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using System.Linq;
-using System.Dynamic;
-using System.Text;
 
 namespace BrewUI.ViewModels
 {
-    public class SessionViewModel : Screen, 
-        IHandle<SerialReceivedEvent>, 
-        IHandle<SessionRunningEvent>, 
+    public class SessionViewModel : Screen,
+        IHandle<SerialReceivedEvent>,
+        IHandle<SessionRunningEvent>,
         IHandle<CurrentProcessUpdatedEvent>,
         IHandle<AddingGrainsEvent>,
         IHandle<ConnectionEvent>,
@@ -42,7 +42,7 @@ namespace BrewUI.ViewModels
         {
             get { return _currentProcess; }
             set
-            { 
+            {
                 _currentProcess = value;
                 NotifyOfPropertyChange(() => CurrentProcess);
                 _events.PublishOnUIThread(new CurrentProcessUpdatedEvent { currentProcess = CurrentProcess });
@@ -54,8 +54,8 @@ namespace BrewUI.ViewModels
         public string CurrentStep
         {
             get { return _currentStep; }
-            set 
-            { 
+            set
+            {
                 _currentStep = value;
                 NotifyOfPropertyChange(() => CurrentStep);
                 _events.PublishOnUIThread(new DebugDataUpdatedEvent { index = "CS", stringValue = CurrentStep });
@@ -66,8 +66,8 @@ namespace BrewUI.ViewModels
         public bool Connected
         {
             get { return _connected; }
-            set 
-            { 
+            set
+            {
                 _connected = value;
                 NotifyOfPropertyChange(() => Connected);
             }
@@ -78,7 +78,7 @@ namespace BrewUI.ViewModels
         {
             get { return _mashRunning; }
             set
-            { 
+            {
                 _mashRunning = value;
                 NotifyOfPropertyChange(() => MashRunning);
                 _events.PublishOnUIThread(new DebugDataUpdatedEvent { index = "MR", boolValue = MashRunning });
@@ -102,7 +102,7 @@ namespace BrewUI.ViewModels
         public bool SpargeCanStart
         {
             get { return _spargeCanStart; }
-            set 
+            set
             {
                 _spargeCanStart = value;
                 NotifyOfPropertyChange(() => SpargeCanStart);
@@ -128,7 +128,7 @@ namespace BrewUI.ViewModels
         {
             get { return _sessionRunning; }
             set
-            { 
+            {
                 _sessionRunning = value;
                 NotifyOfPropertyChange(() => SessionRunning);
                 _events.PublishOnUIThread(new DebugDataUpdatedEvent { index = "SR", boolValue = SessionRunning });
@@ -139,7 +139,8 @@ namespace BrewUI.ViewModels
         public bool RunCooldown
         {
             get { return _runCooldown; }
-            set { 
+            set
+            {
                 _runCooldown = value;
                 NotifyOfPropertyChange(() => RunCooldown);
             }
@@ -160,8 +161,8 @@ namespace BrewUI.ViewModels
         public bool SpargeFinished
         {
             get { return _spargeFinished; }
-            set 
-            { 
+            set
+            {
                 _spargeFinished = value;
                 NotifyOfPropertyChange(() => SpargeFinished);
             }
@@ -188,7 +189,7 @@ namespace BrewUI.ViewModels
         {
             get { return _sessionProgress; }
             set
-            { 
+            {
                 _sessionProgress = value;
                 NotifyOfPropertyChange(() => SessionProgress);
             }
@@ -198,8 +199,8 @@ namespace BrewUI.ViewModels
         public TimeSpan SessionDuration
         {
             get { return _sessionDuration; }
-            set 
-            { 
+            set
+            {
                 _sessionDuration = value;
             }
         }
@@ -266,7 +267,7 @@ namespace BrewUI.ViewModels
         public ObservableCollection<MashStep> MashSteps
         {
             get { return _mashSteps; }
-            set 
+            set
             {
                 _mashSteps = value;
                 NotifyOfPropertyChange(() => MashSteps);
@@ -278,7 +279,7 @@ namespace BrewUI.ViewModels
         {
             get { return _grainList; }
             set
-            { 
+            {
                 _grainList = value;
                 NotifyOfPropertyChange(() => GrainList);
             }
@@ -288,8 +289,8 @@ namespace BrewUI.ViewModels
         public List<Hops> HopsList
         {
             get { return _hopsList; }
-            set 
-            { 
+            set
+            {
                 _hopsList = value;
                 NotifyOfPropertyChange(() => HopsList);
             }
@@ -300,7 +301,7 @@ namespace BrewUI.ViewModels
         {
             get { return _boilSteps; }
             set
-            { 
+            {
                 _boilSteps = value;
                 NotifyOfPropertyChange(() => BoilSteps);
             }
@@ -312,8 +313,8 @@ namespace BrewUI.ViewModels
         public double SpargeWaterAmount
         {
             get { return _spargeWaterAmount; }
-            set 
-            { 
+            set
+            {
                 _spargeWaterAmount = value;
                 NotifyOfPropertyChange(() => SpargeWaterAmount);
             }
@@ -377,7 +378,7 @@ namespace BrewUI.ViewModels
         {
             get { return _boilTimerText; }
             set
-            { 
+            {
                 _boilTimerText = value;
                 NotifyOfPropertyChange(() => BoilTimerText);
             }
@@ -410,8 +411,8 @@ namespace BrewUI.ViewModels
         public double BoilWaterAddition
         {
             get { return _boilWaterAddition; }
-            set 
-            { 
+            set
+            {
                 _boilWaterAddition = value;
                 NotifyOfPropertyChange(() => BoilWaterAddition);
             }
@@ -426,8 +427,8 @@ namespace BrewUI.ViewModels
         public double CDTargetTemp
         {
             get { return _cdTargetTemp; }
-            set 
-            { 
+            set
+            {
                 _cdTargetTemp = value;
                 NotifyOfPropertyChange(() => CDTargetTemp);
             }
@@ -494,7 +495,7 @@ namespace BrewUI.ViewModels
         {
             get { return _mashOpen; }
             set
-            { 
+            {
                 _mashOpen = value;
                 NotifyOfPropertyChange(() => MashOpen);
             }
@@ -516,7 +517,7 @@ namespace BrewUI.ViewModels
         {
             get { return _spargeOpen; }
             set
-            { 
+            {
                 _spargeOpen = value;
                 NotifyOfPropertyChange(() => SpargeOpen);
             }
@@ -533,8 +534,8 @@ namespace BrewUI.ViewModels
         public bool BoilOpen
         {
             get { return _boilOpen; }
-            set 
-            { 
+            set
+            {
                 _boilOpen = value;
                 NotifyOfPropertyChange(() => BoilOpen);
             }
@@ -551,8 +552,8 @@ namespace BrewUI.ViewModels
         public bool CooldownOpen
         {
             get { return _cooldownOpen; }
-            set 
-            { 
+            set
+            {
                 _cooldownOpen = value;
                 NotifyOfPropertyChange(() => CooldownOpen);
             }
@@ -579,7 +580,7 @@ namespace BrewUI.ViewModels
         public bool MashMouseOver
         {
             get { return _mashMouseOver; }
-            set 
+            set
             {
                 _mashMouseOver = value;
                 NotifyOfPropertyChange(() => MashMouseOver);
@@ -604,7 +605,8 @@ namespace BrewUI.ViewModels
         public bool SpargeMouseOver
         {
             get { return _spargeMouseOver; }
-            set {
+            set
+            {
                 _spargeMouseOver = value;
                 NotifyOfPropertyChange(() => SpargeMouseOver);
             }
@@ -664,7 +666,8 @@ namespace BrewUI.ViewModels
         public bool CooldownRunning
         {
             get { return _cooldownRunning; }
-            set { 
+            set
+            {
                 _cooldownRunning = value;
                 NotifyOfPropertyChange(() => CooldownRunning);
             }
@@ -729,7 +732,7 @@ namespace BrewUI.ViewModels
         {
             dynamic addGrains = new ExpandoObject();
             addGrains.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            _events.PublishOnUIThread(new AddingGrainsEvent { grainList = GrainList});
+            _events.PublishOnUIThread(new AddingGrainsEvent { grainList = GrainList });
             manager.ShowDialog(_addGrainsVM);
         }
 
@@ -746,7 +749,7 @@ namespace BrewUI.ViewModels
                 grainWeight += grain.amount;
             }
 
-            
+
             TimeSpan boilDuration = TimeSpan.Zero;
 
             foreach (Hops hops in HopsList)
@@ -757,12 +760,12 @@ namespace BrewUI.ViewModels
                 }
             }
 
-            double waterAmount = Math.Round(Calculations.MashWater(grainWeight),1);
+            double waterAmount = Math.Round(Calculations.MashWater(grainWeight), 1);
 
             // Add strike water and heat to strike temp
             if (!strikeWaterAdded)
             {
-                double strikeTemp = Math.Round(Calculations.StrikeTemp(waterAmount, MashSteps[0].stepTemp, grainWeight),1);
+                double strikeTemp = Math.Round(Calculations.StrikeTemp(waterAmount, MashSteps[0].stepTemp, grainWeight), 1);
                 MessageBoxResult answer = MessageBox.Show(string.Format("Strike temperature calculated to {0}°C.\n\nAdd {1}L of water and press OK.", strikeTemp, waterAmount), "Add strike water", MessageBoxButton.OKCancel);
 
                 if (answer == MessageBoxResult.Cancel)
@@ -789,7 +792,8 @@ namespace BrewUI.ViewModels
                 while (!continueTask)
                 {
                     // Check if process is exited
-                    if (MashStepCancelled(ms)){
+                    if (MashStepCancelled(ms))
+                    {
                         CloseMash();
                         return;
                     }
@@ -818,7 +822,7 @@ namespace BrewUI.ViewModels
                     CloseMash();
                     return;
                 }
-                
+
             }
 
             #endregion
@@ -829,7 +833,7 @@ namespace BrewUI.ViewModels
             foreach (MashStep item in MashSteps)
             {
                 // Check if any steps are already finished. If so, exit step and go to next.
-                if(item.Status == "Finished")
+                if (item.Status == "Finished")
                 {
                     continue;
                 }
@@ -838,7 +842,7 @@ namespace BrewUI.ViewModels
                 TargetTemp = item.stepTemp;
                 CurrentStep = item.stepName;
 
-                if(item.Status == "Paused")
+                if (item.Status == "Paused")
                 {
                     TargetDuration = item.timeLeft.TotalMinutes;
                 }
@@ -924,7 +928,7 @@ namespace BrewUI.ViewModels
         {
             if (!SessionRunning || MashRunning == false)
             {
-                if(itemStatus != "")
+                if (itemStatus != "")
                 {
                     ms.Status = itemStatus;
                 }
@@ -942,7 +946,7 @@ namespace BrewUI.ViewModels
             if (MashRunning)
             {
                 MessageBoxResult result = MessageBox.Show("This will abort the current mash process. Continue?", "Warning", MessageBoxButton.YesNo);
-                if(result == MessageBoxResult.Yes)
+                if (result == MessageBoxResult.Yes)
                 {
                     CloseMash();
                 }
@@ -950,20 +954,20 @@ namespace BrewUI.ViewModels
             }
 
             // Check if mash was paused previously
-            foreach(MashStep step in MashSteps)
+            foreach (MashStep step in MashSteps)
             {
-                if(step.Status == "Paused" | step.Status == "Finished")
+                if (step.Status == "Paused" | step.Status == "Finished")
                 {
                     MessageBoxResult answer_continue = MessageBox.Show("The mash was previously paused. Press Yes to proceed with the paused mash, or press No to restart.", "Warning", MessageBoxButton.YesNoCancel);
-                    if(answer_continue == MessageBoxResult.No)
+                    if (answer_continue == MessageBoxResult.No)
                     {
-                        foreach(MashStep item in MashSteps)
+                        foreach (MashStep item in MashSteps)
                         {
                             item.Status = "Waiting";
                             item.TimerText = step.stepDuration.ToString("hh\\:mm\\:ss");
                         }
                     }
-                    else if(answer_continue == MessageBoxResult.Cancel)
+                    else if (answer_continue == MessageBoxResult.Cancel)
                     {
                         return;
                     }
@@ -1074,7 +1078,7 @@ namespace BrewUI.ViewModels
             if (BoilRunning)
             {
                 MessageBoxResult answer = MessageBox.Show("This will abort the ongoing boil.\n\nContinue?", "Caution", MessageBoxButton.YesNo, MessageBoxImage.Information);
-                if(answer == MessageBoxResult.Yes)
+                if (answer == MessageBoxResult.Yes)
                 {
                     CloseBoil();
                     return;
@@ -1093,12 +1097,12 @@ namespace BrewUI.ViewModels
 
             double grainBill = 0;
 
-            foreach(Grain grain in GrainList)
+            foreach (Grain grain in GrainList)
             {
                 grainBill += grain.amount;
             }
 
-            BoilWaterAddition = Math.Round(Calculations.TotalWater(grainBill, BatchSize, TimeSpan.FromMinutes(TargetDuration))- Calculations.MashWater(grainBill)-SpargeWaterAmount, 1);
+            BoilWaterAddition = Math.Round(Calculations.TotalWater(grainBill, BatchSize, TimeSpan.FromMinutes(TargetDuration)) - Calculations.MashWater(grainBill) - SpargeWaterAmount, 1);
 
             CurrentProcess = "Boil";
             chartStartTime = DateTime.Now;
@@ -1106,9 +1110,9 @@ namespace BrewUI.ViewModels
             TargetTemp = 100;
             TargetDuration = 0;
 
-            MessageBoxResult messageBoxResult = MessageBox.Show($"Add {BoilWaterAddition} liter of water to the vort and press OK", "Add water",MessageBoxButton.OKCancel);
+            MessageBoxResult messageBoxResult = MessageBox.Show($"Add {BoilWaterAddition} liter of water to the vort and press OK", "Add water", MessageBoxButton.OKCancel);
 
-            if(messageBoxResult != MessageBoxResult.OK)
+            if (messageBoxResult != MessageBoxResult.OK)
             {
                 CloseBoil();
                 return;
@@ -1191,7 +1195,7 @@ namespace BrewUI.ViewModels
             await Task.WhenAll(tasks);
 
             bool finished = true;
-            foreach(BoilStep boilStep in BoilSteps)
+            foreach (BoilStep boilStep in BoilSteps)
             {
                 if (boilStep.added == false)
                 {
@@ -1232,15 +1236,16 @@ namespace BrewUI.ViewModels
             TargetTemp = currentRecipe.cooldownTargetTemp;
             CurrentProcess = "Cooldown";
 
-            MessageBoxResult result = MessageBox.Show($"Target temperature for cooldown is set to {TargetTemp}. ","Prepare cooldown",MessageBoxButton.OKCancel);
+            MessageBoxResult result = MessageBox.Show($"Target temperature for cooldown is set to {TargetTemp}. ", "Prepare cooldown", MessageBoxButton.OKCancel);
 
-            if(result != MessageBoxResult.OK)
+            if (result != MessageBoxResult.OK)
             {
                 CloseCooldown();
                 return;
             }
 
-            while(TargetTemp<CurrentTemp){
+            while (TargetTemp < CurrentTemp)
+            {
                 if (!CooldownRunning)
                 {
                     return;
@@ -1306,7 +1311,7 @@ namespace BrewUI.ViewModels
 
         private void BoilTimer_Tick(object sender, EventArgs e)
         {
-            if(DateTime.Now <= boilEndTime)
+            if (DateTime.Now <= boilEndTime)
             {
                 BoilTimerText = (boilEndTime - DateTime.Now).ToString("hh\\:mm\\:ss");
             }
@@ -1374,7 +1379,7 @@ namespace BrewUI.ViewModels
             source.CancelAfter(TimeSpan.FromSeconds(1));
 
             List<Task> tasks = new List<Task>();
-            
+
             tasks.Add(Task.Run(() => PumpController(duration, source.Token)));
             tasks.Add(Task.Run(() => HeaterController(duration, source.Token)));
 
@@ -1502,7 +1507,7 @@ namespace BrewUI.ViewModels
             arduinoMessage.AIndex = 'H';
 
             // Preheating
-            while(CurrentTemp <= TargetTemp - 0.5)
+            while (CurrentTemp <= TargetTemp - 0.5)
             {
                 // Check if session has been aborted
                 if (!SessionRunning || CurrentProcess.Length < 1)
@@ -1617,7 +1622,7 @@ namespace BrewUI.ViewModels
             DateTimeFormatter = value => new TimeSpan((long)value).ToString(); // How to format the x-axis
             chartValues.Add(new TemperatureMeasure { measureTemp = 0, measureTime = TimeSpan.Zero });
         }
-        
+
         private int SetStepProgressionShares()
         {
             int stepCount = 0;
@@ -1632,7 +1637,7 @@ namespace BrewUI.ViewModels
             stepCount += 1;
 
             // Boil
-            foreach(BoilStep bs in BoilSteps)
+            foreach (BoilStep bs in BoilSteps)
             {
                 stepCount += 1;
             }
@@ -1688,12 +1693,12 @@ namespace BrewUI.ViewModels
                 TimeSpan prevBoilTime = TimeSpan.Zero;
                 int i = 0;
 
-                foreach(Hops hops in HopsList)
+                foreach (Hops hops in HopsList)
                 {
-                    if(hops.BoilTime != prevBoilTime)
+                    if (hops.BoilTime != prevBoilTime)
                     {
                         BoilSteps.Add(new BoilStep());
-                        i = BoilSteps.Count -1;
+                        i = BoilSteps.Count - 1;
                         BoilSteps[i].boilTime = hops.BoilTime;
                         BoilSteps[i].hopsList = new ObservableCollection<Hops>();
                     }
@@ -1710,7 +1715,7 @@ namespace BrewUI.ViewModels
                 {
                     RunCooldown = false;
                 }
-                numberofSteps =  SetStepProgressionShares();
+                numberofSteps = SetStepProgressionShares();
             }
             else
             {
@@ -1730,7 +1735,7 @@ namespace BrewUI.ViewModels
                 GrainList.Clear();
                 SendToArduino('H', "0");
                 SendToArduino('P', "0");
-                if(boilTimer != null)
+                if (boilTimer != null)
                 {
                     boilTimer.Stop();
                 }
@@ -1747,8 +1752,8 @@ namespace BrewUI.ViewModels
             switch (_index)
             {
                 case 'T':
-                        CurrentTemp = Calculations.StringToDouble(_value);
-                        chartValues.Add(new TemperatureMeasure { measureTemp = CurrentTemp, measureTime = DateTime.Now.Subtract(chartStartTime) });
+                    CurrentTemp = Calculations.StringToDouble(_value);
+                    chartValues.Add(new TemperatureMeasure { measureTemp = CurrentTemp, measureTime = DateTime.Now.Subtract(chartStartTime) });
                     break;
                 default:
 
@@ -1801,7 +1806,7 @@ namespace BrewUI.ViewModels
 
         public void Handle(ConnectionEvent message)
         {
-            if(message.ConnectionStatus == MyEnums.ConnectionStatus.Connected)
+            if (message.ConnectionStatus == MyEnums.ConnectionStatus.Connected)
             {
                 Connected = true;
             }

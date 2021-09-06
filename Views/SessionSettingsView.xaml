@@ -137,7 +137,7 @@
         </Border>
 
         <!--MASH-->
-        <Border Grid.Row="2" Grid.Column="0">
+        <Border Grid.Row="2" Grid.Column="0" x:Name="MashContainer">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -151,7 +151,7 @@
                 </Grid.RowDefinitions>
                 
                 <!--HEADER-->
-                <TextBlock Text="Mash" Style="{StaticResource Header1}" Grid.Column="0" Grid.Row="0"/>
+                <TextBlock Text="Mash" Style="{StaticResource Header1}" Grid.Column="0" Grid.Row="0" Cursor="Hand" MouseDown="MouseDown_Mash" MouseEnter="MouseEnter_Mash" MouseLeave="MouseLeave_Mash" />
                 
                 <!--ADD GRAINS-->
                 <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2">
@@ -411,20 +411,21 @@
         </Border>
 
         <!--SPARGE-->
-        <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3">
+        <Border x:Name="SpargeContainer" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Sparge"  Grid.Row="0" Style="{StaticResource Header1}"/>
+                <TextBlock Text="Sparge"  Grid.Row="0" Style="{StaticResource Header1}" Grid.ColumnSpan="2" Cursor="Hand" MouseDown="MouseDown_Sparge" MouseEnter="MouseEnter_Sparge" MouseLeave="MouseLeave_Sparge"/>
                 <StackPanel Orientation="Horizontal"
-                            Grid.Row="1">
+                            Grid.Row="2">
                     <TextBlock Text="Temperature: " VerticalAlignment="Center"/>
                     <TextBox x:Name="SpargeTemp" Width="30"/>
                     <TextBlock Text="&#186;C" Style="{StaticResource UnitBlock}" />
@@ -432,12 +433,12 @@
                     <TextBox x:Name="SpargeWaterAmount" Width="30"/>
                     <TextBlock Text="liter" Style="{StaticResource UnitBlock}"/>
                 </StackPanel>
-                <Button x:Name="CalculateSpargeWaterAmount" Content="Calculate amount" Grid.Row="1" Grid.Column="1" Width="120" HorizontalAlignment="Right"/>
+                <Button x:Name="CalculateSpargeWaterAmount" Content="Calculate amount" Grid.Row="2" Grid.Column="1" Width="120" HorizontalAlignment="Right"/>
             </Grid>
         </Border>
 
         <!--Boil-->
-        <Border Grid.Row="6" Grid.Column="0">
+        <Border x:Name="BoilContainer" Grid.Row="6" Grid.Column="0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -450,7 +451,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Boil" Style="{StaticResource Header1}" Grid.Row="0"/>
+                <TextBlock Text="Boil" Style="{StaticResource Header1}" Grid.Row="0" MouseDown="MouseDown_Boil" Cursor="Hand" MouseEnter="MouseEnter_Boil" MouseLeave="MouseLeave_Boil" />
 
                 <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2">
                     <TextBlock Text="Add hops" Style="{StaticResource Header2}" Margin="0 0 0 10"/>
@@ -527,21 +528,22 @@
             </Grid>
         </Border>
 
-        <!-- NewRegion -->
-        <Border Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3">
+        <!-- Cooldown -->
+        <Border x:Name="CooldownContainer" Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="Cooldown"  Grid.Row="0" Style="{StaticResource Header1}"/>
+                <TextBlock Text="Cooldown"  Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource Header1}" Cursor="Hand" MouseDown="MouseDown_Cooldown" MouseEnter="MouseEnter_Cooldown" MouseLeave="MouseLeave_Cooldown"/>
                 <StackPanel Orientation="Horizontal"
-                            Grid.Row="1">
+                            Grid.Row="2">
                     <TextBlock Text="Target temperature: " VerticalAlignment="Center"/>
                     <TextBox x:Name="CDTargetTemp" Width="30"/>
                     <TextBlock Text=" &#186;C " Style="{StaticResource UnitBlock}"/>

@@ -22,14 +22,101 @@ namespace BrewUI.Views
     public partial class SessionSettingsView : UserControl
     {
 
+        // GUI variables
+
         public SessionSettingsView()
         {
             InitializeComponent();
         }
 
-        private void SessionName_MouseEnter(object sender, MouseEventArgs e)
+        #region Colapse containers
+        private void MouseDown_Mash(object sender, MouseButtonEventArgs e)
         {
-
+            ToggleContainerHeight(MashContainer);
         }
+
+        private void MouseDown_Sparge(object sender, MouseButtonEventArgs e)
+        {
+            ToggleContainerHeight(SpargeContainer);
+        }
+
+        private void MouseDown_Boil(object sender, MouseButtonEventArgs e)
+        {
+            ToggleContainerHeight(BoilContainer);
+        }
+
+        private void MouseDown_Cooldown(object sender, MouseButtonEventArgs e)
+        {
+            ToggleContainerHeight(CooldownContainer);
+        }
+
+        private static void ToggleContainerHeight(Border border)
+        {
+            if (border.Height == 45)
+            {
+                border.Height = Double.NaN;
+            }
+            else
+            {
+                border.Height = 45;
+            }
+        }
+
+        #endregion
+
+        #region Toggle hover color
+        private void SetColorFromResource(Border border, string resourceName)
+        {
+            Brush r = Brushes.White;
+            try
+            {
+                r = this.TryFindResource(resourceName) as Brush;
+            }
+            catch
+            {
+            }
+            border.Background = r;
+        }
+
+        private void MouseEnter_Mash(object sender, MouseEventArgs e)
+        {
+            SetColorFromResource(MashContainer, "GrayHover");
+        }
+
+        private void MouseLeave_Mash(object sender, MouseEventArgs e)
+        {
+            MashContainer.Background = Brushes.White;
+        }
+
+        private void MouseEnter_Sparge(object sender, MouseEventArgs e)
+        {
+            SetColorFromResource(SpargeContainer, "GrayHover");
+        }
+
+        private void MouseLeave_Sparge(object sender, MouseEventArgs e)
+        {
+            SpargeContainer.Background = Brushes.White;
+        }
+
+        private void MouseEnter_Boil(object sender, MouseEventArgs e)
+        {
+            SetColorFromResource(BoilContainer, "GrayHover");
+        }
+
+        private void MouseLeave_Boil(object sender, MouseEventArgs e)
+        {
+            BoilContainer.Background = Brushes.White;
+        }
+
+        private void MouseEnter_Cooldown(object sender, MouseEventArgs e)
+        {
+            SetColorFromResource(CooldownContainer, "GrayHover");
+        }
+
+        private void MouseLeave_Cooldown(object sender, MouseEventArgs e)
+        {
+            CooldownContainer.Background = Brushes.White;
+        }
+        #endregion
     }
 }
