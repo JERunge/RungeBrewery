@@ -1427,11 +1427,6 @@ namespace BrewUI.ViewModels
                 _beerStyle = message.BreweryRecipe.sessionInfo.style.Name;
                 _batchSize = message.BreweryRecipe.sessionInfo.BatchSize;
                 MashSteps = message.BreweryRecipe.mashSteps;
-                //TotalSessionTime = Calculations.SessionDuration(currentRecipe, CurrentTemp);
-
-                //SessionProgressTimer = new DispatcherTimer();
-                //SessionProgressTimer.Interval = TimeSpan.FromSeconds(1);
-                //SessionProgressTimer.Tick += SessionProgressTimer_Tick;
 
                 strikeWaterAdded = false;
 

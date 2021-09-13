@@ -167,7 +167,7 @@ namespace BrewUI.Models
         public static BreweryRecipe ImportRecipe()
         {
             BreweryRecipe BR = new BreweryRecipe();
-            string recipeText = "";
+            string recipeText;
 
             OpenFileDialog openDialog = new OpenFileDialog();
             openDialog.Filter = "Beersmith (*.bsmx)|*.bsmx";
@@ -181,12 +181,14 @@ namespace BrewUI.Models
                 }
                 else
                 {
+                    BR = null;
                     return BR;
                 }
             }
             catch
             {
                 MessageBox.Show("Recipe file is corrupted and cannot be opened.", "Error");
+                BR.sessionInfo.sessionName = "RecipeCorruptedError";
                 return BR;
             }
 
@@ -482,6 +484,11 @@ namespace BrewUI.Models
             MessageBox.Show((string.Format("{0} out of {1} grains were new and added to the database.", newGrains, totalGrains)), "Import finished");
         }
 
+        public static void YeastToDB(List<Yeast> yeastList)
+        {
+
+        }
+
         public static void StylesToDB(List<BeerStyle> styleList)
         {
             string newStylesDB = "";
@@ -580,6 +587,26 @@ namespace BrewUI.Models
             }
 
             return grainList;
+        }
+
+        public static List<Yeast> ImportYeastList(string yeastText)
+        {
+            List<Yeast> yeastList = new List<Yeast>();
+
+            string[] tempArray = yeastText.Split(new string[] { "<Yeast>" }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach(string _text in tempArray)
+            {
+                if (_text.Contains("<F_Y_NAME>"))
+                {
+                    Yeast yeast = new Yeast();
+
+                    // Get name
+
+                }
+            }
+
+            return yeastList;
         }
 
         public static List<BeerStyle> ImportStyleList(string styleText)

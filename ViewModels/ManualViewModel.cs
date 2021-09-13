@@ -5,9 +5,6 @@ using BrewUI.Models;
 using Caliburn.Micro;
 using LiveCharts;
 using LiveCharts.Configurations;
-using LiveCharts.Wpf;
-using LiveCharts.Wpf.Charts.Base;
-using Microsoft.SqlServer.Server;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,6 +15,8 @@ namespace BrewUI.ViewModels
     public class ManualViewModel : Screen, IHandle<SerialReceivedEvent>, IHandle<ConnectionEvent>
     {
         private readonly IEventAggregator _events;
+
+        public WifiConnection wifiConnection;
 
         #region Variables
 
@@ -157,7 +156,7 @@ namespace BrewUI.ViewModels
 
             CurrentAction = "-";
 
-            AsyncTaskRunning = false;
+            wifiConnection = new WifiConnection(events);
         }
 
         #region IU Methods
@@ -342,84 +341,26 @@ namespace BrewUI.ViewModels
         }
         #endregion
 
-        #region Async test
-
-        public async Task StartAsync()
+        #region Wifi test
+        private string _messageToWifi;
+        public string MessageToWifi
         {
-            if (AsyncTaskRunning)
-            {
-                return;
-            }
-            AsyncTaskRunning = true;
-
-            CancellationTokenSource source = new CancellationTokenSource();
-            source.CancelAfter(TimeSpan.FromSeconds(1));
-
-            Task countTask = Task.Run(() => count(source.Token), source.Token);
-            await countTask;
-            AsyncTaskRunning = false;
-        }
-
-        private int _countValue;
-        public int CountValue
-        {
-            get { return _countValue; }
-            set
-            { 
-                _countValue = value;
-                NotifyOfPropertyChange(() => CountValue);
+            get { return _messageToWifi; }
+            set { 
+                _messageToWifi = value;
+                NotifyOfPropertyChange(() => MessageToWifi);
             }
         }
 
-        private bool _stopAsyncCount;
-        public bool StopAsyncCount
+        public void SendToWifi()
         {
-            get { return _stopAsyncCount; }
-            set 
-            { 
-                _stopAsyncCount = value;
-                NotifyOfPropertyChange(() => StopAsyncCount);
-            }
+            wifiConnection.SendToWifi(MessageToWifi);
         }
 
-        public bool AsyncTaskRunning { get; set;}
-
-        private void count(CancellationToken cancellationToken)
+        public async Task StartClient()
         {
-            StopAsyncCount = false;
-            CountValue = 1;
-            for(int i = 0; i < 10; i++)
-            {
-                CountValue = i;
-                Task.Delay(1000).Wait();
-
-                try
-                {
-                    if (i > 10)
-                    {
-                        MessageBox.Show("Async task finished");
-                        cancellationToken.ThrowIfCancellationRequested();
-                    }
-                    else if (StopAsyncCount)
-                    {
-                        MessageBox.Show("Async task stopped");
-                        cancellationToken.ThrowIfCancellationRequested();
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    return;
-                }
-            }
-            
+            await Task.Run(() => wifiConnection.StartClient());
         }
-
-        public void StopAsync()
-        {
-            StopAsyncCount = true;
-        }
-
         #endregion
-
     }
 }

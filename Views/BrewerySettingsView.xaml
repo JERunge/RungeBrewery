@@ -148,6 +148,14 @@
             </StackPanel>
         </Border>
 
+        <Border Grid.Column="3" Grid.Row="4" Style="{StaticResource MainContainer}" Height="100" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Connection" Style="{StaticResource Header1}" Margin="0 0 0 10"/>
+                <RadioButton x:Name="BluetoothEnabled" Content="Bluetooth" GroupName="Connection"/>
+                <RadioButton x:Name="WifiEnabled" Content="Wifi" GroupName="Connection"/>
+            </StackPanel>
+        </Border>
+
         <Grid Grid.Row="7" Grid.Column="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>

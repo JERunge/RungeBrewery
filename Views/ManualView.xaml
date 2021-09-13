@@ -31,8 +31,10 @@
             <TextBlock x:Name="CurrentAction" Margin="0 30 0 30" TextAlignment="Center"/>
 
             <TextBlock x:Name="CountValue"/>
-            <Button x:Name="StartAsync" Margin="0 0 0 0" Content="Start async count" Height="25"/>
-            <Button x:Name="StopAsync" Content="Stop async count" Height="25"/>
+            <TextBox x:Name="MessageToWifi" Width="200"/>
+            <Button x:Name="SendToWifi" Content="Send to wifi" Height="25"/>
+            <Button x:Name="StartClient" Content="Start client" Height="25"/>
+            <Button x:Name="StartServer" Content="Start server" Height="25"/>
         </StackPanel>
 
 

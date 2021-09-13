@@ -15,7 +15,7 @@ using System.Windows;
 
 namespace BrewUI.Models
 {
-    public class BreweryConnection : Conductor<object>, IHandle<SerialToSendEvent>, IHandle<ConnectionEvent>
+    public class BluetoothConnection : Conductor<object>, IHandle<SerialToSendEvent>, IHandle<ConnectionEvent>
     {
         #region Variables and constants
 
@@ -32,7 +32,7 @@ namespace BrewUI.Models
 
         #endregion
 
-        public BreweryConnection(IEventAggregator events)
+        public BluetoothConnection(IEventAggregator events)
         {
             // Subscribe to events
             _events = events;

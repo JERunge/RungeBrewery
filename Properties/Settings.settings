@@ -68,5 +68,11 @@
     <Setting Name="MashRatio" Type="System.Double" Scope="User">
       <Value Profile="(Default)">2.7</Value>
     </Setting>
+    <Setting Name="PathYeastsDB" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\Database\Yeasts.bdb</Value>
+    </Setting>
+    <Setting Name="ConnectionType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Bluetooth</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

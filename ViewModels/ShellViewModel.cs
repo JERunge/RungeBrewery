@@ -62,13 +62,7 @@ namespace BrewUI.ViewModels
         public void ImportRecipe()
         {
             BreweryRecipe breweryRecipe = FileInteraction.ImportRecipe();
-            SessionInfo sessionInfo = new SessionInfo();
-            sessionInfo = breweryRecipe.sessionInfo;
-            try
-            {
-                int length = sessionInfo.sessionName.Length;
-            }
-            catch(Exception e)
+            if(breweryRecipe == null)
             {
                 return;
             }
@@ -284,7 +278,7 @@ namespace BrewUI.ViewModels
         #endregion
 
         #region Public variables
-        public BreweryConnection breweryConnection;
+        private ConnectionHandler connectionHandler;
 
         private string _sessionName;
         public string SessionName
@@ -473,20 +467,21 @@ namespace BrewUI.ViewModels
             settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             manager.ShowWindow(_debugWindowVM);
 
-            // Initialize Brewery connection
-            breweryConnection = new BreweryConnection(events);
+            // Initialize connection handler
+            connectionHandler = new ConnectionHandler(events);
+            _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Disconnected });
         }
 
         #region UI Methods
-        public void ConnectButton()
+        public async Task ConnectButton()
         {
             if (ConnectionStatus == MyEnums.ConnectionStatus.Disconnected)
             {
-                breweryConnection.ArduinoConnect();
+                await connectionHandler.ArduinoConnect();
             }
             else
             {
-                breweryConnection.ArduinoDisconnect();
+                connectionHandler.ArduinoDisconnect();
             }
         }
         #endregion
@@ -521,7 +516,14 @@ namespace BrewUI.ViewModels
                 ConnectionIsBusy = false;
                 ConnectionText = "Connect";
                 ConnectButtonEnabled = true;
-                BluetoothIcon = PackIconKind.BluetoothOff;
+                if (Properties.Settings.Default.ConnectionType == "Bluetooth")
+                {
+                    BluetoothIcon = PackIconKind.BluetoothOff;
+                }
+                else
+                {
+                    BluetoothIcon = PackIconKind.WifiOff;
+                }
                 CurrentTemp = 0;
             }
             else if (ConnectionStatus == MyEnums.ConnectionStatus.Searching)
@@ -529,25 +531,49 @@ namespace BrewUI.ViewModels
                 ConnectionIsBusy = true;
                 ConnectionText = "Cancel";
                 ConnectButtonEnabled = false;
-                BluetoothIcon = PackIconKind.BluetoothSearching;
+                if (Properties.Settings.Default.ConnectionType == "Bluetooth")
+                {
+                    BluetoothIcon = PackIconKind.BluetoothSearching;
+                }
+                else
+                {
+                    BluetoothIcon = PackIconKind.WifiStrength0Alert;
+                }
+                    
             }
             else if (ConnectionStatus == MyEnums.ConnectionStatus.Connecting)
             {
                 ConnectionIsBusy = true;
                 ConnectionText = "Cancel";
                 ConnectButtonEnabled = false;
-                BluetoothIcon = PackIconKind.BluetoothSearching;
+                if (Properties.Settings.Default.ConnectionType == "Bluetooth")
+                {
+                    BluetoothIcon = PackIconKind.BluetoothSearching;
+                }
+                else
+                {
+                    BluetoothIcon = PackIconKind.WifiStrength0Alert;
+                }
+                    
             }
             else if(ConnectionStatus == MyEnums.ConnectionStatus.Reconnecting)
             {
-                breweryConnection.ArduinoConnect();
+                //
             }
             else // Connected
             {
                 ConnectionIsBusy = false;
                 ConnectionText = "Disconnect";
                 ConnectButtonEnabled = true;
-                BluetoothIcon = PackIconKind.BluetoothConnected;
+                if (Properties.Settings.Default.ConnectionType == "Bluetooth")
+                {
+                    BluetoothIcon = PackIconKind.BluetoothConnected;
+                }
+                else
+                {
+                    BluetoothIcon = PackIconKind.Wifi;
+                }
+                    
             }
         }
 

@@ -274,5 +274,29 @@ namespace BrewUI.Properties {
                 this["MashRatio"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".\\Database\\Yeasts.bdb")]
+        public string PathYeastsDB {
+            get {
+                return ((string)(this["PathYeastsDB"]));
+            }
+            set {
+                this["PathYeastsDB"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Bluetooth")]
+        public string ConnectionType {
+            get {
+                return ((string)(this["ConnectionType"]));
+            }
+            set {
+                this["ConnectionType"] = value;
+            }
+        }
     }
 }

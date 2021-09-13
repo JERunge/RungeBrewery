@@ -72,6 +72,9 @@
     <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="M2Mqtt.Net, Version=4.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\M2Mqtt.4.3.0.0\lib\net45\M2Mqtt.Net.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.6.5.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.6.5\lib\net47\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -160,17 +163,20 @@
     <Compile Include="Items\SpargeStep.cs" />
     <Compile Include="Items\BeerStyle.cs" />
     <Compile Include="Items\TemperatureMeasure.cs" />
+    <Compile Include="Items\Yeast.cs" />
     <Compile Include="Models\ArduinoParse.cs" />
     <Compile Include="Items\SessionInfo.cs" />
     <Compile Include="Items\StringListItem.cs" />
     <Compile Include="EventModels\ConnectionEvent.cs" />
     <Compile Include="EventModels\SerialReceivedEvent.cs" />
     <Compile Include="EventModels\SessionRunningEvent.cs" />
-    <Compile Include="Models\BreweryConnection.cs" />
+    <Compile Include="Models\BluetoothConnection.cs" />
     <Compile Include="Models\Calculations.cs" />
+    <Compile Include="Models\ConnectionHandler.cs" />
     <Compile Include="Models\GUI.cs" />
     <Compile Include="Models\MyEnums.cs" />
     <Compile Include="Models\FileInteraction.cs" />
+    <Compile Include="Models\WifiConnection.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModels\AddGrainsViewModel.cs" />
