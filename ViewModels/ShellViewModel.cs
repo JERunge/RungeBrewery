@@ -21,6 +21,7 @@ using System.IO;
 using System.Collections.ObjectModel;
 using BrewUI.Items;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace BrewUI.ViewModels
 {
@@ -426,6 +427,8 @@ namespace BrewUI.ViewModels
                 NotifyOfPropertyChange(() => ActiveWindow);
             }
         }
+
+        private DispatcherTimer pingTimer { get; set; }
         #endregion
 
         public ShellViewModel(SessionSettingsViewModel sessionSettingsVM, SessionViewModel sessionVM, ManualViewModel manualVM, BrewerySettingsViewModel brewerySettingsVM, DebugWindowViewModel debugWindowVM, IEventAggregator events)
@@ -453,15 +456,6 @@ namespace BrewUI.ViewModels
             // Startup view
             ActivateItem(_sessionSettingsVM);
 
-            // Start values of variables
-            ConnectionIsBusy = false;
-            ConnectionText = "Connect";
-            ConnectionStatus = MyEnums.ConnectionStatus.Disconnected;
-            _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = ConnectionStatus });
-            _heaterStatus = "Off";
-            _pumpStatus = "Off";
-            BluetoothIcon = PackIconKind.BluetoothOff;
-
             // Load debug window at startup
             dynamic settings = new ExpandoObject();
             settings.WindowStartupLocation = WindowStartupLocation.CenterOwner;
@@ -470,6 +464,20 @@ namespace BrewUI.ViewModels
             // Initialize connection handler
             connectionHandler = new ConnectionHandler(events);
             _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Disconnected });
+
+            // Initialize ping timer
+            pingTimer = new DispatcherTimer();
+            pingTimer.Interval = TimeSpan.FromSeconds(1);
+            pingTimer.Tick += PingTimer_Tick;
+            pingTimer.Start();
+        }
+
+        private void PingTimer_Tick(object sender, EventArgs e)
+        {
+            if (ConnectionStatus == MyEnums.ConnectionStatus.Connected)
+            {
+                _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = new ArduinoMessage { AIndex = 'T', AMessage = "" } });
+            }
         }
 
         #region UI Methods
@@ -525,6 +533,8 @@ namespace BrewUI.ViewModels
                     BluetoothIcon = PackIconKind.WifiOff;
                 }
                 CurrentTemp = 0;
+                PumpStatus = "Off";
+                HeaterStatus = "Off";
             }
             else if (ConnectionStatus == MyEnums.ConnectionStatus.Searching)
             {
@@ -573,7 +583,9 @@ namespace BrewUI.ViewModels
                 {
                     BluetoothIcon = PackIconKind.Wifi;
                 }
-                    
+                PumpStatus = "On";
+                HeaterStatus = "On";
+
             }
         }
 

@@ -354,7 +354,10 @@ namespace BrewUI.ViewModels
 
         public void SendToWifi()
         {
-            wifiConnection.SendToWifi(MessageToWifi);
+            ArduinoMessage arduinoMessage = new ArduinoMessage();
+            arduinoMessage.AIndex = Convert.ToChar(MessageToWifi.Substring(0, 1));
+            arduinoMessage.AMessage = MessageToWifi.Substring(1, MessageToWifi.Length - 1);
+            wifiConnection.SendToWifi(arduinoMessage);
         }
 
         public async Task StartClient()

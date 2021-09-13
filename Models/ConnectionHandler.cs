@@ -58,11 +58,9 @@ namespace BrewUI.Models
 
         public void SendToArduino(ArduinoMessage arduinoMessage)
         {
-            string message = arduinoMessage.AIndex.ToString() + arduinoMessage.AMessage;
-
             if (Properties.Settings.Default.ConnectionType == "Wifi")
             {
-                wifi.SendToWifi(message);
+                wifi.SendToWifi(arduinoMessage);
             }
             else
             {

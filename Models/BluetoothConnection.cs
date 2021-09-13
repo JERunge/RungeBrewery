@@ -15,7 +15,7 @@ using System.Windows;
 
 namespace BrewUI.Models
 {
-    public class BluetoothConnection : Conductor<object>, IHandle<SerialToSendEvent>, IHandle<ConnectionEvent>
+    public class BluetoothConnection : Conductor<object>, IHandle<ConnectionEvent>
     {
         #region Variables and constants
 
@@ -198,10 +198,7 @@ namespace BrewUI.Models
                 {
                     return;
                 }
-                AM.AIndex = 'T';
-                AM.AMessage = null;
-                _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = AM}); // Request temperature. Also functions as ping to brewery.
-                Thread.Sleep(1000);
+                Thread.Sleep(100);
             }
         }
 
@@ -228,10 +225,6 @@ namespace BrewUI.Models
         #endregion
 
         #region Event handlers
-        public void Handle(SerialToSendEvent message)
-        {
-            SendToArduino(message.arduinoMessage);
-        }
 
         public void Handle(ConnectionEvent message)
         {

@@ -16,10 +16,10 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace BrewUI.Models
 {
-    public class WifiConnection : Conductor<object>, IHandle<SerialToSendEvent>
+    public class WifiConnection : Conductor<object>
     {
         private IEventAggregator _events;
-        static TcpClient client = new TcpClient();
+        static TcpClient client;
 
         public WifiConnection(IEventAggregator events)
         {
@@ -34,6 +34,7 @@ namespace BrewUI.Models
             _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Connecting });
             try
             {
+                client = new TcpClient();
                 client.Connect("192.168.1.202", 80);
             }
             catch(Exception e)
@@ -60,14 +61,17 @@ namespace BrewUI.Models
                     ArduinoMessage _arduinoMessage = new ArduinoMessage();
 
                     // Read index value from read message
-                    _arduinoMessage.AIndex = str[0];
+                    _arduinoMessage.AIndex = str[1];
 
                     // Read value from read message
-                    for (int i = 1; i < str.Length; i++)
+                    for (int i = 2; i < str.Length; i++)
                     {
                         if (str[i] != '>')
                         {
-                            _arduinoMessage.AMessage += str[i];
+                            if (str[i] != ' ')
+                            {
+                                _arduinoMessage.AMessage += str[i];
+                            }
                         }
                         else if (str[i] == '>')
                         {
@@ -84,9 +88,11 @@ namespace BrewUI.Models
         public void Closeclient()
         {
             client.Close();
+            client.Dispose();
+            _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Disconnected });
         }
 
-        public void SendToWifi(string message)
+        public void SendToWifi(ArduinoMessage message)
         {
             if (client.Connected)
             {
@@ -94,20 +100,16 @@ namespace BrewUI.Models
                 //Converting string to byte array
                 if (message == null)
                 {
-                    message = "";
+                    return;
                 }
-                byte[] bytesToSend = System.Text.Encoding.ASCII.GetBytes(message);
+                var buffer = System.Text.Encoding.UTF8.GetBytes(ArduinoParse.ToParse(message));
                 //Sending the byte array to the server
-                client.Client.Send(bytesToSend);
+                client.Client.Send(buffer);
             }
         }
 
         #region Event handlers
-        public void Handle(SerialToSendEvent message)
-        {
-            string msg = message.arduinoMessage.AIndex.ToString() + message.arduinoMessage.AMessage;
-            SendToWifi(msg);
-        }
+
         #endregion
     }
 
