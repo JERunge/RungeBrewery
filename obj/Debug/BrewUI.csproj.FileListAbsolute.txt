@@ -375,3 +375,8 @@ C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Network.xm
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\System.ValueTuple.xml
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\M2Mqtt.Net.dll
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\M2Mqtt.Net.pdb
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Database\RungeBreweryDatabase.db
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Dapper.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\System.Data.SQLite.dll
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Dapper.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\System.Data.SQLite.xml

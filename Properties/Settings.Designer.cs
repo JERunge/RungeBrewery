@@ -193,33 +193,6 @@ namespace BrewUI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(".\\Database\\Hops.bdb")]
-        public string PathHopsDB {
-            get {
-                return ((string)(this["PathHopsDB"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(".\\Database\\Grains.bdb")]
-        public string PathGrainsDB {
-            get {
-                return ((string)(this["PathGrainsDB"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(".\\Database\\Styles.bdb")]
-        public string PathStylesDB {
-            get {
-                return ((string)(this["PathStylesDB"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute(".\\Database\\Recipes\\")]
         public string PathRecipesFolder {
             get {
@@ -272,18 +245,6 @@ namespace BrewUI.Properties {
             }
             set {
                 this["MashRatio"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(".\\Database\\Yeasts.bdb")]
-        public string PathYeastsDB {
-            get {
-                return ((string)(this["PathYeastsDB"]));
-            }
-            set {
-                this["PathYeastsDB"] = value;
             }
         }
         

@@ -182,7 +182,7 @@
                               CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True"
                               AlternatingRowBackground="{StaticResource GrayLight}" AutoGenerateColumns="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Hops" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
                                 <DataGridTextColumn Header="Origin" Binding="{Binding Origin}"/>
                                 <DataGridTextColumn Header="Alpha" Binding="{Binding Alpha}"/>
                                 <DataGridTextColumn Header="Beta" Binding="{Binding Beta}"/>
@@ -196,13 +196,25 @@
                               AlternatingRowBackground="{StaticResource GrayLight}"
                                   AutoGenerateColumns="False">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Grain" Binding="{Binding grainName}"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding name}"/>
                                 <DataGridTextColumn Header="Origin" Binding="{Binding origin}"/>
                                 <DataGridTextColumn Header="Notes" Binding="{Binding notes}"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </TabItem>
-                    <TabItem Header="Yeast"/>
+                    <TabItem Header="Yeast">
+                        <DataGrid x:Name="YeastList" Height="Auto" MaxColumnWidth="200"
+                              CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="True"
+                              AlternatingRowBackground="{StaticResource GrayLight}"
+                                  AutoGenerateColumns="False">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Name" Binding="{Binding name}"/>
+                                <DataGridTextColumn Header="Lab" Binding="{Binding origin}"/>
+                                <DataGridTextColumn Header="Best for" Binding="{Binding bestFor}"/>
+                                <DataGridTextColumn Header="Notes" Binding="{Binding notes}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </TabItem>
                 </TabControl>
             </StackPanel>
         </Border>

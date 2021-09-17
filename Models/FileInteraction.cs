@@ -80,7 +80,7 @@ namespace BrewUI.Models
                     Grain grain = new Grain();
                     
                     // Read name
-                    grain.grainName = GetDataInbetween("<NAME>", grainText);
+                    grain.name = GetDataInbetween("<NAME>", grainText);
 
                     // Read amount
                     grain.amount = Convert.ToDouble(GetDataInbetween("<AMOUNT>", grainText));
@@ -228,7 +228,7 @@ namespace BrewUI.Models
                     Grain grain = new Grain();
 
                     // Read name
-                    grain.grainName = GetDataInbetween("<F_G_NAME>", grainText);
+                    grain.name = GetDataInbetween("<F_G_NAME>", grainText);
 
                     // Read amount
                     MessageBox.Show(GetDataInbetween("<F_G_AMOUNT>", grainText));
@@ -283,165 +283,40 @@ namespace BrewUI.Models
 
         public static List<Hops> HopsFromDB()
         {
-            List<Hops> listDB = new List<Hops>();
-            string pathDB = Properties.Settings.Default.PathHopsDB;
-            string hopsTextDB = "";
-
-            using (StreamReader sr = new StreamReader(pathDB))
-            {
-                hopsTextDB = sr.ReadToEnd();
-            }
-
-            if (hopsTextDB.Contains("<HOPS>"))
-            {
-                string[] arrayDB = hopsTextDB.Split(new string[] { "<HOPS>" }, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach(string hopsText in arrayDB)
-                {
-                    if (hopsText.Contains("</HOPS>"))
-                    {
-                        Hops hops = new Hops();
-
-                        // Get name
-                        hops.Name = GetDataInbetween("<NAME>", hopsText);
-
-                        // Get origin
-                        hops.Origin = GetDataInbetween("<ORIGIN>", hopsText);
-
-                        // Get alpha
-                        hops.Alpha = GetDataInbetween("<ALPHA>", hopsText);
-
-                        // Get beta
-                        hops.Beta = GetDataInbetween("<BETA>", hopsText);
-
-                        // Get beta
-                        hops.Notes = GetDataInbetween("<NOTES>", hopsText);
-
-                        listDB.Add(hops);
-                    }
-                }
-            }
-
+            List<Hops> listDB = new List<Hops>(SQLiteAcces.LoadHops());
             return listDB;
         }
 
         public static List<Grain> GrainsFromDB()
         {
-            List<Grain> listDB = new List<Grain>();
-            string pathDB = Properties.Settings.Default.PathGrainsDB;
-            string grainsTextDB = "";
-
-            using (StreamReader sr = new StreamReader(pathDB))
-            {
-                grainsTextDB = sr.ReadToEnd();
-            }
-
-            if (grainsTextDB.Contains("<GRAIN>"))
-            {
-                string[] arrayDB = grainsTextDB.Split(new string[] { "<GRAIN>" }, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (string grainText in arrayDB)
-                {
-                    if (grainText.Contains("</GRAIN>"))
-                    {
-                        Grain grain = new Grain();
-
-                        // Get name
-                        grain.grainName = GetDataInbetween("<NAME>", grainText);
-
-                        // Get origin
-                        grain.origin = GetDataInbetween("<ORIGIN>", grainText);
-
-                        // Get beta
-                        grain.notes = GetDataInbetween("<NOTES>", grainText);
-
-                        listDB.Add(grain);
-                    }
-                }
-            }
-
+            List<Grain> listDB = new List<Grain>(SQLiteAcces.LoadGrains());
             return listDB;
         }
 
-        public static List<BeerStyle> StyleFromDB()
+        public static List<Yeast> YeastsFromDB()
         {
-            List<BeerStyle> listDB = new List<BeerStyle>();
-            string pathDB = Properties.Settings.Default.PathStylesDB;
-            string stylesTextDB = "";
+            return new List<Yeast>(SQLiteAcces.LoadYeasts());
+        }
 
-            using (StreamReader sr = new StreamReader(pathDB))
-            {
-                stylesTextDB = sr.ReadToEnd();
-            }
-
-            if (stylesTextDB.Contains("<STYLE>"))
-            {
-                string[] arrayDB = stylesTextDB.Split(new string[] { "<STYLE>" }, StringSplitOptions.RemoveEmptyEntries);
-                
-                foreach(string _text in arrayDB)
-                {
-                    if (_text.Contains("</STYLE>"))
-                    {
-                        BeerStyle style = new BeerStyle();
-
-                        // Get Name
-                        style.Name = GetDataInbetween("<NAME>", _text);
-
-                        // Get Category
-                        style.Category = GetDataInbetween("<CATEGORY>", _text);
-
-                        // Get Description
-                        style.Description = GetDataInbetween("<DESCRIPTION>", _text);
-
-                        // Get Profile
-                        style.Profile = GetDataInbetween("<PROFILE>", _text);
-
-                        // Get Ingredients
-                        style.Ingredients = GetDataInbetween("<INGREDIENTS>", _text);
-
-                        listDB.Add(style);
-                    }
-                }
-            }
-
-            return listDB;
+        public static List<BeerStyle> StylesFromDB()
+        {
+            return new List<BeerStyle>(SQLiteAcces.LoadStyles());
         }
 
         public static void HopsToDB(List<Hops> hopsList)
         {
-            string newHopsDB = "";
-            using (StreamReader sr = new StreamReader(Properties.Settings.Default.PathHopsDB))
-            {
-                newHopsDB = sr.ReadToEnd();
-            }
-
-            string[] tempArray = newHopsDB.Split(new string[] { "</DATA>" }, StringSplitOptions.RemoveEmptyEntries);
-            newHopsDB = tempArray[0];
-
-            int totalHops = 0;
             int newHops = 0;
+            int totalHops = 0;
 
-            foreach (Hops hopsItem in hopsList)
+            foreach(Hops hops in hopsList)
             {
                 totalHops++;
 
-                if (!newHopsDB.Contains(hopsItem.Name))
+                if(SQLiteAcces.ItemExistsInDB("Hops", "Name", hops.Name) == false)
                 {
                     newHops++;
-                    newHopsDB += "<HOPS>\n";
-                    newHopsDB += AddProperty("NAME", hopsItem.Name);
-                    newHopsDB += AddProperty("ORIGIN", hopsItem.Origin);
-                    newHopsDB += AddProperty("ALPHA", hopsItem.Alpha);
-                    newHopsDB += AddProperty("BETA", hopsItem.Beta);
-                    newHopsDB += AddProperty("NOTES", hopsItem.Notes);
-                    newHopsDB += "</HOPS>\n";
+                    SQLiteAcces.SaveHops(hops);
                 }
-            }
-
-            newHopsDB += "</DATA>\n</HOPSLIST>";
-            using (StreamWriter sw = new StreamWriter(Properties.Settings.Default.PathHopsDB))
-            {
-                sw.Write(newHopsDB);
             }
 
             MessageBox.Show((string.Format("{0} out of {1} hops were new and added to the database.", newHops, totalHops)),"Import finished");
@@ -449,36 +324,18 @@ namespace BrewUI.Models
 
         public static void GrainsToDB(List<Grain> grainList)
         {
-            string newGrainsDB = "";
-            using (StreamReader sr = new StreamReader(Properties.Settings.Default.PathGrainsDB))
-            {
-                newGrainsDB = sr.ReadToEnd();
-            }
-
-            string[] tempArray = newGrainsDB.Split(new string[] { "</DATA>" }, StringSplitOptions.RemoveEmptyEntries);
-            newGrainsDB = tempArray[0];
-
-            int totalGrains = 0;
             int newGrains = 0;
+            int totalGrains = 0;
 
-            foreach(Grain grainItem in grainList)
+            foreach(Grain grain in grainList)
             {
                 totalGrains++;
 
-                if (!newGrainsDB.Contains(grainItem.grainName)){
+                if (SQLiteAcces.ItemExistsInDB("Grains", "Name", grain.name) == false)
+                {
                     newGrains++;
-                    newGrainsDB += "<GRAIN>\n";
-                    newGrainsDB += AddProperty("NAME", grainItem.grainName);
-                    newGrainsDB += AddProperty("ORIGIN", grainItem.origin);
-                    newGrainsDB += AddProperty("NOTES", grainItem.notes);
-                    newGrainsDB += "</GRAIN>\n";
+                    SQLiteAcces.SaveGrain(grain);
                 }
-            }
-
-            newGrainsDB += "</DATA>\n</GRAINLIST>";
-            using (StreamWriter sw = new StreamWriter(Properties.Settings.Default.PathGrainsDB))
-            {
-                sw.Write(newGrainsDB);
             }
 
             MessageBox.Show((string.Format("{0} out of {1} grains were new and added to the database.", newGrains, totalGrains)), "Import finished");
@@ -486,47 +343,40 @@ namespace BrewUI.Models
 
         public static void YeastToDB(List<Yeast> yeastList)
         {
+            int newYeasts = 0;
+            int totalYeasts = 0;
 
+            foreach(Yeast yeast in yeastList)
+            {
+                totalYeasts++;
+
+                if(SQLiteAcces.ItemExistsInDB("Yeasts", "Name", yeast.name) == false)
+                {
+                    newYeasts++;
+                    SQLiteAcces.SaveYeast(yeast);
+                }
+            }
+
+            MessageBox.Show((string.Format("{0} out of {1} yeasts were new and added to the database.", newYeasts, totalYeasts)), "Import finished");
         }
 
         public static void StylesToDB(List<BeerStyle> styleList)
         {
-            string newStylesDB = "";
-            using (StreamReader sr = new StreamReader(Properties.Settings.Default.PathStylesDB))
-            {
-                newStylesDB = sr.ReadToEnd();
-            }
-
-            string[] tempArray = newStylesDB.Split(new string[] { "</DATA>" }, StringSplitOptions.RemoveEmptyEntries);
-            newStylesDB = tempArray[0];
-
-            int totalStyles = 0;
             int newStyles = 0;
+            int totalStyles = 0;
 
-            foreach(BeerStyle styleItem in styleList)
+            foreach (BeerStyle style in styleList)
             {
                 totalStyles++;
 
-                if (!newStylesDB.Contains(styleItem.Name))
+                if (SQLiteAcces.ItemExistsInDB("Styles", "Name", style.Name) == false)
                 {
                     newStyles++;
-                    newStylesDB += "<STYLE>\n";
-                    newStylesDB += AddProperty("NAME", styleItem.Name);
-                    newStylesDB += AddProperty("CATEGORY", styleItem.Category);
-                    newStylesDB += AddProperty("DESCRIPTION", styleItem.Description);
-                    newStylesDB += AddProperty("PROFILE", styleItem.Profile);
-                    newStylesDB += AddProperty("INGREDIENTS", styleItem.Ingredients);
-                    newStylesDB += "</STYLE>\n";
+                    SQLiteAcces.SaveStyle(style);
                 }
             }
 
-            newStylesDB += "</DATA>\n</STYLELIST>";
-            using(StreamWriter sw = new StreamWriter(Properties.Settings.Default.PathStylesDB))
-            {
-                sw.Write(newStylesDB);
-            }
-
-            MessageBox.Show((string.Format("{0} out of {1} styles were new and added to the database.", newStyles, totalStyles)), "Import finished");
+            MessageBox.Show((string.Format("{0} out of {1} beer styles were new and added to the database.", newStyles, totalStyles)), "Import finished");
         }
 
         public static List<Hops> ImportHopsList(string hopsText)
@@ -574,7 +424,7 @@ namespace BrewUI.Models
                     Grain grain = new Grain();
 
                     // Get name
-                    grain.grainName = GetDataInbetween("<F_G_NAME>", _text);
+                    grain.name = GetDataInbetween("<F_G_NAME>", _text);
 
                     // Get origin
                     grain.origin = GetDataInbetween("<F_G_ORIGIN>", _text);
@@ -594,7 +444,7 @@ namespace BrewUI.Models
             List<Yeast> yeastList = new List<Yeast>();
 
             string[] tempArray = yeastText.Split(new string[] { "<Yeast>" }, StringSplitOptions.RemoveEmptyEntries);
-
+            string debugtxt = "";
             foreach(string _text in tempArray)
             {
                 if (_text.Contains("<F_Y_NAME>"))
@@ -602,7 +452,18 @@ namespace BrewUI.Models
                     Yeast yeast = new Yeast();
 
                     // Get name
+                    yeast.name = GetDataInbetween("<F_Y_NAME>", _text);
 
+                    // Get lab
+                    yeast.lab = GetDataInbetween("<F_Y_LAB>", _text);
+
+                    // Get best for
+                    yeast.bestFor = GetDataInbetween("<F_Y_BEST_FOR>", _text);
+
+                    //Get notes
+                    yeast.notes = GetDataInbetween("<F_Y_NOTES>", _text);
+
+                    yeastList.Add(yeast);
                 }
             }
 

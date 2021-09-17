@@ -117,7 +117,7 @@ namespace BrewUI.ViewModels
                         recipeText += "<GRAIN>\n";
 
                         // Name
-                        recipeText += FileInteraction.AddProperty("NAME", grain.grainName);
+                        recipeText += FileInteraction.AddProperty("NAME", grain.name);
 
                         // Amount
                         recipeText += FileInteraction.AddProperty("AMOUNT", grain.amount.ToString());

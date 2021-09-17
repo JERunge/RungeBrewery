@@ -152,6 +152,13 @@ namespace BrewUI.ViewModels
             _events.PublishOnUIThread(new SerialReceivedEvent { arduinoMessage = AM });
         }
 
+        public void ClearAll()
+        {
+            SentData = "";
+            ReceivedData = "";
+            DebugText = "";
+        }
+
         #region Event handlers
         public void Handle(DebugDataUpdatedEvent message)
         {

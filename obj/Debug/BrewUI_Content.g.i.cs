@@ -12,5 +12,6 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("database/hops.bdb")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("database/grains.bdb")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("database/styles.bdb")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("database/rungebrewerydatabase.db")]
 
 

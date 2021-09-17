@@ -412,7 +412,7 @@ namespace BrewUI.ViewModels
             BrewMethods.Add(new StringListItem() { StringItem = "Extract" });
             BrewMethods.Add(new StringListItem() { StringItem = "BIAB" });
 
-            StyleList = new ObservableCollection<BeerStyle>(FileInteraction.StyleFromDB());
+            StyleList = new ObservableCollection<BeerStyle>(FileInteraction.StylesFromDB());
 
             SessionName = "New session";
             BatchSize = Properties.Settings.Default.BatchSize;
@@ -528,7 +528,7 @@ namespace BrewUI.ViewModels
         {
             if(GrainAmount > 0)
             {
-                AddedGrains.Add(new Grain { amount = GrainAmount, grainName = SelectedGrain.grainName });
+                AddedGrains.Add(new Grain { amount = GrainAmount, name = SelectedGrain.name });
             }
             else
             {

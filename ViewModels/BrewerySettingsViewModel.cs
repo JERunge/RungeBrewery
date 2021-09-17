@@ -137,6 +137,18 @@ namespace BrewUI.ViewModels
             }
         }
 
+        private List<Yeast> _yeastList;
+        public List<Yeast> YeastList
+        {
+            get { return _yeastList; }
+            set 
+            {
+                _yeastList = value;
+                NotifyOfPropertyChange(() => YeastList);
+            }
+        }
+
+
         private List<BeerStyle> _styleList;
         public List<BeerStyle> StyleList
         {
@@ -195,10 +207,10 @@ namespace BrewUI.ViewModels
             prevPumpOffDuration = Properties.Settings.Default.PumpOffDuration;
             prevPumpOnDuration = Properties.Settings.Default.PumpOnDuration;
 
-            pathHopsDB = Properties.Settings.Default.PathHopsDB;
             HopList = new List<Hops>(FileInteraction.HopsFromDB());
             GrainList = new List<Grain>(FileInteraction.GrainsFromDB());
-            StyleList = new List<BeerStyle>(FileInteraction.StyleFromDB());
+            YeastList = new List<Yeast>(FileInteraction.YeastsFromDB());
+            StyleList = new List<BeerStyle>(FileInteraction.StylesFromDB());
 
             if (Properties.Settings.Default.ConnectionType == "Bluetooth")
             {
@@ -304,62 +316,52 @@ namespace BrewUI.ViewModels
                 {
                     if (importText.Contains("<Hops>"))
                     {
-                        using (StreamReader sr = new StreamReader(Properties.Settings.Default.PathHopsDB))
-                        {
-                            DBText = sr.ReadToEnd();
-                            sr.Close();
-                        }
-
-                        List<Hops> importList = new List<Hops>(FileInteraction.ImportHopsList(importText));
-
-                        FileInteraction.HopsToDB(importList);
+                        FileInteraction.HopsToDB(new List<Hops>(FileInteraction.ImportHopsList(importText)));
                         _events.PublishOnUIThread(new DatabaseUpdatedEvent { dataType = "Hops" });
                     }
 
                     else if (importText.Contains("<Grain>"))
                     {
-                        using (StreamReader sr = new StreamReader(Properties.Settings.Default.PathGrainsDB))
-                        {
-                            DBText = sr.ReadToEnd();
-                            sr.Close();
-                        }
-
-                        List<Grain> importList = new List<Grain>(FileInteraction.ImportGrainList(importText));
-
-                        FileInteraction.GrainsToDB(importList);
+                        FileInteraction.GrainsToDB(new List<Grain>(FileInteraction.ImportGrainList(importText)));
                         _events.PublishOnUIThread(new DatabaseUpdatedEvent { dataType = "Grains" });
                     }
 
                     else if (importText.Contains("<Yeast>"))
                     {
-                        using (StreamReader sr = new StreamReader(Properties.Settings.Default.PathYeastsDB))
-                        {
-                            DBText = sr.ReadToEnd();
-                            sr.Close();
-                        }
-
-                        List<Yeast> importList = new List<Yeast>(FileInteraction.ImportYeastList(importText));
-
-                        FileInteraction.YeastToDB(importList);
+                        FileInteraction.YeastToDB(new List<Yeast>(FileInteraction.ImportYeastList(importText)));
+                        _events.PublishOnUIThread(new DatabaseUpdatedEvent { dataType = "Yeasts" });
                     }
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show(e.Message, "Error");
+                    return;
+                }
+            }
+        }
 
-                    else if (importText.Contains("Style"))
+        public void ImportEquipment()
+        {
+            OpenFileDialog openDialog = new OpenFileDialog();
+            openDialog.Filter = "Beersmith (*.bsmx)|*.bsmx";
+            openDialog.FilterIndex = 1;
+
+            if(openDialog.ShowDialog() == true)
+            {
+                string importText = File.ReadAllText(openDialog.FileName);
+                string DBText;
+
+                try
+                {
+                    if (importText.Contains("<Style>"))
                     {
-                        using (StreamReader sr = new StreamReader(Properties.Settings.Default.PathStylesDB))
-                        {
-                            DBText = sr.ReadToEnd();
-                            sr.Close();
-                        }
-
-                        List<BeerStyle> importList = new List<BeerStyle>(FileInteraction.ImportStyleList(importText));
-
-                        FileInteraction.StylesToDB(importList);
+                        FileInteraction.StylesToDB(new List<BeerStyle>(FileInteraction.ImportStyleList(importText)));
                         _events.PublishOnUIThread(new DatabaseUpdatedEvent { dataType = "Styles" });
                     }
                 }
-                catch
+                catch(Exception e)
                 {
-                    MessageBox.Show("Could not import ingredients. Chosen file might be corrupted.", "Caution");
+                    MessageBox.Show(e.Message, "Error");
                     return;
                 }
             }
@@ -380,6 +382,12 @@ namespace BrewUI.ViewModels
                     break;
                 case "Grains":
                     GrainList = FileInteraction.GrainsFromDB();
+                    break;
+                case "Yeasts":
+                    YeastList = FileInteraction.YeastsFromDB();
+                    break;
+                case "Styles":
+                    StyleList = FileInteraction.StylesFromDB();
                     break;
             }
         }

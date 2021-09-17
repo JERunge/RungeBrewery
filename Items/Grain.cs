@@ -11,7 +11,7 @@ namespace BrewUI.Items
     public class Grain : Conductor<object>
     {
         public bool remove { get; set; }
-        public string grainName { get; set; }
+        public string name { get; set; }
         public string origin { get; set; }
         public string notes { get; set; }
         public double amount { get; set; }

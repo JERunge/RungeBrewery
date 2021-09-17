@@ -41,7 +41,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding grainName}" Grid.Column="1" 
+                        <TextBlock Text="{Binding name}" Grid.Column="1" 
                                                        Margin="10 0 0 0" Foreground="White" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding amount, StringFormat={}{0}g}" Grid.Column="3" Width="40" TextAlignment="Right" Foreground="White"
                                                        Margin="10 0 0 0" VerticalAlignment="Center"/>

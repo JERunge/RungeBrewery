@@ -60,7 +60,9 @@
 
         <TextBlock Text="Boil running:" Grid.Row="13" Grid.Column="1"/>
         <TextBlock x:Name="BoilRunning" Grid.Row="13" Grid.Column="3"/>
-        
+
+        <Button x:Name="ClearAll" Grid.Row="13" Grid.Column="5" Content="Clear all"/>
+
         <!-- Serial data log-->
         <TextBlock Text="Received data:" Grid.Row="15" Grid.Column="1"/>
         <TextBox x:Name="ReceivedData" Grid.Row="16" Grid.Column="1"/>
