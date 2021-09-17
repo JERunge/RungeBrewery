@@ -30,5 +30,15 @@ namespace BrewUI.Views
             InitializeComponent();
         }
 
+        private void GrainAutoText_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            GrainPopup.IsOpen = true;
+            GrainAutoText.SelectAll();
+        }
+
+        private void GrainAutoText_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            GrainPopup.IsOpen = false;
+        }
     }
 }

@@ -342,6 +342,7 @@ namespace BrewUI.ViewModels
             {
                 _selectedGrain = value;
                 NotifyOfPropertyChange(() => SelectedGrain);
+                GrainSelected();
             }
         }
 
@@ -387,6 +388,55 @@ namespace BrewUI.ViewModels
             }
         }
         #endregion
+
+        private ObservableCollection<Grain> _grainSearchList;
+        public ObservableCollection<Grain> GrainSearchList
+        {
+            get { return _grainSearchList; }
+            set { 
+                _grainSearchList = value;
+                NotifyOfPropertyChange(() => GrainSearchList);
+            }
+        }
+
+        private string _grainAutoText;
+        public string GrainAutoText
+        {
+            get { return _grainAutoText; }
+            set { 
+                _grainAutoText = value;
+                NotifyOfPropertyChange(() => GrainAutoText);
+            }
+        }
+
+        public void GrainAutoTextChanged()
+        {
+            GrainSearchList.Clear();
+            if(GrainAutoText=="" || GrainAutoText == null)
+            {
+                foreach(Grain grain in GrainDB)
+                {
+                    GrainSearchList.Add(grain);
+                }
+            }
+            else
+            {
+                foreach (Grain grain in GrainDB)
+                {
+                    if (grain.name.ToUpper().Contains(GrainAutoText.ToUpper()))
+                    {
+                        GrainSearchList.Add(grain);
+                    }
+                }
+            }
+            
+            //GrainSearchList.Sort();
+        }
+
+        public void GrainSelected()
+        {
+            GrainAutoText = SelectedGrain.name;
+        }
 
         private IEventAggregator _events;
 
@@ -435,7 +485,12 @@ namespace BrewUI.ViewModels
 
             GrainDB = FileInteraction.GrainsFromDB();
             AddedGrains = new ObservableCollection<Grain>();
-            SelectedGrain = GrainDB[0];
+
+            GrainSearchList = new ObservableCollection<Grain>();
+            foreach(Grain grain in GrainDB)
+            {
+                GrainSearchList.Add(grain);
+            }
 
             CDTargetTemp = 20.0;
 

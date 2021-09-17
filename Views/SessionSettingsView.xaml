@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:a="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:behaviors="clr-namespace:WPFTextBoxAutoComplete;assembly=WPFTextBoxAutoComplete"
              mc:Ignorable="d" 
              Height="Auto" HorizontalAlignment="Stretch">
@@ -72,11 +73,6 @@
                             <TextBlock Text="Name"/>
                             <TextBox x:Name="SessionName" Width="220" Height="20"
                                      FontStyle="Italic">
-                                <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseLeftButtonDown">
-                                        <i:InvokeCommandAction Command="{Binding MouseEntered}"/>
-                                    </i:EventTrigger>
-                                </i:Interaction.Triggers>
                                 <TextBox.Style>
                                     <Style>
                                         <Style.Triggers>
@@ -168,14 +164,24 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="GrainDB" Grid.Column="0" Width="150" Margin="0" Height="25" 
-                                  SelectedItem="{Binding SelectedGrain}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding name}"/>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
+                            <StackPanel Orientation="Vertical" Grid.Column="0">
+                                <TextBox x:Name="GrainAutoText" Width="200" Margin="0 5 0 0" PreviewMouseLeftButtonUp="GrainAutoText_PreviewMouseLeftButtonUp" PreviewLostKeyboardFocus="GrainAutoText_PreviewLostKeyboardFocus" >
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="TextChanged">
+                                            <a:CallMethodAction MethodName="GrainAutoTextChanged" TargetObject="{Binding}"/>
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </TextBox>
+                                <Popup MaxHeight="200" Width="200" x:Name="GrainPopup">
+                                    <ListBox ItemsSource="{Binding GrainSearchList}" Height="200" Width="200" SelectedItem="{Binding SelectedGrain}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding name}"/>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Popup>
+                            </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Column="2">
                                 <TextBox x:Name="GrainAmount" Width="50"/>
                                 <TextBlock Text="g" Style="{StaticResource UnitBlock}"/>
