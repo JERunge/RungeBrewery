@@ -377,3 +377,5 @@ C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Dapper.dll
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\System.Data.SQLite.dll
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Dapper.xml
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\System.Data.SQLite.xml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\UserControls\AutoSearchBox.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\UserControls\AutoSearchBox.baml

@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="BrewUI.UserControls.AutoSearchBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:a="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:local="clr-namespace:BrewUI.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="300">
+    <Grid x:Name="LayoutRoot">
+        <StackPanel Orientation="Vertical" Grid.Column="0">
+            <TextBox x:Name="SearchTextBox" Text="{Binding Path=SearchText}" Width="200" Margin="0 5 0 0" PreviewMouseLeftButtonUp="SearchTextBox_PreviewMouseLeftButtonUp" PreviewLostKeyboardFocus="SearchTextBox_PreviewLostKeyboardFocus" >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="TextChanged">
+                        <a:CallMethodAction MethodName="SearchTextChanged" TargetObject="{Binding}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBox>
+            <Popup MaxHeight="200" Width="200" x:Name="GrainPopup">
+                <ListBox ItemsSource="{Binding SearchList}" Height="200" Width="200" SelectedItem="{Binding SelectedItem}"/>
+            </Popup>
+        </StackPanel>
+    </Grid>
+</UserControl>

@@ -6,7 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:a="http://schemas.microsoft.com/expression/2010/interactions"
-             xmlns:behaviors="clr-namespace:WPFTextBoxAutoComplete;assembly=WPFTextBoxAutoComplete"
+             xmlns:uc="clr-namespace:BrewUI.UserControls"
              mc:Ignorable="d" 
              Height="Auto" HorizontalAlignment="Stretch">
 
@@ -190,6 +190,9 @@
                                 <Button x:Name="AddGrainItem" Content="Add" Margin="0 0 10 0"/>
                                 <Button x:Name="RemoveGrains" Content="Remove"/>
                             </StackPanel>
+                            <uc:AutoSearchBox Grid.Column="3"
+                                              SearchText="{Binding GrainAutoText}"                                              
+                                              />
                         </Grid>
 
                         <!--ADDED GRAINS LIST/TABLE-->

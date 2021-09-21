@@ -15,12 +15,12 @@ namespace BrewUI.Items
         public string origin { get; set; }
         public string notes { get; set; }
         public double amount { get; set; }
-        
+
         private bool _added;
         public bool added
         {
             get { return _added; }
-            set 
+            set
             {
                 _added = value;
                 NotifyOfPropertyChange(() => added);

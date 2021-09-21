@@ -186,6 +186,9 @@
     <Compile Include="Models\WifiConnection.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="UserControls\AutoSearchBox.xaml.cs">
+      <DependentUpon>AutoSearchBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\AddGrainsViewModel.cs" />
     <Compile Include="ViewModels\BrewerySettingsViewModel.cs" />
     <Compile Include="ViewModels\DebugWindowViewModel.cs" />
@@ -253,6 +256,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="UserControls\AutoSearchBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddGrainsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
