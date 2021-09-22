@@ -10,15 +10,9 @@
              d:DesignHeight="50" d:DesignWidth="300">
     <Grid x:Name="LayoutRoot">
         <StackPanel Orientation="Vertical" Grid.Column="0">
-            <TextBox x:Name="SearchTextBox" Text="{Binding Path=SearchText}" Width="200" Margin="0 5 0 0" PreviewMouseLeftButtonUp="SearchTextBox_PreviewMouseLeftButtonUp" PreviewLostKeyboardFocus="SearchTextBox_PreviewLostKeyboardFocus" >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="TextChanged">
-                        <a:CallMethodAction MethodName="SearchTextChanged" TargetObject="{Binding}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </TextBox>
-            <Popup MaxHeight="200" Width="200" x:Name="GrainPopup">
-                <ListBox ItemsSource="{Binding SearchList}" Height="200" Width="200" SelectedItem="{Binding SelectedItem}"/>
+            <TextBox x:Name="SearchTextBox" Width="200" Margin="0 5 0 0" PreviewMouseLeftButtonUp="SearchTextBox_PreviewMouseLeftButtonUp" PreviewLostKeyboardFocus="SearchTextBox_PreviewLostKeyboardFocus" TextChanged="SearchTextBox_TextChanged"/>
+            <Popup MaxHeight="200" Width="200" x:Name="SearchPopup">
+                <ListView  ItemsSource="{Binding ResultList}" SelectedItem="{Binding SelectedItem}" SelectionChanged="ListBox_SelectionChanged" Height="200" Width="200"/>
             </Popup>
         </StackPanel>
     </Grid>

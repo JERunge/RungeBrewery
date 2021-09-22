@@ -165,7 +165,7 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Orientation="Vertical" Grid.Column="0">
-                                <TextBox x:Name="GrainAutoText" Width="200" Margin="0 5 0 0" PreviewMouseLeftButtonUp="GrainAutoText_PreviewMouseLeftButtonUp" PreviewLostKeyboardFocus="GrainAutoText_PreviewLostKeyboardFocus" >
+                                <!--<TextBox x:Name="GrainAutoText" Width="200" Margin="0 5 0 0" PreviewMouseLeftButtonUp="GrainAutoText_PreviewMouseLeftButtonUp" PreviewLostKeyboardFocus="GrainAutoText_PreviewLostKeyboardFocus" >
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="TextChanged">
                                             <a:CallMethodAction MethodName="GrainAutoTextChanged" TargetObject="{Binding}"/>
@@ -180,7 +180,7 @@
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
-                                </Popup>
+                                </Popup>-->
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Column="2">
                                 <TextBox x:Name="GrainAmount" Width="50"/>
@@ -191,7 +191,8 @@
                                 <Button x:Name="RemoveGrains" Content="Remove"/>
                             </StackPanel>
                             <uc:AutoSearchBox Grid.Column="3"
-                                              SearchText="{Binding GrainAutoText}"                                              
+                                              SearchList="{Binding GrainSearchList}"
+                                              SelectedItem="{Binding Path=SelectedGrainName, Mode=OneWayToSource}"
                                               />
                         </Grid>
 

@@ -342,7 +342,17 @@ namespace BrewUI.ViewModels
             {
                 _selectedGrain = value;
                 NotifyOfPropertyChange(() => SelectedGrain);
-                GrainSelected();
+            }
+        }
+
+        private string _selectedGrainName;
+        public string SelectedGrainName
+        {
+            get { return _selectedGrainName; }
+            set { 
+                _selectedGrainName = value;
+                NotifyOfPropertyChange(() => SelectedGrainName) ;
+                UpdateSelectedGrain();
             }
         }
 
@@ -389,53 +399,14 @@ namespace BrewUI.ViewModels
         }
         #endregion
 
-        private ObservableCollection<Grain> _grainSearchList;
-        public ObservableCollection<Grain> GrainSearchList
+        private List<string> _grainSearchList;
+        public List<string> GrainSearchList
         {
             get { return _grainSearchList; }
             set { 
                 _grainSearchList = value;
                 NotifyOfPropertyChange(() => GrainSearchList);
             }
-        }
-
-        private string _grainAutoText;
-        public string GrainAutoText
-        {
-            get { return _grainAutoText; }
-            set { 
-                _grainAutoText = value;
-                NotifyOfPropertyChange(() => GrainAutoText);
-            }
-        }
-
-        public void GrainAutoTextChanged()
-        {
-            GrainSearchList.Clear();
-            if(GrainAutoText=="" || GrainAutoText == null)
-            {
-                foreach(Grain grain in GrainDB)
-                {
-                    GrainSearchList.Add(grain);
-                }
-            }
-            else
-            {
-                foreach (Grain grain in GrainDB)
-                {
-                    if (grain.name.ToUpper().Contains(GrainAutoText.ToUpper()))
-                    {
-                        GrainSearchList.Add(grain);
-                    }
-                }
-            }
-            
-            //GrainSearchList.Sort();
-        }
-
-        public void GrainSelected()
-        {
-            GrainAutoText = SelectedGrain.name;
         }
 
         private IEventAggregator _events;
@@ -486,11 +457,13 @@ namespace BrewUI.ViewModels
             GrainDB = FileInteraction.GrainsFromDB();
             AddedGrains = new ObservableCollection<Grain>();
 
-            GrainSearchList = new ObservableCollection<Grain>();
+            GrainSearchList = new List<string>();
             foreach(Grain grain in GrainDB)
             {
-                GrainSearchList.Add(grain);
+                GrainSearchList.Add(grain.name);
             }
+
+            SelectedGrain = new Grain();
 
             CDTargetTemp = 20.0;
 
@@ -634,6 +607,21 @@ namespace BrewUI.ViewModels
                 grainBill += grain.amount;
             }
             SpargeWaterAmount = Calculations.SpargeWater(grainBill);
+        }
+
+        private void UpdateSelectedGrain()
+        {
+            if(SelectedGrainName != "")
+            {
+                foreach (Grain grain in GrainDB)
+                {
+                    if (grain.name == SelectedGrainName)
+                    {
+                        SelectedGrain = grain;
+                        return;
+                    }
+                }
+            }
         }
         #endregion
 
