@@ -45,6 +45,8 @@ namespace BrewUI.UserControls
 
         #endregion
 
+        #region Variables
+
         private ObservableCollection<string> _resultList;
         public ObservableCollection<string> ResultList
         {
@@ -54,39 +56,19 @@ namespace BrewUI.UserControls
 
         private bool updatingResultList;
 
+        #endregion
+
         public AutoSearchBox()
         {
             InitializeComponent();
 
             LayoutRoot.DataContext = this;
+
             SearchList = new List<string>();
             ResultList = new ObservableCollection<string>();
-            foreach(string item in SearchList)
-            {
-                ResultList.Add(item);
-            }
         }
 
-        private void SearchTextBox_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            SearchPopup.IsOpen = true;
-            SearchTextBox.SelectAll();
-        }
-
-        private void SearchTextBox_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-        {
-            SearchPopup.IsOpen = false;
-        }
-
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!updatingResultList)
-            {
-                SearchTextBox.Text = SelectedItem;
-            }
-        }
-
-        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void UpdateResultList()
         {
             if (SearchTextBox.Text == null)
             {
@@ -117,5 +99,34 @@ namespace BrewUI.UserControls
 
             updatingResultList = false;
         }
+
+        #region Events
+
+        private void SearchTextBox_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            UpdateResultList();
+            SearchPopup.IsOpen = true;
+            SearchTextBox.SelectAll();
+        }
+
+        private void SearchTextBox_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            SearchPopup.IsOpen = false;
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!updatingResultList)
+            {
+                SearchTextBox.Text = SelectedItem;
+            }
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateResultList();
+        }
+
+        #endregion
     }
 }

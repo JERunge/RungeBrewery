@@ -199,17 +199,6 @@ namespace BrewUI.ViewModels
             }
         }
 
-        private string _grainText;
-        public string GrainText
-        {
-            get { return _grainText; }
-            set
-            {
-                _grainText = value;
-                NotifyOfPropertyChange(() => GrainText);
-            }
-        }
-
         public string SessionName
         {
             get 
@@ -299,6 +288,26 @@ namespace BrewUI.ViewModels
             }
         }
 
+        private string _selectedHopsName;
+        public string SelectedHopsName
+        {
+            get { return _selectedHopsName; }
+            set { _selectedHopsName = value;
+                NotifyOfPropertyChange(() => SelectedHopsName);
+                UpdateSelectedHops();
+            }
+        }
+
+        private List<string> _hopsSearchList;
+        public List<string> HopsSearchList
+        {
+            get { return _hopsSearchList; }
+            set { 
+                _hopsSearchList = value;
+                NotifyOfPropertyChange(() => HopsSearchList);
+            }
+        }
+
         private List<Grain> _grainDB;
         public List<Grain> GrainDB
         {
@@ -356,6 +365,17 @@ namespace BrewUI.ViewModels
             }
         }
 
+        private List<string> _grainSearchList;
+        public List<string> GrainSearchList
+        {
+            get { return _grainSearchList; }
+            set
+            {
+                _grainSearchList = value;
+                NotifyOfPropertyChange(() => GrainSearchList);
+            }
+        }
+
         private bool _sessionNameBorder;
         public bool SessionNameBorder
         {
@@ -397,17 +417,7 @@ namespace BrewUI.ViewModels
                 NotifyOfPropertyChange(() => CanStart);
             }
         }
-        #endregion
-
-        private List<string> _grainSearchList;
-        public List<string> GrainSearchList
-        {
-            get { return _grainSearchList; }
-            set { 
-                _grainSearchList = value;
-                NotifyOfPropertyChange(() => GrainSearchList);
-            }
-        }
+        #endregion        
 
         private IEventAggregator _events;
 
@@ -452,17 +462,20 @@ namespace BrewUI.ViewModels
 
             HopsDB = FileInteraction.HopsFromDB();
             AddedHops = new ObservableCollection<Hops>();
-            SelectedHops = HopsDB[0];
+            HopsSearchList = new List<string>();
+            foreach(Hops hops in HopsDB)
+            {
+                HopsSearchList.Add(hops.Name);
+            }
+            SelectedHops = new Hops();
 
             GrainDB = FileInteraction.GrainsFromDB();
             AddedGrains = new ObservableCollection<Grain>();
-
             GrainSearchList = new List<string>();
             foreach(Grain grain in GrainDB)
             {
                 GrainSearchList.Add(grain.name);
             }
-
             SelectedGrain = new Grain();
 
             CDTargetTemp = 20.0;
@@ -618,6 +631,21 @@ namespace BrewUI.ViewModels
                     if (grain.name == SelectedGrainName)
                     {
                         SelectedGrain = grain;
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void UpdateSelectedHops()
+        {
+            if(SelectedHopsName != "")
+            {
+                foreach(Hops hops in HopsDB)
+                {
+                    if(hops.Name == SelectedHopsName)
+                    {
+                        SelectedHops = hops;
                         return;
                     }
                 }

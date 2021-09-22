@@ -164,24 +164,6 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel Orientation="Vertical" Grid.Column="0">
-                                <!--<TextBox x:Name="GrainAutoText" Width="200" Margin="0 5 0 0" PreviewMouseLeftButtonUp="GrainAutoText_PreviewMouseLeftButtonUp" PreviewLostKeyboardFocus="GrainAutoText_PreviewLostKeyboardFocus" >
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="TextChanged">
-                                            <a:CallMethodAction MethodName="GrainAutoTextChanged" TargetObject="{Binding}"/>
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-                                </TextBox>
-                                <Popup MaxHeight="200" Width="200" x:Name="GrainPopup">
-                                    <ListBox ItemsSource="{Binding GrainSearchList}" Height="200" Width="200" SelectedItem="{Binding SelectedGrain}">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock Text="{Binding name}"/>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
-                                </Popup>-->
-                            </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Column="2">
                                 <TextBox x:Name="GrainAmount" Width="50"/>
                                 <TextBlock Text="g" Style="{StaticResource UnitBlock}"/>
@@ -190,7 +172,7 @@
                                 <Button x:Name="AddGrainItem" Content="Add" Margin="0 0 10 0"/>
                                 <Button x:Name="RemoveGrains" Content="Remove"/>
                             </StackPanel>
-                            <uc:AutoSearchBox Grid.Column="3"
+                            <uc:AutoSearchBox Grid.Column="0"
                                               SearchList="{Binding GrainSearchList}"
                                               SelectedItem="{Binding Path=SelectedGrainName, Mode=OneWayToSource}"
                                               />
@@ -492,14 +474,14 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="HopsDB" Grid.Column="0" Width="150" Margin="0" Height="25" SelectedItem="{Binding SelectedHops}">
+                            <!--<ComboBox x:Name="HopsDB" Grid.Column="0" Width="150" Margin="0" Height="25" SelectedItem="{Binding SelectedHops}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding Name}"/>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
-                            </ComboBox>
-
+                            </ComboBox>-->
+                            <uc:AutoSearchBox SearchList="{Binding HopsSearchList}" SelectedItem="{Binding Path=SelectedHopsName, Mode=OneWayToSource}" Grid.Column="0"/>
                             <StackPanel Orientation="Horizontal" Grid.Column="2">
                                 <TextBox x:Name="HopsAmount" Width="50"/>
                                 <TextBlock Text="g" Style="{StaticResource UnitBlock}"/>
