@@ -31,7 +31,8 @@ namespace BrewUI.ViewModels
         IHandle<SerialReceivedEvent>, 
         IHandle<SerialToSendEvent>,
         IHandle<ActiveWindowEvent>,
-        IHandle<RecipeToSaveEvent>
+        IHandle<RecipeToSaveEvent>,
+        IHandle<SettingsUpdatedEvent>
     {
         IWindowManager manager = new WindowManager();
 
@@ -583,9 +584,6 @@ namespace BrewUI.ViewModels
                 {
                     BluetoothIcon = PackIconKind.Wifi;
                 }
-                PumpStatus = "On";
-                HeaterStatus = "On";
-
             }
         }
 
@@ -655,6 +653,11 @@ namespace BrewUI.ViewModels
             {
                 currentRecipe.sessionInfo.sessionName = "";
             }
+        }
+
+        public void Handle(SettingsUpdatedEvent message)
+        {
+            _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = ConnectionStatus });
         }
 
         #endregion

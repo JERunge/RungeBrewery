@@ -9,5 +9,6 @@ namespace BrewUI.Items
     public class BrewerySettings
     {
         public double BatchSize { get; set; }
+        public string ConnectionType { get; set; }
     }
 }

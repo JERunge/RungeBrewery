@@ -6,15 +6,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace BrewUI.Models
 {
-    public class ConnectionHandler : Conductor<object>, IHandle<SerialToSendEvent>
+    public class ConnectionHandler : Conductor<object>, IHandle<SerialToSendEvent>, IHandle<ConnectionEvent>
     {
         static WifiConnection wifi;
         static BluetoothConnection bluetooth;
 
         private IEventAggregator _events;
+
+        private List<ArduinoMessage> sendBuffer;
+
+        private DispatcherTimer sendTimer;
 
         public ConnectionHandler(IEventAggregator events)
         {
@@ -25,6 +30,23 @@ namespace BrewUI.Models
             // Initiate connection classes
             wifi = new WifiConnection(events);
             bluetooth = new BluetoothConnection(events);
+
+            // Initiate send buffer to store outgoing messages
+            sendBuffer = new List<ArduinoMessage>();
+
+            // Initiate timer to send messages 
+            sendTimer = new DispatcherTimer();
+            sendTimer.Interval = TimeSpan.FromMilliseconds(500);
+            sendTimer.Tick += SendTimer_Tick;
+        }
+
+        private void SendTimer_Tick(object sender, EventArgs e)
+        {
+            if(sendBuffer.Count > 0)
+            {
+                SendToArduino(sendBuffer[0]);
+                sendBuffer.RemoveAt(0);
+            }
         }
 
         public async Task ArduinoConnect()
@@ -71,7 +93,23 @@ namespace BrewUI.Models
         #region Event handlers
         public void Handle(SerialToSendEvent message)
         {
-            SendToArduino(message.arduinoMessage);
+            sendBuffer.Add(message.arduinoMessage);
+        }
+
+        public void Handle(ConnectionEvent message)
+        {
+            if(message.ConnectionStatus == MyEnums.ConnectionStatus.Connected)
+            {
+                sendTimer.Start();
+            }
+            else
+            {
+                if (sendTimer.IsEnabled)
+                {
+                    sendTimer.Stop();
+                }
+                    
+            }
         }
     }
     #endregion

@@ -152,6 +152,14 @@ namespace BrewUI.ViewModels
             _events.PublishOnUIThread(new SerialReceivedEvent { arduinoMessage = AM });
         }
 
+        public void SendCommand()
+        {
+            char index = ReceiveText[0];
+            string message = ReceiveText.Substring(1, ReceiveText.Length - 1);
+            ArduinoMessage am = new ArduinoMessage { AIndex = index, AMessage = message };
+            _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = am });
+        }
+
         public void ClearAll()
         {
             SentData = "";

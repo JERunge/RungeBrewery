@@ -57,17 +57,26 @@ namespace BrewUI.Models
 
         public static double StringToDouble(string message)
         {
-            double result = 0;
-            if (message.Contains('.'))
+            double result;
+
+            try
             {
-                char decimalPNT = '.';
-                int pntIndex = message.IndexOf(decimalPNT);
-                result = Convert.ToDouble(message.Substring(0, pntIndex)) + Convert.ToDouble(message.Substring(pntIndex + 1, 1)) / 10;
+                if (message.Contains('.'))
+                {
+                    char decimalPNT = '.';
+                    int pntIndex = message.IndexOf(decimalPNT);
+                    result = Convert.ToDouble(message.Substring(0, pntIndex)) + Convert.ToDouble(message.Substring(pntIndex + 1, 1)) / 10;
+                }
+                else
+                {
+                    result = Convert.ToDouble(message);
+                }
             }
-            else
+            catch
             {
-                result = Convert.ToDouble(message);
+                result = 0;
             }
+
             return result;
         }
 

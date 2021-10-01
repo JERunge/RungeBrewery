@@ -10,10 +10,12 @@ using System.IO;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using BrewUI.Data;
+using static BrewUI.Models.MyEnums;
 
 namespace BrewUI.ViewModels
 {
-    public class BrewerySettingsViewModel : Screen, IHandle<DatabaseUpdatedEvent>
+    public class BrewerySettingsViewModel : Screen, IHandle<DatabaseUpdatedEvent>, IHandle<ConnectionEvent>, IHandle<SessionRunningEvent>
     {
         #region Variables
         private double prevBatchSize { get; set; }
@@ -24,8 +26,12 @@ namespace BrewUI.ViewModels
         private double prevGrainAbsorption { get; set; }
         private double prevPumpOnDuration { get; set; }
         private double prevPumpOffDuration { get; set; }
-        private readonly string pathHopsDB;
+
         private IEventAggregator _events;
+
+        private ConnectionStatus connectionStatus;
+
+        private bool sessionRunning;
 
         private double _batchSize;
         public double BatchSize
@@ -287,17 +293,38 @@ namespace BrewUI.ViewModels
             Properties.Settings.Default.GrainAbsorption = GrainAbsorption;
             Properties.Settings.Default.PumpOnDuration = PumpOnDuration;
             Properties.Settings.Default.PumpOffDuration = PumpOffDuration;
-            
-            if (BluetoothEnabled)
+
+            if (sessionRunning)
             {
-                Properties.Settings.Default.ConnectionType = "Bluetooth";
+                MessageBox.Show("Cannot update connection settings during ongoing session.", "Caution");
             }
             else
             {
-                Properties.Settings.Default.ConnectionType = "Wifi";
+                if (!BluetoothEnabled && Properties.Settings.Default.ConnectionType == "Bluetooth" || BluetoothEnabled && Properties.Settings.Default.ConnectionType == "Wifi") // User has updated connection settings
+                {
+                    if (BluetoothEnabled)
+                    {
+                        Properties.Settings.Default.ConnectionType = "Bluetooth";
+                    }
+                    else
+                    {
+                        Properties.Settings.Default.ConnectionType = "Wifi";
+                    }
+
+                    // Check if this is changed while the system is connected. If so, offer to update the setting in arduino as well and restart it.
+                    if (connectionStatus == ConnectionStatus.Connected)
+                    {
+                        MessageBox.Show("The software is currently connected to the brewery. Please reconnect manually after changes are applied.");
+                        _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = new ArduinoMessage { AIndex = 'C', AMessage = Properties.Settings.Default.ConnectionType } });
+                        _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = ConnectionStatus.Disconnected });
+                    }
+                }
             }
+            
+            
             Properties.Settings.Default.Save();
-            MessageBox.Show("Settings saved.");
+            MessageBox.Show("Settings saved!");
+            _events.PublishOnUIThread(new SettingsUpdatedEvent { brewerySettings = new BrewerySettings()});
             this.TryClose();
         }
 
@@ -390,6 +417,16 @@ namespace BrewUI.ViewModels
                     StyleList = FileInteraction.StylesFromDB();
                     break;
             }
+        }
+
+        public void Handle(ConnectionEvent message)
+        {
+            connectionStatus = message.ConnectionStatus;
+        }
+
+        public void Handle(SessionRunningEvent message)
+        {
+            sessionRunning = message.SessionRunning;
         }
         #endregion
     }
