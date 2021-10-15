@@ -187,6 +187,17 @@ namespace BrewUI.ViewModels
             }
         }
 
+        private string _breweryIP;
+        public string breweryIP
+        {
+            get { return _breweryIP; }
+            set 
+            {
+                _breweryIP = value;
+                NotifyOfPropertyChange(() => breweryIP);
+            }
+        }
+
         #endregion
 
         public BrewerySettingsViewModel(IEventAggregator events)
@@ -228,6 +239,8 @@ namespace BrewUI.ViewModels
                 BluetoothEnabled = false;
                 WifiEnabled = true;
             }
+
+            breweryIP = Properties.Settings.Default.breweryIP;
         }
 
         #region UI Methods
@@ -321,6 +334,10 @@ namespace BrewUI.ViewModels
                 }
             }
             
+            if(breweryIP != Properties.Settings.Default.breweryIP)
+            {
+                Properties.Settings.Default.breweryIP = breweryIP;
+            }
             
             Properties.Settings.Default.Save();
             MessageBox.Show("Settings saved!");

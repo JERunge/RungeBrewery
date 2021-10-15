@@ -463,12 +463,12 @@ namespace BrewUI.ViewModels
             manager.ShowWindow(_debugWindowVM);
 
             // Initialize connection handler
-            connectionHandler = new ConnectionHandler(events);
+            connectionHandler = new ConnectionHandler(_events);
             _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Disconnected });
 
             // Initialize ping timer
             pingTimer = new DispatcherTimer();
-            pingTimer.Interval = TimeSpan.FromSeconds(1);
+            pingTimer.Interval = TimeSpan.FromSeconds(5);
             pingTimer.Tick += PingTimer_Tick;
             pingTimer.Start();
         }
@@ -486,7 +486,7 @@ namespace BrewUI.ViewModels
         {
             if (ConnectionStatus == MyEnums.ConnectionStatus.Disconnected)
             {
-                await connectionHandler.ArduinoConnect();
+                connectionHandler.ArduinoConnect();
             }
             else
             {

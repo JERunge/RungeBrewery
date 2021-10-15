@@ -4,6 +4,7 @@ using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -12,8 +13,8 @@ namespace BrewUI.Models
 {
     public class ConnectionHandler : Conductor<object>, IHandle<SerialToSendEvent>, IHandle<ConnectionEvent>
     {
-        static WifiConnection wifi;
         static BluetoothConnection bluetooth;
+        static WifiTCPConnection wifi;
 
         private IEventAggregator _events;
 
@@ -28,8 +29,8 @@ namespace BrewUI.Models
             _events.Subscribe(this);
 
             // Initiate connection classes
-            wifi = new WifiConnection(events);
-            bluetooth = new BluetoothConnection(events);
+            bluetooth = new BluetoothConnection(_events);
+            wifi = new WifiTCPConnection(_events);
 
             // Initiate send buffer to store outgoing messages
             sendBuffer = new List<ArduinoMessage>();
@@ -53,7 +54,7 @@ namespace BrewUI.Models
         {
             if (Properties.Settings.Default.ConnectionType == "Wifi")
             {
-                await Task.Run(() => wifi.StartClient());
+                await Task.Run(() => wifi.ConnectClient());
             }
             else
             {
@@ -65,7 +66,7 @@ namespace BrewUI.Models
         {
             if(Properties.Settings.Default.ConnectionType == "Wifi")
             {
-                wifi.Closeclient();
+                wifi.CloseClient();
             }
             else
             {

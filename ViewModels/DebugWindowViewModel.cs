@@ -1,9 +1,11 @@
 ﻿using BrewUI.Data;
 using BrewUI.EventModels;
+using BrewUI.Models;
 using Caliburn.Micro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -135,6 +137,7 @@ namespace BrewUI.ViewModels
             }
         }
 
+        private static WifiUDPConnector wifiUDPConnector;
 
         public DebugWindowViewModel(IEventAggregator events)
         {
@@ -157,6 +160,7 @@ namespace BrewUI.ViewModels
             char index = ReceiveText[0];
             string message = ReceiveText.Substring(1, ReceiveText.Length - 1);
             ArduinoMessage am = new ArduinoMessage { AIndex = index, AMessage = message };
+
             _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = am });
         }
 

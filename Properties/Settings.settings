@@ -60,7 +60,16 @@
       <Value Profile="(Default)">2.7</Value>
     </Setting>
     <Setting Name="ConnectionType" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Bluetooth</Value>
+      <Value Profile="(Default)">Wifi</Value>
+    </Setting>
+    <Setting Name="breweryPort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">4210</Value>
+    </Setting>
+    <Setting Name="breweryIP" Type="System.String" Scope="User">
+      <Value Profile="(Default)">192.168.1.78</Value>
+    </Setting>
+    <Setting Name="receivePort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">8888</Value>
     </Setting>
   </Settings>
 </SettingsFile>

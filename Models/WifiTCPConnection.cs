@@ -11,31 +11,45 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using uPLibrary.Networking.M2Mqtt;
-using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace BrewUI.Models
 {
-    public class WifiConnection : Conductor<object>
+    public class WifiTCPConnection : Conductor<object>
     {
         private IEventAggregator _events;
         static TcpClient client;
 
-        public WifiConnection(IEventAggregator events)
+        public WifiTCPConnection(IEventAggregator events)
         {
             // Subscribe to events
             _events = events;
             _events.Subscribe(this);
-        }        
+        }   
+        
+        public async Task ConnectClient()
+        {
+            _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Connecting });
+            WifiUDPConnector connector = new WifiUDPConnector(_events);
+            IPAddress ip = await connector.GetIP();
 
-        public void StartClient()
+            if(ip == null)
+            {
+                _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Disconnected });
+                MessageBox.Show("Connection attempt timed out. Brewery IP not found.");
+                return;
+            }
+
+            StartClient(ip);
+        }
+
+        public void StartClient(IPAddress ip)
         {
             //Connect to the server
             _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Connecting });
             try
             {
                 client = new TcpClient();
-                client.Connect("192.168.1.202", 80);
+                client.Connect(ip, 80);
             }
             catch(Exception e)
             {
@@ -85,7 +99,7 @@ namespace BrewUI.Models
             }
         }
 
-        public void Closeclient()
+        public void CloseClient()
         {
             client.Close();
             client.Dispose();
@@ -102,9 +116,10 @@ namespace BrewUI.Models
                 {
                     return;
                 }
-                var buffer = System.Text.Encoding.UTF8.GetBytes(ArduinoParse.ToParse(message));
+                var buffer = Encoding.ASCII.GetBytes(ArduinoParse.ToParse(message));
                 //Sending the byte array to the server
-                client.Client.Send(buffer);
+                _events.PublishOnUIThread(new DebugDataUpdatedEvent { stringValue = Encoding.ASCII.GetString(buffer) });
+                stream.Write(buffer,0,buffer.Length);
             }
         }
 

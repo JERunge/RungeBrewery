@@ -16,7 +16,7 @@ namespace BrewUI.ViewModels
     {
         private readonly IEventAggregator _events;
 
-        public WifiConnection wifiConnection;
+        public WifiTCPConnection wifiConnection;
 
         #region Variables
 
@@ -156,7 +156,7 @@ namespace BrewUI.ViewModels
 
             CurrentAction = "-";
 
-            wifiConnection = new WifiConnection(events);
+            wifiConnection = new WifiTCPConnection(events);
         }
 
         #region IU Methods
@@ -362,7 +362,7 @@ namespace BrewUI.ViewModels
 
         public async Task StartClient()
         {
-            await Task.Run(() => wifiConnection.StartClient());
+            //await Task.Run(() => wifiConnection.StartClient());
         }
         #endregion
     }

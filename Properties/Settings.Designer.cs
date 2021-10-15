@@ -250,13 +250,43 @@ namespace BrewUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Bluetooth")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Wifi")]
         public string ConnectionType {
             get {
                 return ((string)(this["ConnectionType"]));
             }
             set {
                 this["ConnectionType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4210")]
+        public int breweryPort {
+            get {
+                return ((int)(this["breweryPort"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.78")]
+        public string breweryIP {
+            get {
+                return ((string)(this["breweryIP"]));
+            }
+            set {
+                this["breweryIP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8888")]
+        public int receivePort {
+            get {
+                return ((int)(this["receivePort"]));
             }
         }
     }
