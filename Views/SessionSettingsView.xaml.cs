@@ -29,5 +29,10 @@ namespace BrewUI.Views
         {
             InitializeComponent();
         }
+
+        private void SessionName_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            SessionName.SelectAll();
+        }
     }
 }

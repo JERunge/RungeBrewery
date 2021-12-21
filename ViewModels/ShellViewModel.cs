@@ -31,8 +31,8 @@ namespace BrewUI.ViewModels
         IHandle<SerialReceivedEvent>, 
         IHandle<SerialToSendEvent>,
         IHandle<ActiveWindowEvent>,
-        IHandle<RecipeToSaveEvent>,
-        IHandle<SettingsUpdatedEvent>
+        IHandle<SettingsUpdatedEvent>,
+        IHandle<RecipeToSaveEvent>
     {
         IWindowManager manager = new WindowManager();
 
@@ -73,134 +73,7 @@ namespace BrewUI.ViewModels
 
         public void SaveRecipe()
         {
-            _events.PublishOnUIThread(new SaveRecipeEvent { });
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Brewery Recipe|*.br";
-            sfd.Title = "Save recipe";
-
-            if(sfd.ShowDialog() == true)
-            {
-                if (sfd.FileName.Length != 0)
-                {
-                    string filePath = sfd.FileName;
-                    string recipeText = "<RECIPE>\n<DATA>\n";
-
-                    #region Add session info
-                    SessionInfo si = new SessionInfo();
-                    si = currentRecipe.sessionInfo;
-
-                    recipeText += "<SESSIONINFO>\n";
-
-                    // Recipe name
-                    recipeText += FileInteraction.AddProperty("NAME", si.sessionName);
-
-                    // Batch size
-                    recipeText += FileInteraction.AddProperty("BATCHSIZE", si.BatchSize.ToString());
-
-                    // Brew method
-                    recipeText += FileInteraction.AddProperty("BREWMETHOD", si.BrewMethod);
-
-                    // Style
-                    recipeText += FileInteraction.AddProperty("STYLE", si.style.Name);
-
-                    recipeText += "</SESSIONINFO>\n";
-                    #endregion
-
-                    #region Add grain list
-
-                    ObservableCollection<Grain> gl = new ObservableCollection<Grain>();
-                    gl = currentRecipe.grainList;
-
-                    recipeText += "<GRAINLIST>\n";
-
-                    foreach(Grain grain in gl)
-                    {
-                        recipeText += "<GRAIN>\n";
-
-                        // Name
-                        recipeText += FileInteraction.AddProperty("NAME", grain.name);
-
-                        // Amount
-                        recipeText += FileInteraction.AddProperty("AMOUNT", grain.amount.ToString());
-
-                        recipeText += "</GRAIN>\n";
-                    }
-
-                    recipeText += "</GRAINLIST>\n";
-                    #endregion
-
-                    #region Add mash steps
-
-                    ObservableCollection<MashStep> msl = new ObservableCollection<MashStep>();
-                    msl = currentRecipe.mashSteps;
-
-                    recipeText += "<MASHSTEPS>\n";
-
-                    foreach (MashStep ms in msl)
-                    {
-                        recipeText += "<MASHSTEP>\n";
-
-                        // Name
-                        recipeText += FileInteraction.AddProperty("NAME", ms.stepName);
-
-                        // Temperature
-                        recipeText += FileInteraction.AddProperty("TEMPERATURE", ms.stepTemp.ToString());
-
-                        // Duration
-                        recipeText += FileInteraction.AddProperty("DURATION", ms.stepDuration.TotalMinutes.ToString());
-
-                        recipeText += "</MASHSTEP>\n";
-                    }
-
-                    recipeText += "</MASHSTEPS>\n";
-
-                    #endregion
-
-                    #region Add sparge step
-
-                    recipeText += "<SPARGESTEP>\n" + FileInteraction.AddProperty("TEMPERATURE", currentRecipe.spargeStep.spargeTemp.ToString()) + FileInteraction.AddProperty("AMOUNT", currentRecipe.spargeStep.spargeWaterAmount.ToString()) + "</AMOUNT>\n";
-
-                    #endregion
-
-                    #region Add hops list
-
-                    ObservableCollection<Hops> hl = new ObservableCollection<Hops>();
-                    hl = currentRecipe.hopsList;
-
-                    recipeText += "<HOPSLIST>\n";
-
-                    foreach(Hops hops in hl)
-                    {
-                        recipeText += "<HOPS>\n";
-
-                        // Name
-                        recipeText += FileInteraction.AddProperty("NAME", hops.Name);
-
-                        // Amount
-                        recipeText += FileInteraction.AddProperty("AMOUNT", hops.Amount.ToString());
-
-                        // Boil time
-                        recipeText += FileInteraction.AddProperty("BOILTIME", hops.BoilTime.TotalMinutes.ToString());
-
-                        recipeText += "</HOPS>\n";
-                    }
-
-                    recipeText += "</HOPSLIST>\n";
-
-                    #endregion
-
-                    recipeText += "</DATA>\n</RECIPE>";
-
-                    using (StreamWriter sw = new StreamWriter(filePath))
-                    {
-                        sw.Write(recipeText);
-                        sw.Close();
-                    }
-                }
-            }
-
-            
-
+            _events.PublishOnUIThread(new SaveRecipeEvent());
         }
 
         public void CloseButton()
@@ -233,6 +106,12 @@ namespace BrewUI.ViewModels
         public void MinimizeButton()
         {
             CustomWindowState = WindowState.Minimized;
+        }
+
+        public void NewRecipe()
+        {
+            BreweryRecipe newRecipe = FileInteraction.NewRecipe();
+            _events.PublishOnUIThread(new RecipeOpened { openedRecipe = newRecipe});
         }
 
         public void OpenRecipe()
@@ -428,8 +307,6 @@ namespace BrewUI.ViewModels
                 NotifyOfPropertyChange(() => ActiveWindow);
             }
         }
-
-        private DispatcherTimer pingTimer { get; set; }
         #endregion
 
         public ShellViewModel(SessionSettingsViewModel sessionSettingsVM, SessionViewModel sessionVM, ManualViewModel manualVM, BrewerySettingsViewModel brewerySettingsVM, DebugWindowViewModel debugWindowVM, IEventAggregator events)
@@ -439,6 +316,9 @@ namespace BrewUI.ViewModels
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-SE");
             FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(
                         XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+
+            // Upgrade settings
+            Properties.Settings.Default.Upgrade();
 
             // Subscribe to events
             _events = events;
@@ -465,20 +345,6 @@ namespace BrewUI.ViewModels
             // Initialize connection handler
             connectionHandler = new ConnectionHandler(_events);
             _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Disconnected });
-
-            // Initialize ping timer
-            pingTimer = new DispatcherTimer();
-            pingTimer.Interval = TimeSpan.FromSeconds(5);
-            pingTimer.Tick += PingTimer_Tick;
-            pingTimer.Start();
-        }
-
-        private void PingTimer_Tick(object sender, EventArgs e)
-        {
-            if (ConnectionStatus == MyEnums.ConnectionStatus.Connected)
-            {
-                _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = new ArduinoMessage { AIndex = 'T', AMessage = "" } });
-            }
         }
 
         #region UI Methods
@@ -646,18 +512,14 @@ namespace BrewUI.ViewModels
             ActiveWindow = AW.activeWindow;
         }
 
-        public void Handle(RecipeToSaveEvent recipe)
-        {
-            currentRecipe = recipe.breweryRecipe;
-            if(currentRecipe.sessionInfo.sessionName == null)
-            {
-                currentRecipe.sessionInfo.sessionName = "";
-            }
-        }
-
         public void Handle(SettingsUpdatedEvent message)
         {
             _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = ConnectionStatus });
+        }
+
+        public void Handle(RecipeToSaveEvent message)
+        {
+            FileInteraction.SaverRecipe(message.breweryRecipe);
         }
 
         #endregion

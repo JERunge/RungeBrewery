@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:uc="clr-namespace:BrewUI.UserControls"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -23,16 +24,18 @@
     <!--Main grid-->
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="150"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" MinHeight="200"/>
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
@@ -52,7 +55,7 @@
             </StackPanel>
         </Border>
 
-        <!--DataTracker-->
+        <!--Temp and progress-->
         <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource ContentBorder}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -61,11 +64,11 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="0"/>
+                    <ColumnDefinition Width="*" MinWidth="100"/>
                     <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="150"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*" MinWidth="100"/>
+                    <ColumnDefinition Width="0"/>
                 </Grid.ColumnDefinitions>
 
                 <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="0">
@@ -108,11 +111,19 @@
             </Grid>
 
         </Border>
-
+        
+        <!--Seps and process-->
+        <Border Grid.Column="5" Grid.Row="0" Style="{StaticResource ContentBorder}">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Status" Style="{StaticResource Header1}" FontWeight="Bold" Margin="0 0 0 10"/>
+                <TextBlock Text="{Binding CurrentProcess}" Style="{StaticResource Header2}"/>
+                <TextBlock Text="{Binding CurrentStep}" Style="{StaticResource Header2}" />
+                <TextBlock Text="{Binding CurrentWork}"/>
+            </StackPanel>
+        </Border>
+        
         <!--Process overview-->
-        <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="3">
-            <!--<TextBlock Text="Process overview" FontSize="16" Margin="0 0 0 5"/>-->
-            <Grid>
+        <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
@@ -127,12 +138,13 @@
                 </Grid.RowDefinitions>
                 <!--Mash steps-->
                 <Border x:Name="MashContainer" Grid.Row="0" Style="{StaticResource ContentBorder}">
-                    <Expander IsExpanded="True">
+                    <Expander IsExpanded="True" x:Name="MashExpander">
                         <Expander.Header>
                             <TextBlock Text="Mash" Style="{StaticResource Header1}"/>
                         </Expander.Header>
-                        <StackPanel Orientation="Vertical">
-                            <ItemsControl ItemsSource="{Binding MashSteps}">
+                    <StackPanel Orientation="Vertical" Margin="0 10 0 0">
+                        
+                        <ItemsControl ItemsSource="{Binding MashSteps}" Margin="0 10 0 0">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <StackPanel Orientation="Vertical" IsItemsHost="True"/>
@@ -141,8 +153,29 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
+                                            <Grid.Style>
+                                                <Style TargetType="Grid">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Finished">
+                                                            <Setter Property="Background" Value="{StaticResource GrayLight}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Waiting">
+                                                            <Setter Property="Background" Value="{StaticResource GrayDark}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Mashing">
+                                                            <Setter Property="Background" Value="{StaticResource GrayDark}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Paused">
+                                                            <Setter Property="Background" Value="{StaticResource GrayDark}"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Preheating">
+                                                            <Setter Property="Background" Value="{StaticResource GrayDark}"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Style>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="5"/>
+                                                <ColumnDefinition Width="10"/>
                                                 <ColumnDefinition Width="200"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="100"/>
@@ -168,7 +201,7 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                             <Button x:Name="StartMash" VerticalAlignment="Center" Width="90"
-                                HorizontalAlignment="Right" Margin="0 10 0 0">
+                                HorizontalAlignment="Right" Margin="0 10 0 0" IsEnabledChanged="StartMash_IsEnabledChanged">
                                 <Button.Style>
                                     <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                         <Style.Triggers>
@@ -190,18 +223,16 @@
                             </Button>
                         </StackPanel>
                     </Expander>
-                    
-
                 </Border>
 
                 <!--Sparge-->
                 <Border x:Name="SpargeContainer" Grid.Row="2" Style="{StaticResource ContentBorder}">
                     <!--Content-->
-                    <Expander>
+                    <Expander x:Name="SpargeExpander">
                         <Expander.Header>
                             <TextBlock Text="Sparge" Style="{StaticResource Header1}"/>
                         </Expander.Header>
-                        <Grid>
+                        <Grid Margin="0 10 0 0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="10"/>
@@ -212,14 +243,34 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-
-                            <StackPanel Orientation="Horizontal" Grid.Row="2">
+                            <TextBlock x:Name="SpargeTimerText" Grid.Row="0"/>
+                            <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
                                 <TextBlock Text="{Binding Path=SpargeTemp, StringFormat={}Target temperature: {0} °C}" Margin="0 0 30 0"/>
-                                <TextBlock Text="{Binding Path=SpargeWaterAmount, StringFormat={}Water amount: {0} L}"/>
+                                <TextBlock Text="{Binding Path=SpargeDur, StringFormat={}Duration: {0} min}"/>
                             </StackPanel>
+                        <Button x:Name="StartSparge" Grid.Row="2" Grid.Column="2" Width="90">
+                            <Button.Style>
+                                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SpargeRunning}" Value="True">
+                                            <Setter Property="Content" Value="Cancel"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SpargeRunning}" Value="False">
+                                            <Setter Property="Content" Value="Start"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SpargeFinished}" Value="True">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SpargeFinished}" Value="False">
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                         </Grid>
                     </Expander>
-                    
+
                 </Border>
 
                 <!--BOIL-->
@@ -315,11 +366,23 @@
                             </Button>
                         </StackPanel>
                     </Expander>
-                    
+
                 </Border>
-                
+
                 <!-- Cooldown-->
-                <Border x:Name="CooldownContainer" Grid.Row="6" Style="{StaticResource ContentBorder}">
+                <Border x:Name="CooldownContainer" Grid.Row="6">
+                    <Border.Style>
+                        <Style TargetType="Border" BasedOn="{StaticResource ContentBorder}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RunCooldown}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding RunCooldown}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
                     <Expander>
                         <Expander.Header>
                             <TextBlock Text="Cooldown" Style="{StaticResource Header1}"/>
@@ -333,22 +396,37 @@
                                 <Button x:Name="StartCooldown" Content="Start" Width="90" HorizontalAlignment="Right" Grid.Row="2" Grid.Column="2">
                                     <Button.Style>
                                         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                                        </Style>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CooldownRunning}" Value="True">
+                                                <Setter Property="Content" Value="Cancel"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CooldownRunning}" Value="False">
+                                                <Setter Property="Content" Value="Start"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CooldownFinished}" Value="True">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CooldownFinished}" Value="False">
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
                                     </Button.Style>
                                 </Button>
                             </Grid>
                         </StackPanel>
                     </Expander>
-                    
+
                 </Border>
             </Grid>
-        </StackPanel>
 
-        <!--Data-->
-        <lvc:CartesianChart Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4"
+        
+
+            <!--Data-->
+        <lvc:CartesianChart Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="5"
                             Hoverable="True" DataTooltip="{x:Null}" 
                             Width="Auto" 
-                            Height="300">
+                            Height="Auto" MinHeight="200">
             <lvc:CartesianChart.Series>
                 <lvc:LineSeries Values="{Binding chartValues}"
                                 LineSmoothness="0"
@@ -360,7 +438,7 @@
                           Title="Time"/>
             </lvc:CartesianChart.AxisX>
             <lvc:CartesianChart.AxisY>
-                <lvc:Axis Title="Temperature"/>
+                <lvc:Axis Title="Temperature" MinValue="0" MaxValue="105"/>
             </lvc:CartesianChart.AxisY>
         </lvc:CartesianChart>
 

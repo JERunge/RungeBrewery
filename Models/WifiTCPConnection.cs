@@ -14,7 +14,7 @@ using System.Windows.Threading;
 
 namespace BrewUI.Models
 {
-    public class WifiTCPConnection : Conductor<object>
+    public class WifiTCPConnection : Conductor<object>, IHandle<ConnectionEvent>
     {
         private IEventAggregator _events;
         static TcpClient client;
@@ -50,6 +50,9 @@ namespace BrewUI.Models
             {
                 client = new TcpClient();
                 client.Connect(ip, 80);
+
+                // Send data once to let brewery know we are connected
+                SendToWifi(new ArduinoMessage { AIndex = 'x', AMessage = "" });
             }
             catch(Exception e)
             {
@@ -60,43 +63,6 @@ namespace BrewUI.Models
 
             _events.PublishOnUIThread(new ConnectionEvent { ConnectionStatus = MyEnums.ConnectionStatus.Connected });
 
-            while (client.Connected)
-            {
-                if(client.Available > 0)
-                {
-                    //Initializing a new byte array the size of the available bytes on the network stream
-                    byte[] readBytes = new byte[client.Available];
-                    //Reading data from the stream
-                    client.GetStream().Read(readBytes, 0, client.Available);
-                    //Converting the byte array to string
-                    string str = System.Text.Encoding.ASCII.GetString(readBytes);
-                    //This should output "Hello world" to the console window
-
-                    ArduinoMessage _arduinoMessage = new ArduinoMessage();
-
-                    // Read index value from read message
-                    _arduinoMessage.AIndex = str[1];
-
-                    // Read value from read message
-                    for (int i = 2; i < str.Length; i++)
-                    {
-                        if (str[i] != '>')
-                        {
-                            if (str[i] != ' ')
-                            {
-                                _arduinoMessage.AMessage += str[i];
-                            }
-                        }
-                        else if (str[i] == '>')
-                        {
-                            break;
-                        }
-                    }
-
-                    // Publish message on event
-                    _events.PublishOnUIThread(new SerialReceivedEvent { arduinoMessage = _arduinoMessage });
-                }
-            }
         }
 
         public void CloseClient()
@@ -120,6 +86,69 @@ namespace BrewUI.Models
                 //Sending the byte array to the server
                 _events.PublishOnUIThread(new DebugDataUpdatedEvent { stringValue = Encoding.ASCII.GetString(buffer) });
                 stream.Write(buffer,0,buffer.Length);
+            }
+        }
+
+        public void PingBrewery(IPAddress ip)
+        {
+            Ping pingSender = new Ping();
+            PingOptions options = new PingOptions();
+
+            PingReply pingReply = pingSender.Send(ip, 1000);
+
+            if(pingReply.Status == IPStatus.Success)
+            {
+                _events.PublishOnUIThread(new DebugDataUpdatedEvent { stringValue = "Ping ok" });
+            }
+        }
+        private async Task tcpListener()
+        {
+            // Listen for data from client while connected
+            while (client.Connected)
+            {
+                if (client.Available > 0)
+                {
+                    //Wait for whole data to arrive
+                    await Task.Delay(200);
+
+                    //Initializing a new byte array the size of the available bytes on the network stream
+                    byte[] readBytes = new byte[client.Available];
+
+                    //Reading data from the stream
+                    client.GetStream().Read(readBytes, 0, client.Available);
+
+                    //Converting the byte array to string
+                    string str = System.Text.Encoding.ASCII.GetString(readBytes);
+
+                    ArduinoMessage _arduinoMessage = new ArduinoMessage();
+
+                    // Read index value from read message
+                    _arduinoMessage.AIndex = str[1];
+
+                    // Read value from read message
+                    for (int i = 2; i < str.Length; i++)
+                    {
+                        if (str[i] != '>')
+                        {
+                            _arduinoMessage.AMessage += str[i];
+                        }
+                        else if (str[i] == '>')
+                        {
+                            break;
+                        }
+                    }
+
+                    // Publish message on event
+                    _events.PublishOnUIThread(new SerialReceivedEvent { arduinoMessage = _arduinoMessage });
+                }
+            }
+        }
+
+        public void Handle(ConnectionEvent message)
+        {
+            if(message.ConnectionStatus == MyEnums.ConnectionStatus.Connected)
+            {
+                Task.Run(() => tcpListener());
             }
         }
 

@@ -6,13 +6,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
+using static BrewUI.Models.MyEnums;
 
 namespace BrewUI.Models
 {
-    public class ConnectionHandler : Conductor<object>, IHandle<SerialToSendEvent>, IHandle<ConnectionEvent>
+    public class ConnectionHandler : Conductor<object>, IHandle<SerialToSendEvent>, IHandle<ConnectionEvent>, IHandle<SerialReceivedEvent>
     {
+        #region Data
+
         static BluetoothConnection bluetooth;
         static WifiTCPConnection wifi;
 
@@ -21,6 +26,14 @@ namespace BrewUI.Models
         private List<ArduinoMessage> sendBuffer;
 
         private DispatcherTimer sendTimer;
+
+        private ConnectionStatus connectionStatus;
+
+        private bool dataVerified;
+
+        #endregion
+
+        #region Methods
 
         public ConnectionHandler(IEventAggregator events)
         {
@@ -45,9 +58,36 @@ namespace BrewUI.Models
         {
             if(sendBuffer.Count > 0)
             {
-                SendToArduino(sendBuffer[0]);
-                sendBuffer.RemoveAt(0);
+                //SendToArduino(sendBuffer[0]);
+                SendWithVerification(sendBuffer[0]);
+                //sendBuffer.RemoveAt(0);
             }
+        }
+
+        private async Task SendWithVerification(ArduinoMessage am)
+        {
+            dataVerified = false;
+            sendTimer.Stop();
+
+            for(int i = 1; i <= 5; i++)
+            {
+                if (!dataVerified) // No verification received yet
+                {
+                    SendToArduino(am);
+                }
+                else // Verification received
+                {
+                    dataVerified = false;
+                    sendBuffer.Clear();
+                    sendTimer.Start();
+                    return; 
+                }
+
+                await Task.Delay(2000);
+            }
+
+            sendTimer.Start();
+
         }
 
         public async Task ArduinoConnect()
@@ -74,11 +114,6 @@ namespace BrewUI.Models
             }
         }
 
-        public void ArduinoReconnect()
-        {
-
-        }
-
         public void SendToArduino(ArduinoMessage arduinoMessage)
         {
             if (Properties.Settings.Default.ConnectionType == "Wifi")
@@ -91,6 +126,8 @@ namespace BrewUI.Models
             }
         }
 
+        #endregion
+
         #region Event handlers
         public void Handle(SerialToSendEvent message)
         {
@@ -99,7 +136,9 @@ namespace BrewUI.Models
 
         public void Handle(ConnectionEvent message)
         {
-            if(message.ConnectionStatus == MyEnums.ConnectionStatus.Connected)
+            connectionStatus = message.ConnectionStatus;
+
+            if(connectionStatus == MyEnums.ConnectionStatus.Connected)
             {
                 sendTimer.Start();
             }
@@ -109,7 +148,15 @@ namespace BrewUI.Models
                 {
                     sendTimer.Stop();
                 }
-                    
+            }
+        }
+
+        public void Handle(SerialReceivedEvent message)
+        {
+            ArduinoMessage am = message.arduinoMessage;
+            if(am.AIndex == 'V' && am.AMessage == "OK")
+            {
+                dataVerified = true;
             }
         }
     }

@@ -89,6 +89,25 @@ namespace BrewUI.Models
                 cnn.Execute("insert into Styles (Name, Category, Description, Profile, Ingredients) values (@Name, @Category, @Description, @Profile, @Ingredients)", style);
             }
         }
+        #endregion
+
+        #region Brew methods
+        public static List<BrewMethod> LoadBrewMethods()
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<BrewMethod>("select * from BrewMethods", new DynamicParameters());
+                return output.ToList();
+            }
+        }
+
+        public static void SaveBrewMethod(BrewMethod method)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                cnn.Execute("insert into BrewMethods (Name) values (@Name)", method);
+            }
+        }
 
         #endregion
 
@@ -119,7 +138,6 @@ namespace BrewUI.Models
             connectionString.ProviderName = "System.Data.SqlClient";
             return connectionString.ToString();
         }
-
         #endregion
     }
 }

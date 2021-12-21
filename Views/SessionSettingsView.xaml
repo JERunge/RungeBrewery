@@ -72,7 +72,7 @@
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="Name"/>
                             <TextBox x:Name="SessionName" Width="220" Height="20"
-                                     FontStyle="Italic">
+                                     FontStyle="Italic" PreviewMouseLeftButtonUp="SessionName_PreviewMouseLeftButtonUp">
                                 <TextBox.Style>
                                     <Style>
                                         <Style.Triggers>
@@ -107,7 +107,7 @@
                               Width="100" >
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding StringItem}"/>
+                                        <TextBlock Text="{Binding Name}"/>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
@@ -231,7 +231,7 @@
                         </Grid.ColumnDefinitions>
 
                         <!--ACID-->
-                        <TextBlock Text="Add mash steps" Style="{StaticResource Header2}"/>
+                        <TextBlock Text="Select mash steps" Style="{StaticResource Header2}"/>
                         <Border Grid.Column="0" Grid.Row="2">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -375,7 +375,7 @@
                                 </Grid.RowDefinitions>
 
                                 <CheckBox x:Name="SpargeCheckBox" Grid.Row="0" Grid.Column="0"
-                                        Content="Sparge out"
+                                        Content="Mash out"
                                         IsChecked="{Binding SpargeChecked}"/>
                                 <StackPanel Orientation="Vertical" Grid.Row="1" Grid.Column="0">
                                     <TextBlock Text="Temperature: " Margin="0 0 0 5"/>
@@ -432,11 +432,10 @@
                         <TextBlock Text="Temperature: " VerticalAlignment="Center"/>
                         <TextBox x:Name="SpargeTemp" Width="30"/>
                         <TextBlock Text="&#186;C" Style="{StaticResource UnitBlock}" />
-                        <TextBlock Text="Sparge water amount: " Margin="30 0 0 0" VerticalAlignment="Center"/>
-                        <TextBox x:Name="SpargeWaterAmount" Width="30"/>
-                        <TextBlock Text="liter" Style="{StaticResource UnitBlock}"/>
+                        <TextBlock Text="Duration: " Margin="30 0 0 0" VerticalAlignment="Center"/>
+                        <TextBox x:Name="SpargeDur" Width="30"/>
+                        <TextBlock Text="min" Style="{StaticResource UnitBlock}"/>
                     </StackPanel>
-                    <Button x:Name="CalculateSpargeWaterAmount" Content="Calculate amount" Grid.Row="2" Grid.Column="1" Width="120" HorizontalAlignment="Right"/>
                 </Grid>
             </Expander>
             

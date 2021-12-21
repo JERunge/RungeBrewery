@@ -27,20 +27,48 @@ namespace BrewUI.Models
             return strikeTemp;
         }
 
-        public static double TotalWater(double grainBill, double batchSize, TimeSpan boilTime)
+        public static double PostBoilVolume(double batchVolume, double cooldownShrinkage = -1)
         {
-            // Grain absorption
-            double grainAbsorption = grainBill / 1000 * Properties.Settings.Default.GrainAbsorption;
+            if(cooldownShrinkage == -1)
+            {
+                cooldownShrinkage = Properties.Settings.Default.CooldownShrinkage;
+            }
+            double cl = batchVolume * (1 + cooldownShrinkage/100);
+            return cl;
+        }
 
-            // Boil off
-            double boilOff = boilTime.TotalHours * 3.2;
+        public static double BoilVolume(double postBoilVolume, double boilDuration, double evaporationRate = -1, double boilLoss = -1)
+        {
+            if(evaporationRate == -1)
+            {
+                evaporationRate = Properties.Settings.Default.EvaporationRate;
+            }
+            if(boilLoss == -1)
+            {
+                boilLoss = Properties.Settings.Default.BoilLoss;
+            }
+            double bv = postBoilVolume * boilDuration / 60 * evaporationRate/100 + postBoilVolume + boilLoss;
+            return bv;
+        }
 
-            // Equipment loss
-            double equipmentLoss = Properties.Settings.Default.EquipmentLoss;
+        public static double MashVolume(double grainBill, double mashRatio = -1)
+        {
+            if(mashRatio == -1)
+            {
+                mashRatio = Properties.Settings.Default.MashRatio;
+            }
 
-            double totalWater = Math.Round(grainAbsorption + boilOff + equipmentLoss + batchSize, 1);
+            return grainBill / 1000 * mashRatio;
+        }
 
-            return totalWater;
+        public static double TotalWater(double boilVolume, double grainBill, double grainAbsorption = -1)
+        {
+            if(grainAbsorption == -1)
+            {
+                grainAbsorption = Properties.Settings.Default.GrainAbsorption;
+            }
+            double tmw = boilVolume + grainBill/1000 * grainAbsorption;
+            return tmw;
         }
 
         public static double MashWater(double grainBill)
@@ -80,51 +108,5 @@ namespace BrewUI.Models
             return result;
         }
 
-        public static TimeSpan SessionDuration(BreweryRecipe breweryRecipe, double currentTemp)
-        {
-            TimeSpan duration = TimeSpan.Zero;
-
-            // Calculate mash duration
-            MashStep previousMashStep = new MashStep();
-            foreach(MashStep mashStep in breweryRecipe.mashSteps)
-            {
-                // Calculate preheating duration for each step
-                if (previousMashStep == null)
-                {
-                    duration += HeatDuration(currentTemp, mashStep.stepTemp, breweryRecipe.sessionInfo.BatchSize);
-                }
-                else
-                {
-                    duration += HeatDuration(previousMashStep.stepTemp, mashStep.stepTemp, breweryRecipe.sessionInfo.BatchSize);
-                }
-
-                // Calculate duration for each step and add to total duration
-                duration += mashStep.stepDuration;
-
-                previousMashStep = mashStep;
-            }
-
-            // Add sparge duration
-            //duration += breweryRecipe.spargeStep.spargeDur;
-
-            // Calculate sparge preheating duration
-            duration += HeatDuration(previousMashStep.stepTemp, breweryRecipe.spargeStep.spargeTemp, breweryRecipe.sessionInfo.BatchSize);
-
-            // Calculate boil preheating duration
-            duration += HeatDuration(breweryRecipe.spargeStep.spargeTemp, 100, breweryRecipe.sessionInfo.BatchSize);
-
-            // Add boil duration
-            TimeSpan boilDuration = TimeSpan.Zero;
-            foreach(Hops hops in breweryRecipe.hopsList)
-            {
-                if(hops.BoilTime > boilDuration)
-                {
-                    boilDuration = hops.BoilTime;
-                }
-            }
-            duration += boilDuration;
-
-            return duration;
-        }
     }
 }

@@ -8,5 +8,6 @@ namespace BrewUI.Items
     {
         public double spargeTemp { get; set; }
         public double spargeWaterAmount { get; set; }
+        public int spargeDur { get; set; }
     }
 }

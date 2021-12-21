@@ -2,6 +2,7 @@
 using BrewUI.EventModels;
 using BrewUI.Items;
 using BrewUI.Models;
+using BrewUI.UserControls;
 using Caliburn.Micro;
 using LiveCharts;
 using LiveCharts.Configurations;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using static BrewUI.Models.MyEnums;
 
 namespace BrewUI.ViewModels
 {
@@ -32,9 +34,6 @@ namespace BrewUI.ViewModels
         private IEventAggregator _events;
 
         private bool continueTask;
-
-        IWindowManager manager = new WindowManager();
-        private AddGrainsViewModel _addGrainsVM;
 
         // Process tracking data
         private string _currentProcess;
@@ -59,6 +58,17 @@ namespace BrewUI.ViewModels
                 _currentStep = value;
                 NotifyOfPropertyChange(() => CurrentStep);
                 _events.PublishOnUIThread(new DebugDataUpdatedEvent { index = "CS", stringValue = CurrentStep });
+            }
+        }
+
+        private string _currentWork;
+        public string CurrentWork
+        {
+            get { return _currentWork; }
+            set 
+            { 
+                _currentWork = value;
+                NotifyOfPropertyChange(() => CurrentWork);
             }
         }
 
@@ -273,6 +283,57 @@ namespace BrewUI.ViewModels
             }
         }
 
+        private double _mashWater;
+        public double MashWater
+        {
+            get { return _mashWater; }
+            set {
+                _mashWater = value;
+                NotifyOfPropertyChange(() => MashWater); 
+            }
+        }
+
+        private bool _mashWaterAdded;
+        public bool MashWaterAdded
+        {
+            get { return _mashWaterAdded; }
+            set { 
+                _mashWaterAdded = value;
+                NotifyOfPropertyChange(() => MashWaterAdded);
+            }
+        }
+
+        private double _batchVolume;
+        public double BatchVolume
+        {
+            get { return _batchVolume; }
+            set {
+                _batchVolume = value;
+                NotifyOfPropertyChange(() => BatchVolume);
+            }
+        }
+
+        private double _postBoilVolume;
+        public double PostBoilVolume
+        {
+            get { return _postBoilVolume; }
+            set {
+                _postBoilVolume = value;
+                NotifyOfPropertyChange(() => PostBoilVolume);
+            }
+        }
+
+        private double _boilVolume;
+        public double BoilVolume
+        {
+            get { return _boilVolume; }
+            set {
+                _boilVolume = value;
+                NotifyOfPropertyChange(() => BoilVolume);
+            }
+        }
+
+
         private ObservableCollection<MashStep> _mashSteps;
         public ObservableCollection<MashStep> MashSteps
         {
@@ -318,6 +379,16 @@ namespace BrewUI.ViewModels
         }
 
         public SpargeStep spargeStep { get; set; }
+
+        private bool _mashBasketLifted;
+        public bool MashBaskedLifted
+        {
+            get { return _mashBasketLifted; }
+            set {
+                _mashBasketLifted = value;
+                NotifyOfPropertyChange(() => MashBaskedLifted);
+            }
+        }
 
         private double _spargeWaterAmount;
         public double SpargeWaterAmount
@@ -365,6 +436,16 @@ namespace BrewUI.ViewModels
         public TimeSpan spargeDur { get; set; }
         public DateTime spargeEndTime { get; set; }
 
+        private int _spargeDur;
+        public int SpargeDur
+        {
+            get { return _spargeDur; }
+            set {
+                _spargeDur = value;
+                NotifyOfPropertyChange(() => SpargeDur);
+            }
+        }
+
         private string _spargeTimerText;
         public string SpargeTimerText
         {
@@ -394,6 +475,18 @@ namespace BrewUI.ViewModels
             }
         }
 
+        private string _mashStatus;
+        public string MashStatus
+        {
+            get { return _mashStatus; }
+            set
+            {
+                _mashStatus = value;
+                NotifyOfPropertyChange(() => MashStatus);
+                CurrentWork = MashStatus;
+            }
+        }
+
         private string _spargeStatus;
         public string SpargeStatus
         {
@@ -402,6 +495,7 @@ namespace BrewUI.ViewModels
             {
                 _spargeStatus = value;
                 NotifyOfPropertyChange(() => SpargeStatus);
+                CurrentWork = SpargeStatus;
             }
         }
 
@@ -413,6 +507,19 @@ namespace BrewUI.ViewModels
             {
                 _boilStatus = value;
                 NotifyOfPropertyChange(() => BoilStatus);
+                CurrentWork = BoilStatus;
+            }
+        }
+
+        private string _cooldownStatus;
+
+        public string CooldownStatus
+        {
+            get { return _cooldownStatus; }
+            set { 
+                _cooldownStatus = value;
+                NotifyOfPropertyChange(() => CooldownStatus);
+                CurrentWork = CooldownStatus;
             }
         }
 
@@ -488,9 +595,8 @@ namespace BrewUI.ViewModels
 
         #endregion
 
-        public SessionViewModel(IEventAggregator events, AddGrainsViewModel addGrainsVM)
+        public SessionViewModel(IEventAggregator events)
         {
-            _addGrainsVM = addGrainsVM;
             Connected = false;
 
             // Eventhandler
@@ -508,6 +614,7 @@ namespace BrewUI.ViewModels
             MashFinished = false;
             SpargeCanStart = false;
             RunCooldown = false;
+            MashWaterAdded = false;
 
             // Initialize recipe data
             GrainList = new ObservableCollection<Grain>();
@@ -535,17 +642,27 @@ namespace BrewUI.ViewModels
             _events.PublishOnUIThread(new SessionRunningEvent { SessionRunning = false });
         }
 
-        public async void LoadAddGrains()
-        {
-            dynamic addGrains = new ExpandoObject();
-            addGrains.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            _events.PublishOnUIThread(new AddingGrainsEvent { grainList = GrainList });
-            manager.ShowDialog(_addGrainsVM);
-        }
-
         public async Task Mash()
         {
+            //if (!MashWaterAdded)
+            //{
+            //    MessageBox.Show("Please add mash water before starting.");
+            //    return;
+            //}
+
+            List<StepConfirmation> mashConfirmations = new List<StepConfirmation>();
+            mashConfirmations.Add(new StepConfirmation { Name = "Mount mash basket in brewery" });
+            mashConfirmations.Add(new StepConfirmation { Name = "Connect mash basket hose" });
+            mashConfirmations.Add(new StepConfirmation { Name = "Add mash water", Content = $"{MashWater} L" });
+
+            if(!CustomWindowHandler.LoadStepConfirmationWindow(mashConfirmations, "Prepare mash"))
+            {
+                MessageBox.Show("Mash preparations not verified. Mash aborted.");
+                return;
+            }
+
             CurrentProcess = "Mash";
+            MashStatus = "Waiting";
             startTime = DateTime.Now;
             chartStartTime = startTime;
 
@@ -567,69 +684,79 @@ namespace BrewUI.ViewModels
                 }
             }
 
-            double waterAmount = Math.Round(Calculations.MashWater(grainWeight), 1);
+            //double waterAmount = Math.Round(Calculations.MashWater(grainWeight), 1);
 
             // Add strike water and heat to strike temp
-            if (!strikeWaterAdded)
+            //if (!strikeWaterAdded)
+            //{
+            //    double strikeTemp = Math.Round(Calculations.StrikeTemp(MashWater, MashSteps[0].stepTemp, grainWeight), 1);
+            //    //MessageBoxResult answer = MessageBox.Show(string.Format("Strike temperature calculated to {0}°C.\n\nAdd {1}L of water and press OK.", strikeTemp, waterAmount), "Add strike water", MessageBoxButton.OKCancel);
+            //    MessageBoxResult answer = MessageBox.Show(string.Format("Strike temperature calculated to {0}°C.\n\nAdd {1}L of water and press OK.", strikeTemp, MashWater), "Add strike water", MessageBoxButton.OKCancel);
+
+            //    if (answer == MessageBoxResult.Cancel)
+            //    {
+            //        MessageBoxResult messageBoxResult = MessageBox.Show("This will abort the mash. Do you want to proceed?", "Warning", MessageBoxButton.YesNo);
+            //        if (messageBoxResult == MessageBoxResult.Yes)
+            //        {
+            //            CloseMash();
+            //            return;
+            //        }
+            //    }
+            //}
+            //strikeWaterAdded = true;
+
+            double strikeTemp = Math.Round(Calculations.StrikeTemp(MashWater, MashSteps[0].stepTemp, grainWeight), 1);
+
+            startTime = DateTime.Now;
+            continueTask = false;
+            TargetTemp = strikeTemp;
+
+            CancellationTokenSource source = new CancellationTokenSource();
+            source.CancelAfter(TimeSpan.FromSeconds(1));
+            MashStatus = "Preheating";
+            Task heatAndKeep = Task.Run(() => HeatAndKeepAsync(TimeSpan.Zero), source.Token);
+            await heatAndKeep;
+
+            MashStep ms = MashSteps[0]; // Create this to have something to give to MashStepCancelled
+            
+            while (!continueTask)
             {
-                double strikeTemp = Math.Round(Calculations.StrikeTemp(waterAmount, MashSteps[0].stepTemp, grainWeight), 1);
-                MessageBoxResult answer = MessageBox.Show(string.Format("Strike temperature calculated to {0}°C.\n\nAdd {1}L of water and press OK.", strikeTemp, waterAmount), "Add strike water", MessageBoxButton.OKCancel);
-
-                if (answer == MessageBoxResult.Cancel)
-                {
-                    MessageBoxResult messageBoxResult = MessageBox.Show("This will abort the mash. Do you want to proceed?", "Warning", MessageBoxButton.YesNo);
-                    if (messageBoxResult == MessageBoxResult.Yes)
-                    {
-                        CloseMash();
-                        return;
-                    }
-                }
-
-                strikeWaterAdded = true;
-                startTime = DateTime.Now;
-                continueTask = false;
-                TargetTemp = MashSteps[0].stepTemp;
-
-                CancellationTokenSource source = new CancellationTokenSource();
-                source.CancelAfter(TimeSpan.FromSeconds(1));
-                Task heatAndKeep = Task.Run(() => HeatAndKeepAsync(TimeSpan.Zero), source.Token);
-                await heatAndKeep;
-
-                MashStep ms = MashSteps[0]; // Create this to have something to give to MashStepCancelled
-                while (!continueTask)
-                {
-                    // Check if process is exited
-                    if (MashStepCancelled(ms))
-                    {
-                        CloseMash();
-                        return;
-                    }
-                    await Task.Delay(100);
-                }
-
-                continueTask = false;
-
-                // Check again if mash is cancelled
+                // Check if process is exited
                 if (MashStepCancelled(ms))
                 {
                     CloseMash();
                     return;
                 }
-
-                FileInteraction.PlaySound("Alarm.wav");
+                await Task.Delay(100);
             }
+
+            continueTask = false;
+
+            // Check again if mash is cancelled
+            if (MashStepCancelled(ms))
+            {
+                CloseMash();
+                return;
+            }
+
+            FileInteraction.PlaySound(Sound.Finished);
 
             // Add grains
             if (!grainsAdded)
             {
-                LoadAddGrains();
+                List<StepConfirmation> stepConfirmations = new List<StepConfirmation>();
+                foreach (Grain grain in GrainList)
+                {
+                    stepConfirmations.Add(new StepConfirmation { Name = grain.name, Content = $"{grain.amount}g" });
+                }
+                grainsAdded = CustomWindowHandler.LoadStepConfirmationWindow(stepConfirmations, "Add grains");
+
                 if (!grainsAdded)
                 {
                     MessageBox.Show("Grains not added. Mash aborted.");
                     CloseMash();
                     return;
                 }
-
             }
 
             #endregion
@@ -660,6 +787,7 @@ namespace BrewUI.ViewModels
 
                 #region Preheat mashstep
                 item.Status = "Preheating";
+                MashStatus = item.Status;
 
                 await HeatAndKeepAsync(TimeSpan.Zero);
 
@@ -675,6 +803,7 @@ namespace BrewUI.ViewModels
 
                 // Keep temperature for desired duration
                 item.Status = "Mashing";
+                MashStatus = item.Status;
                 item.startTime = DateTime.Now;
                 item.endTime = item.startTime + TimeSpan.FromMinutes(TargetDuration);
                 item.stepTimer.Start();
@@ -684,13 +813,14 @@ namespace BrewUI.ViewModels
                 tasks.Add(Task.Run(() =>
                 {
                     // Check if process is exited
-                    if (!SessionRunning || CurrentProcess.Length < 1)
+                    if (!SessionRunning || CurrentProcess.Length < 1 || MashStepCancelled(item, "Waiting"))
                     {
                         foreach (MashStep step in MashSteps)
                         {
                             if (step.Status == "Mashing")
                             {
                                 step.Status = "Paused";
+                                MashStatus = "Paused";
                                 step.stepTimer.Stop();
                                 step.timeLeft = item.endTime.Subtract(DateTime.Now);
                             }
@@ -703,6 +833,11 @@ namespace BrewUI.ViewModels
 
                 await Task.WhenAll(tasks);
 
+                if(CurrentProcess.Length < 1)
+                {
+                    return;
+                }
+
                 item.Status = "Finished";
                 item.stepTimer.Stop();
                 item.TimerText = item.stepDuration.ToString("hh\\:mm\\:ss");
@@ -713,8 +848,10 @@ namespace BrewUI.ViewModels
             #endregion
 
             CurrentProcess = "";
+            MashStatus = "";
+            CurrentStep = "";
             TargetTemp = 0;
-            FileInteraction.PlaySound("Alarm.wav");
+            FileInteraction.PlaySound(Sound.Finished);
             MessageBox.Show("Mash finished!");
             MashFinished = true;
             SpargeCanStart = true;
@@ -783,100 +920,102 @@ namespace BrewUI.ViewModels
             Mash();
         }
 
-        //public async void StartSparge()
-        //{
-        //    // Initiate cancellation token for async tasks
-        //    CancellationTokenSource source = new CancellationTokenSource();
-        //    source.CancelAfter(TimeSpan.FromSeconds(1));
+        public async void StartSparge()
+        {
+            // Initiate cancellation token for async tasks
+            CancellationTokenSource source = new CancellationTokenSource();
+            source.CancelAfter(TimeSpan.FromSeconds(1));
 
-        //    // Cancel sparge if ongoing
-        //    if (SpargeRunning)
-        //    {
-        //        MessageBoxResult msganswer = MessageBox.Show("This will abort the ongoing sparge.\n\nContinue?", "Cancel sparge", MessageBoxButton.YesNo, MessageBoxImage.Information);
-        //        if(msganswer == MessageBoxResult.Yes)
-        //        {
-        //            CloseSparge();
-        //            return;
-        //        }
-        //    }
+            // Cancel sparge if ongoing
+            if (SpargeRunning)
+            {
+                MessageBoxResult msganswer = MessageBox.Show("This will abort the ongoing sparge.\n\nContinue?", "Cancel sparge", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                if (msganswer == MessageBoxResult.Yes)
+                {
+                    CloseSparge();
+                    return;
+                }
+            }
 
-        //    //SessionProgressTimer.Start();
+            SpargeRunning = true;
 
-        //    // Start sparge
-        //    CurrentProcess = "Sparge";
-        //    chartStartTime = DateTime.Now;
+            // Start sparge
+            CurrentProcess = "Sparge";
 
-        //    spargeStep = currentRecipe.spargeStep;
-        //    SpargeStatus = "Preheating";
-        //    spargeDur = spargeStep.spargeDur;
-        //    SpargeTemp = spargeStep.spargeTemp;
+            spargeStep = currentRecipe.spargeStep;
+            SpargeStatus = "Preheating";
+            spargeDur = TimeSpan.FromMinutes(spargeStep.spargeDur);
+            spargeEndTime = DateTime.Now + spargeDur;
+            SpargeTemp = spargeStep.spargeTemp;
 
-        //    TargetDuration = spargeDur.TotalMinutes;
-        //    TargetTemp = SpargeTemp;
+            TargetDuration = spargeDur.TotalMinutes;
+            TargetTemp = SpargeTemp;
 
-        //    // Preheat
-        //    Task heatAndKeep = Task.Run(() => HeatAndKeepAsync(TimeSpan.Zero), source.Token);
-        //    await heatAndKeep;
+            // Preheat
+            Task heatAndKeep = Task.Run(() => HeatAndKeepAsync(TimeSpan.Zero), source.Token);
+            await heatAndKeep;
 
-        //    while (!continueTask)
-        //    {
-        //        // Check if process is exited
-        //        if (!SessionRunning || CurrentProcess.Length < 1)
-        //        {
-        //            CloseSparge();
-        //            return;
-        //        }
-        //        await Task.Delay(100);
-        //    }
-        //    continueTask = false;
+            while (!continueTask)
+            {
+                // Check if process is exited
+                if (!SessionRunning || CurrentProcess.Length < 1)
+                {
+                    CloseSparge();
+                    return;
+                }
+                await Task.Delay(100);
+            }
+            continueTask = false;
 
-        //    FileInteraction.PlaySound("Alarm.wav");
-        //    MessageBoxResult answer =  MessageBox.Show("Sparge temperature reached. Please carry out the following steps.\n\n1. Lift up mash container above water level\n2. Grab hose to apply sparge water on mash (caution, hot)\n3. Press OK to initiate sparge", "Prepare sparge", MessageBoxButton.OKCancel);
-        //    if(answer != MessageBoxResult.OK)
-        //    {
-        //        CloseSparge();
-        //        return;
-        //    }
+            FileInteraction.PlaySound(Sound.Finished);
 
-        //    SpargeStatus = "Sparging";
-        //    spargeStep.startTime = DateTime.Now;
-        //    spargeEndTime = spargeStep.startTime + spargeDur;
+            List<StepConfirmation> stepConfirmations = new List<StepConfirmation>();
+            stepConfirmations.Add(new StepConfirmation { Name = "Lift up mash basket" });
+            stepConfirmations.Add(new StepConfirmation { Name = "Ensure hose is connected to mash basket top" });
 
-        //    // Initialize sparge timer
-        //    SpargeTimer.Interval = TimeSpan.FromSeconds(1);
-        //    SpargeTimer.Tick += SpargeTimer_Tick;
-        //    SpargeTimer.Start();
+            
+            if (!CustomWindowHandler.LoadStepConfirmationWindow(stepConfirmations, "Sparge preparations"))
+            {
+                MessageBox.Show("Sparge preparations not verified. Sparge aborted.");
+                CloseSparge();
+                return;
+            }
 
-        //    SendToArduino('P', "1");
-        //    Task heaterController = Task.Run(() => HeaterController(spargeDur, source.Token));
-        //    await heaterController;
+            SpargeStatus = "Sparging";
 
-        //    while (!continueTask)
-        //    {
-        //        // Check if process is exited
-        //        if (!SessionRunning || CurrentProcess.Length < 1)
-        //        {
-        //            CloseSparge();
-        //            return;
-        //        }
-        //        await Task.Delay(100);
-        //    }
+            // Initialize sparge timer
+            SpargeTimer.Interval = TimeSpan.FromSeconds(1);
+            SpargeTimer.Tick += SpargeTimer_Tick;
+            SpargeTimer.Start();
 
-        //    SendToArduino('P', "0");
-        //    SpargeTimer.Stop();
-        //    SpargeTimerText = TimeSpan.FromMinutes(TargetDuration).ToString("hh\\:mm\\:ss");
-        //    SpargeStatus = "Finished";
-        //    FileInteraction.PlaySound("Alarm.wav");
-        //    MessageBox.Show("Sparge finished!");
-        //    SpargeFinished = true;
-        //    CurrentProcess = "";
-        //    SpargeOpen = false;
-        //    BoilOpen = true;
+            SendToArduino('P', "1");
+            Task heaterController = Task.Run(() => HeaterController(spargeDur, source.Token));
+            await heaterController;
 
-        //    //SessionProgressTimer.Stop();
-        //    UpdateProgressionBar();
-        //    ProcessFinishedTime = DateTime.Now;
-        //}
+            while (!continueTask)
+            {
+                // Check if process is exited
+                if (!SessionRunning || CurrentProcess.Length < 1)
+                {
+                    CloseSparge();
+                    return;
+                }
+                await Task.Delay(100);
+            }
+
+            SendToArduino('P', "0");
+            SpargeTimer.Stop();
+            SpargeTimerText = TimeSpan.FromMinutes(TargetDuration).ToString("hh\\:mm\\:ss");
+            SpargeStatus = "Finished";
+            FileInteraction.PlaySound(Sound.Finished);
+            MessageBox.Show("Sparge finished!");
+            SpargeFinished = true;
+            CurrentProcess = "";
+
+            //SessionProgressTimer.Stop();
+            UpdateProgressionBar();
+            ProcessFinishedTime = DateTime.Now;
+        }
 
         public async void StartBoil()
         {
@@ -908,25 +1047,26 @@ namespace BrewUI.ViewModels
                 grainBill += grain.amount;
             }
 
-            BoilWaterAddition = Math.Round(Calculations.TotalWater(grainBill, BatchSize, TimeSpan.FromMinutes(TargetDuration)) - Calculations.MashWater(grainBill) - SpargeWaterAmount, 1);
+            //BoilWaterAddition = Math.Round(Calculations.TotalWater(grainBill, BatchSize, TimeSpan.FromMinutes(TargetDuration)) - Calculations.MashWater(grainBill) - SpargeWaterAmount, 1);
 
             CurrentProcess = "Boil";
             chartStartTime = DateTime.Now;
 
             TargetTemp = 100;
-            TargetDuration = 0;
 
-            MessageBoxResult messageBoxResult = MessageBox.Show($"Add {BoilWaterAddition} liter of water to the vort and press OK", "Add water", MessageBoxButton.OKCancel);
+            //MessageBoxResult messageBoxResult = MessageBox.Show($"Add {BoilWaterAddition} liter of water to the vort and press OK", "Add water", MessageBoxButton.OKCancel);
 
-            if (messageBoxResult != MessageBoxResult.OK)
-            {
-                CloseBoil();
-                return;
-            }
+            //if (messageBoxResult != MessageBoxResult.OK)
+            //{
+            //    CloseBoil();
+            //    return;
+            //}
 
             // Preheat
             BoilStatus = "Preheating";
-            await HeatAndKeepAsync(TimeSpan.Zero);
+            CancellationTokenSource cts = new CancellationTokenSource();
+            cts.CancelAfter(TimeSpan.FromSeconds(1));
+            await Task.Run(() => HeaterController(TimeSpan.Zero, cts.Token));
 
             while (!continueTask)
             {
@@ -948,7 +1088,6 @@ namespace BrewUI.ViewModels
             DateTime now = DateTime.Now;
             boilStartTime = now;
             boilEndTime = boilStartTime + TimeSpan.FromMinutes(TargetDuration);
-            DateTime endTime = boilStartTime + TimeSpan.FromMinutes(TargetDuration);
             TimeSpan timeLeft = TimeSpan.FromMinutes(TargetDuration);
 
             boilTimer = new DispatcherTimer();
@@ -960,10 +1099,10 @@ namespace BrewUI.ViewModels
             source.CancelAfter(TimeSpan.FromSeconds(1));
 
             List<Task> tasks = new List<Task>();
-            tasks.Add(Task.Run(() => HeaterController(endTime - boilStartTime, source.Token)));
+            tasks.Add(Task.Run(() => HeaterController(boilEndTime - boilStartTime, source.Token)));
             tasks.Add(Task.Run(() =>
             {
-                while (now < endTime)
+                while (now < boilEndTime)
                 {
                     // Check if process is exited
                     if (!SessionRunning || CurrentProcess.Length < 1)
@@ -974,7 +1113,7 @@ namespace BrewUI.ViewModels
                     Task.Delay(100).Wait();
 
                     now = DateTime.Now;
-                    timeLeft = endTime - now;
+                    timeLeft = boilEndTime - now;
 
                     foreach (BoilStep boilStep in BoilSteps)
                     {
@@ -987,7 +1126,7 @@ namespace BrewUI.ViewModels
                                 string tempLine = hops.Amount + "g " + hops.Name;
                                 tempStr.AppendLine(tempLine);
                             }
-                            FileInteraction.PlaySound("Alarm.wav");
+                            FileInteraction.PlaySound(Sound.Finished);
                             MessageBox.Show("Add the following hops and press Ok.\n\n" + tempStr, "Add hops");
                             boilStep.added = true;
                             UpdateProgressionBar();
@@ -1016,7 +1155,7 @@ namespace BrewUI.ViewModels
                 return;
             }
 
-            FileInteraction.PlaySound("Alarm.wav");
+            FileInteraction.PlaySound(Sound.Finished);
             BoilStatus = "Finished";
             MessageBox.Show("Boil has finished!");
             BoilFinished = true;
@@ -1038,17 +1177,15 @@ namespace BrewUI.ViewModels
 
         private async Task Cooldown()
         {
+            List<StepConfirmation> stepConfirmations = new List<StepConfirmation>();
+            stepConfirmations.Add(new StepConfirmation { Name = "Remove hops from brewery" });
+            stepConfirmations.Add(new StepConfirmation { Name = "Insert cooling coil and connect to water tap" });
+            CustomWindowHandler.LoadStepConfirmationWindow(stepConfirmations, "Cooldown preparations");
+
             CooldownRunning = true;
             TargetTemp = currentRecipe.cooldownTargetTemp;
             CurrentProcess = "Cooldown";
-
-            MessageBoxResult result = MessageBox.Show($"Target temperature for cooldown is set to {TargetTemp}. ", "Prepare cooldown", MessageBoxButton.OKCancel);
-
-            if (result != MessageBoxResult.OK)
-            {
-                CloseCooldown();
-                return;
-            }
+            CurrentStep = "Cooling";
 
             while (TargetTemp < CurrentTemp)
             {
@@ -1125,15 +1262,9 @@ namespace BrewUI.ViewModels
 
         private void SpargeTimer_Tick(object sender, EventArgs e)
         {
-            spargeDur = spargeEndTime - DateTime.Now;
-            SpargeTimerText = spargeDur.ToString("hh\\:mm\\:ss");
+            TimeSpan timeLeft = spargeEndTime - DateTime.Now;
+            SpargeTimerText = timeLeft.ToString("hh\\:mm\\:ss");
         }
-
-        //private void SessionProgressTimer_Tick(object sender, EventArgs e)
-        //{
-        //    ElapsedSessionTime += -TimeSpan.FromSeconds(1);
-        //    SessionProgress = Convert.ToInt32(Math.Round((TotalSessionTime.TotalMinutes - ElapsedSessionTime.TotalMinutes)/TotalSessionTime.TotalMinutes));
-        //}
 
         #endregion
 
@@ -1268,7 +1399,6 @@ namespace BrewUI.ViewModels
             DateTime now = DateTime.Now;
             bool sendMessage = true;
             bool heating = false;
-            DateTime heaterEnd = now + TimeSpan.FromSeconds(1);
 
             ArduinoMessage arduinoMessage = new ArduinoMessage();
             arduinoMessage.AIndex = 'H';
@@ -1320,6 +1450,7 @@ namespace BrewUI.ViewModels
             }
 
             // Keep temp for duration
+            now = DateTime.Now;
             DateTime endTime = now + duration;
             while (now < endTime)
             {
@@ -1428,6 +1559,12 @@ namespace BrewUI.ViewModels
                 _batchSize = message.BreweryRecipe.sessionInfo.BatchSize;
                 MashSteps = message.BreweryRecipe.mashSteps;
 
+                // Status for all processes
+                MashStatus = "Waiting";
+                SpargeStatus = "Waiting";
+                BoilStatus = "Waiting";
+                CooldownStatus = "Waiting";
+
                 strikeWaterAdded = false;
 
                 startTime = DateTime.Now;
@@ -1437,10 +1574,14 @@ namespace BrewUI.ViewModels
                     step.Status = "Waiting";
                 }
 
+                MashBaskedLifted = false;
+
                 GrainList = message.BreweryRecipe.grainList;
                 spargeStep = message.BreweryRecipe.spargeStep;
                 SpargeWaterAmount = spargeStep.spargeWaterAmount;
                 SpargeTemp = spargeStep.spargeTemp;
+                SpargeDur = spargeStep.spargeDur;
+                SpargeTimerText = TimeSpan.FromMinutes(SpargeDur).ToString("hh\\:mm\\:ss");
 
                 // Retrieve hops list and create boil steps
                 foreach (Hops hops in message.BreweryRecipe.hopsList)
@@ -1466,6 +1607,8 @@ namespace BrewUI.ViewModels
                     BoilSteps[i].added = false;
                     prevBoilTime = hops.BoilTime;
                 }
+
+                // Cooldown 
                 CDTargetTemp = message.BreweryRecipe.cooldownTargetTemp;
                 if (CDTargetTemp > 0)
                 {
@@ -1476,6 +1619,27 @@ namespace BrewUI.ViewModels
                     RunCooldown = false;
                 }
                 numberofSteps = SetStepProgressionShares();
+
+                // Step temperatures
+                // Calculate water amounts for all steps
+                BatchVolume = BatchSize + Properties.Settings.Default.FermentertLoss;
+                PostBoilVolume = Calculations.PostBoilVolume(BatchVolume);
+                TimeSpan totalBoilTime = TimeSpan.FromSeconds(0);
+                foreach (Hops hops in HopsList)
+                {
+                    if (hops.BoilTime > totalBoilTime)
+                    {
+                        totalBoilTime = hops.BoilTime;
+                    }
+                }
+                BoilVolume = Calculations.BoilVolume(PostBoilVolume, totalBoilTime.TotalMinutes, Properties.Settings.Default.EvaporationRate, Properties.Settings.Default.BoilLoss);
+                double grainBill = 0;
+                foreach (Grain grain in GrainList)
+                {
+                    grainBill += grain.amount;
+                }
+
+                MashWater = Math.Round(Calculations.TotalWater(BoilVolume, grainBill),1);
             }
             else
             {

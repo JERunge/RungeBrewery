@@ -12,38 +12,57 @@ using System.Linq;
 using System.Media;
 using System.Security.Policy;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using static BrewUI.Models.MyEnums;
 
 namespace BrewUI.Models
 {
     public class FileInteraction
     {
-        public static BreweryRecipe OpenRecipe()
+        public static BreweryRecipe NewRecipe()
+        {
+            BreweryRecipe newRecipe = OpenRecipe(Properties.Settings.Default.NewRecipePath);
+            newRecipe.isNewFile = true;
+            return newRecipe;
+        }
+
+        public static BreweryRecipe OpenRecipe(string filePath = "")
         {
             BreweryRecipe BR = new BreweryRecipe();
             string recipeText = "";
             
-            OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.Filter = "Recipe (*.br)|*.br";
-            openDialog.FilterIndex = 1;
-
-            try
+            if(filePath.Length < 1)
             {
-                if (openDialog.ShowDialog() == true)
+                OpenFileDialog openDialog = new OpenFileDialog();
+                openDialog.Filter = "Recipe (*.br)|*.br";
+                openDialog.FilterIndex = 1;
+
+                try
                 {
-                    recipeText = File.ReadAllText(openDialog.FileName);
+                    if (openDialog.ShowDialog() == true)
+                    {
+                        recipeText = File.ReadAllText(openDialog.FileName);
+                        Properties.Settings.Default.LastFile = openDialog.FileName;
+                        Properties.Settings.Default.Save();
+                        Properties.Settings.Default.Reload();
+                    }
+                    else
+                    {
+                        return BR;
+                    }
                 }
-                else
+                catch
                 {
+                    MessageBox.Show("Recipe file is corrupted and cannot be opened.", "Error");
                     return BR;
                 }
             }
-            catch
+            else
             {
-                MessageBox.Show("Recipe file is corrupted and cannot be opened.", "Error");
-                return BR;
+                recipeText = File.ReadAllText(filePath);
             }
 
             #region Read session info
@@ -125,7 +144,7 @@ namespace BrewUI.Models
             provider.NumberDecimalSeparator = ",";
             ss.spargeTemp = Convert.ToDouble(GetDataInbetween("<TEMPERATURE>", spargeText),provider);
             ss.spargeWaterAmount = Convert.ToDouble(GetDataInbetween("<AMOUNT>", spargeText),provider);
-            //ss.spargeDur = TimeSpan.FromMinutes(Convert.ToDouble(GetDataInbetween("<DURATION>", spargeText)));
+            ss.spargeDur = Int32.Parse(GetDataInbetween("<DURATION>", spargeText));
 
             #endregion
 
@@ -156,11 +175,28 @@ namespace BrewUI.Models
 
             #endregion
 
+            #region Read cooldown
+
+            string cooldownText = GetDataInbetween("<COOLDOWN>", recipeText);
+            if(cooldownText != null)
+            {
+                BR.cooldownTargetTemp = Convert.ToDouble(GetDataInbetween("<TEMPERATURE>", cooldownText));
+            }
+            else
+            {
+                BR.cooldownTargetTemp = 0;
+            }
+            
+
+            #endregion
+
             BR.grainList = grains;
             BR.sessionInfo = si;
             BR.mashSteps = mashSteps;
             BR.spargeStep = ss;
             BR.hopsList = hopsList;
+
+            BR.isNewFile = false;
             return BR;
         }
 
@@ -278,7 +314,166 @@ namespace BrewUI.Models
             BR.spargeStep = ss;
             BR.hopsList = hopsList;
 
+            BR.isNewFile = true;
+
             return BR;
+        }
+
+        public static void SaverRecipe(BreweryRecipe currentRecipe)
+        {
+            if (currentRecipe.isNewFile)
+            {
+                
+            }
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Brewery Recipe|*.br";
+            sfd.Title = "Save recipe";
+
+            if (sfd.ShowDialog() == true)
+            {
+                if (sfd.FileName.Length != 0)
+                {
+                    string filePath = sfd.FileName;
+                    Properties.Settings.Default.LastFile = filePath;
+                    string recipeText = "<RECIPE>\n<DATA>\n";
+
+                    #region Add session info
+                    if (currentRecipe.sessionInfo.sessionName == null)
+                    {
+                        currentRecipe.sessionInfo.sessionName = "";
+                    }
+                    SessionInfo si = new SessionInfo();
+                    si = currentRecipe.sessionInfo;
+
+                    recipeText += "<SESSIONINFO>\n";
+
+                    // Recipe name
+                    recipeText += AddProperty("NAME", si.sessionName);
+
+                    // Batch size
+                    recipeText += AddProperty("BATCHSIZE", si.BatchSize.ToString());
+
+                    // Brew method
+                    recipeText += AddProperty("BREWMETHOD", si.BrewMethod);
+
+                    // Style
+                    recipeText += AddProperty("STYLE", si.style.Name);
+
+                    recipeText += "</SESSIONINFO>\n";
+                    #endregion
+
+                    #region Add grain list
+
+                    ObservableCollection<Grain> gl = new ObservableCollection<Grain>();
+                    gl = currentRecipe.grainList;
+
+                    recipeText += "<GRAINLIST>\n";
+
+                    foreach (Grain grain in gl)
+                    {
+                        recipeText += "<GRAIN>\n";
+
+                        // Name
+                        recipeText += AddProperty("NAME", grain.name);
+
+                        // Amount
+                        recipeText += AddProperty("AMOUNT", grain.amount.ToString());
+
+                        recipeText += "</GRAIN>\n";
+                    }
+
+                    recipeText += "</GRAINLIST>\n";
+                    #endregion
+
+                    #region Add mash steps
+
+                    ObservableCollection<MashStep> msl = new ObservableCollection<MashStep>();
+                    msl = currentRecipe.mashSteps;
+
+                    recipeText += "<MASHSTEPS>\n";
+
+                    foreach (MashStep ms in msl)
+                    {
+                        recipeText += "<MASHSTEP>\n";
+
+                        // Name
+                        recipeText += AddProperty("NAME", ms.stepName);
+
+                        // Temperature
+                        recipeText += AddProperty("TEMPERATURE", ms.stepTemp.ToString());
+
+                        // Duration
+                        recipeText += AddProperty("DURATION", ms.stepDuration.TotalMinutes.ToString());
+
+                        recipeText += "</MASHSTEP>\n";
+                    }
+
+                    recipeText += "</MASHSTEPS>\n";
+
+                    #endregion
+
+                    #region Add sparge step
+
+                    recipeText += "<SPARGESTEP>\n";
+                    recipeText += AddProperty("TEMPERATURE", currentRecipe.spargeStep.spargeTemp.ToString());
+                    recipeText += AddProperty("AMOUNT", currentRecipe.spargeStep.spargeWaterAmount.ToString());
+                    recipeText += AddProperty("DURATION", currentRecipe.spargeStep.spargeDur.ToString());
+                    recipeText += "</SPARGESTEP>\n";
+                    #endregion
+
+                    #region Add hops list
+
+                    ObservableCollection<Hops> hl = new ObservableCollection<Hops>();
+                    hl = currentRecipe.hopsList;
+
+                    recipeText += "<HOPSLIST>\n";
+
+                    foreach (Hops hops in hl)
+                    {
+                        recipeText += "<HOPS>\n";
+
+                        // Name
+                        recipeText += AddProperty("NAME", hops.Name);
+
+                        // Amount
+                        recipeText += AddProperty("AMOUNT", hops.Amount.ToString());
+
+                        // Boil time
+                        recipeText += AddProperty("BOILTIME", hops.BoilTime.TotalMinutes.ToString());
+
+                        recipeText += "</HOPS>\n";
+                    }
+
+                    recipeText += "</HOPSLIST>\n";
+
+                    #endregion
+
+                    #region Add cooldown data
+
+                    recipeText += $"<COOLDOWN>\n";
+
+                    // Add target temp
+                    recipeText += AddProperty("TEMPERATURE", currentRecipe.cooldownTargetTemp.ToString());
+
+                    // Close cooldown section
+                    recipeText += "</COOLDOWN>\n";
+
+                    #endregion
+
+                    recipeText += "</DATA>\n</RECIPE>";
+
+                    using (StreamWriter sw = new StreamWriter(filePath))
+                    {
+                        sw.Write(recipeText);
+                        sw.Close();
+                    }
+
+                    Properties.Settings.Default.LastFile = filePath;
+                    Properties.Settings.Default.Save();
+                    Properties.Settings.Default.Reload();
+                }
+            }
         }
 
         public static List<Hops> HopsFromDB()
@@ -512,7 +707,15 @@ namespace BrewUI.Models
             }
 
             string[] tempArray = recipeText.Split(new string[] { startMarker }, StringSplitOptions.RemoveEmptyEntries);
-            string resultString = tempArray[1];
+            string resultString = "";
+            try
+            {
+                resultString = tempArray[1];
+            }
+            catch
+            {
+                return null;
+            }
             tempArray = resultString.Split(new string[] { endMarker }, StringSplitOptions.RemoveEmptyEntries);
             resultString = tempArray[0];
 
@@ -525,15 +728,20 @@ namespace BrewUI.Models
             return result;
         }
 
-        public static async void PlaySound(string fileName)
+        public static async void PlaySound(Sound soundType)
         {
-            Uri uri = new Uri(AppDomain.CurrentDomain.BaseDirectory + fileName);
-            SoundPlayer SP = new SoundPlayer(AppDomain.CurrentDomain.BaseDirectory + fileName);
-            SP.LoadCompleted += delegate (object sender, AsyncCompletedEventArgs e)
+            soundHandler(soundType);
+        }
+
+        private static void soundHandler(Sound sound)
+        {
+            switch (sound)
             {
-                SP.Play();
-            };
-            SP.LoadAsync();
+                case Sound.Finished:
+                    SoundPlayer soundPlayer = new SoundPlayer("Alarm.wav");
+                    soundPlayer.Play();
+                    break;
+            }
         }
     }
 }

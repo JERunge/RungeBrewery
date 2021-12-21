@@ -8,7 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("favicon.ico")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("alarm.wav")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("database/rungebrewerydatabase.db")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("database/recipes/new%20session.br")]
 
 

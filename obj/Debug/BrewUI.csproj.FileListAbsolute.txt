@@ -380,3 +380,10 @@ C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\UserContro
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\MQTTnet.dll
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\MQTTnet.Extensions.ManagedClient.dll
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\BrewUI.csproj.AssemblyReference.cache
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\UserControls\TextBoxWithUnit.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\UserControls\TextBoxWithUnit.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\UserControls\TextBlockWithUnit.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\UserControls\TextBlockWithUnit.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\UserControls\StepConfirmationWindow.g.cs
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\obj\Debug\UserControls\StepConfirmationWindow.baml
+C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\bin\Debug\Database\Recipes\New session.br

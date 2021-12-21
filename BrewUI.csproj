@@ -21,6 +21,21 @@
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -40,6 +55,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Caliburn.Micro, Version=3.2.0.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
@@ -169,6 +187,8 @@
     <Compile Include="Items\BoilStep.cs" />
     <Compile Include="Items\BreweryRecipe.cs" />
     <Compile Include="Items\BrewerySettings.cs" />
+    <Compile Include="Items\BrewMethod.cs" />
+    <Compile Include="Items\Equipment.cs" />
     <Compile Include="Items\Grain.cs" />
     <Compile Include="Items\Hops.cs" />
     <Compile Include="Items\MashStep.cs" />
@@ -186,9 +206,11 @@
     <Compile Include="Models\Calculations.cs" />
     <Compile Include="Models\ConnectionHandler.cs" />
     <Compile Include="Models\GUI.cs" />
+    <Compile Include="Models\CustomWindowHandler.cs" />
     <Compile Include="Models\MyEnums.cs" />
     <Compile Include="Models\FileInteraction.cs" />
     <Compile Include="Models\SQLiteAcces.cs" />
+    <Compile Include="Items\StepConfirmation.cs" />
     <Compile Include="Models\WifiTCPConnection.cs" />
     <Compile Include="Models\WifiUDPConnection.cs" />
     <Compile Include="Models\WifiUDPConnector.cs" />
@@ -196,6 +218,15 @@
     <Compile Include="Settings.cs" />
     <Compile Include="UserControls\AutoSearchBox.xaml.cs">
       <DependentUpon>AutoSearchBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\StepConfirmationWindow.xaml.cs">
+      <DependentUpon>StepConfirmationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TextBlockWithUnit.xaml.cs">
+      <DependentUpon>TextBlockWithUnit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\TextBoxWithUnit.xaml.cs">
+      <DependentUpon>TextBoxWithUnit.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AddGrainsViewModel.cs" />
     <Compile Include="ViewModels\BrewerySettingsViewModel.cs" />
@@ -241,6 +272,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Content Include="favicon.ico" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -254,6 +286,9 @@
     <Content Include="Database\RungeBreweryDatabase.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Database\Recipes\New session.br">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -265,6 +300,18 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="UserControls\AutoSearchBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\StepConfirmationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\TextBlockWithUnit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\TextBoxWithUnit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -298,7 +345,16 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Database\Recipes\" />
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.VersionCheckAnalyzer.3.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.VersionCheckAnalyzer.resources.dll" />
@@ -310,6 +366,14 @@
     <Analyzer Include="..\packages\Microsoft.NetCore.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetCore.CSharp.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
     <Analyzer Include="..\packages\Microsoft.NetFramework.Analyzers.3.0.0\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <FileAssociation Include=".br">
+      <Visible>False</Visible>
+      <Description>Brewery recipe</Description>
+      <Progid>Recipe</Progid>
+      <DefaultIcon>icon.ico</DefaultIcon>
+    </FileAssociation>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

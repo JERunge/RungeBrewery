@@ -8,52 +8,49 @@
     <Setting Name="HeaterEffect" Type="System.Double" Scope="User">
       <Value Profile="(Default)">2</Value>
     </Setting>
-    <Setting Name="TapTemp" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">12</Value>
-    </Setting>
-    <Setting Name="STD_BatchSize" Type="System.Double" Scope="User">
+    <Setting Name="STD_BatchSize" Type="System.Double" Scope="Application">
       <Value Profile="(Default)">16</Value>
     </Setting>
-    <Setting Name="STD_HeaterEffect" Type="System.Double" Scope="User">
+    <Setting Name="STD_HeaterEffect" Type="System.Double" Scope="Application">
       <Value Profile="(Default)">2</Value>
     </Setting>
-    <Setting Name="STD_TapTemp" Type="System.Double" Scope="User">
+    <Setting Name="STD_TapTemp" Type="System.Double" Scope="Application">
       <Value Profile="(Default)">12</Value>
     </Setting>
     <Setting Name="MashThickness" Type="System.Double" Scope="User">
       <Value Profile="(Default)">2.5</Value>
     </Setting>
     <Setting Name="GrainAbsorption" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1.1</Value>
+      <Value Profile="(Default)">0.7</Value>
     </Setting>
-    <Setting Name="STD_MashThickness" Type="System.Double" Scope="User">
+    <Setting Name="STD_MashThickness" Type="System.Double" Scope="Application">
       <Value Profile="(Default)">2.5</Value>
     </Setting>
-    <Setting Name="STD_GrainAbsorption" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">1.1</Value>
+    <Setting Name="STD_GrainAbsorption" Type="System.Double" Scope="Application">
+      <Value Profile="(Default)">0.7</Value>
     </Setting>
     <Setting Name="PumpOnDuration" Type="System.Double" Scope="User">
       <Value Profile="(Default)">10</Value>
     </Setting>
-    <Setting Name="STD_PumpOnDuration" Type="System.Double" Scope="User">
+    <Setting Name="STD_PumpOnDuration" Type="System.Double" Scope="Application">
       <Value Profile="(Default)">10</Value>
     </Setting>
     <Setting Name="PumpOffDuration" Type="System.Double" Scope="User">
       <Value Profile="(Default)">30</Value>
     </Setting>
-    <Setting Name="STD_PumpOffDuration" Type="System.Double" Scope="User">
+    <Setting Name="STD_PumpOffDuration" Type="System.Double" Scope="Application">
       <Value Profile="(Default)">30</Value>
     </Setting>
     <Setting Name="PathRecipesFolder" Type="System.String" Scope="Application">
       <Value Profile="(Default)">.\Database\Recipes\</Value>
     </Setting>
-    <Setting Name="EquipmentLoss" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">2</Value>
+    <Setting Name="FermentertLoss" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.5</Value>
     </Setting>
-    <Setting Name="STD_EquipmentLoss" Type="System.Double" Scope="User">
-      <Value Profile="(Default)">2</Value>
+    <Setting Name="STD_FermenterLoss" Type="System.Double" Scope="Application">
+      <Value Profile="(Default)">0.5</Value>
     </Setting>
-    <Setting Name="STD_MashRatio" Type="System.Double" Scope="User">
+    <Setting Name="STD_MashRatio" Type="System.Double" Scope="Application">
       <Value Profile="(Default)">2.7</Value>
     </Setting>
     <Setting Name="MashRatio" Type="System.Double" Scope="User">
@@ -70,6 +67,33 @@
     </Setting>
     <Setting Name="receivePort" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">8888</Value>
+    </Setting>
+    <Setting Name="BoilLoss" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.5</Value>
+    </Setting>
+    <Setting Name="CooldownShrinkage" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="STD_CooldownShrinkage" Type="System.Double" Scope="Application">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="EvaporationRate" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="KettleLoss" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">0.5</Value>
+    </Setting>
+    <Setting Name="STD_KettleLoss" Type="System.Double" Scope="Application">
+      <Value Profile="(Default)">0.5</Value>
+    </Setting>
+    <Setting Name="STD_EvaporationRate" Type="System.Double" Scope="Application">
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="LastFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="NewRecipePath" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\Database\Recipes\New session.br</Value>
     </Setting>
   </Settings>
 </SettingsFile>

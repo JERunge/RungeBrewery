@@ -20,12 +20,15 @@ namespace BrewUI.ViewModels
         #region Variables
         private double prevBatchSize { get; set; }
         private double prevHeaterEffect { get; set; }
-        private double prevTapTemp { get; set; }
         private double prevEquipmentLoss { get; set; }
         private double prevMashThickness { get; set; }
         private double prevGrainAbsorption { get; set; }
         private double prevPumpOnDuration { get; set; }
         private double prevPumpOffDuration { get; set; }
+        private double prevFermenterLoss { get; set; }
+        private double prevKettleLoss { get; set; }
+        private double prevEvaporationRate { get; set; }
+        private double prevCoolingShrinkage { get; set; }
 
         private IEventAggregator _events;
 
@@ -55,14 +58,23 @@ namespace BrewUI.ViewModels
             }
         }
 
-        private double _tapTemp;
-        public double TapTemp
+        private double _fermenterLoss;
+        public double FermenterLoss
         {
-            get { return _tapTemp; }
-            set
-            {
-                _tapTemp = value;
-                NotifyOfPropertyChange(() => TapTemp);
+            get { return _fermenterLoss; }
+            set {
+                _fermenterLoss = value;
+                NotifyOfPropertyChange(() => FermenterLoss);
+            }
+        }
+
+        private double _kettleLoss;
+        public double KettleLoss
+        {
+            get { return _kettleLoss; }
+            set {
+                _kettleLoss = value;
+                NotifyOfPropertyChange(() => KettleLoss);
             }
         }
 
@@ -96,6 +108,26 @@ namespace BrewUI.ViewModels
             {
                 _grainAbsorption = value;
                 NotifyOfPropertyChange(() => GrainAbsorption);
+            }
+        }
+
+        private double _coolingShrinkage;
+        public double CoolingShrinkage
+        {
+            get { return _coolingShrinkage; }
+            set {
+                _coolingShrinkage = value;
+                NotifyOfPropertyChange(() => CoolingShrinkage);
+            }
+        }
+
+        private double _evaporationRate;
+        public double EvaporationRate
+        {
+            get { return _evaporationRate; }
+            set { 
+                _evaporationRate = value;
+                NotifyOfPropertyChange(() => EvaporationRate);
             }
         }
 
@@ -206,22 +238,29 @@ namespace BrewUI.ViewModels
             _events = events;
             _events.Subscribe(this);
 
+            // Equipment
             BatchSize = Properties.Settings.Default.BatchSize;
             HeaterEffect = Properties.Settings.Default.HeaterEffect;
-            TapTemp = Properties.Settings.Default.TapTemp;
-            EquipmentLoss = Properties.Settings.Default.EquipmentLoss;
+            FermenterLoss = Properties.Settings.Default.FermentertLoss;
+            KettleLoss = Properties.Settings.Default.KettleLoss;
+
+            // General
             MashThickness = Properties.Settings.Default.MashThickness;
             GrainAbsorption = Properties.Settings.Default.GrainAbsorption;
+            CoolingShrinkage = Properties.Settings.Default.CooldownShrinkage;
+            EvaporationRate = Properties.Settings.Default.EvaporationRate;
             PumpOnDuration = Properties.Settings.Default.PumpOnDuration;
-            PumpOffDuration = Properties.Settings.Default.PumpOffDuration;
 
+            // Equipment
             prevBatchSize = Properties.Settings.Default.BatchSize;
             prevHeaterEffect = Properties.Settings.Default.HeaterEffect;
-            prevTapTemp = Properties.Settings.Default.TapTemp;
-            prevEquipmentLoss = Properties.Settings.Default.EquipmentLoss;
+            prevFermenterLoss = Properties.Settings.Default.FermentertLoss;
+            prevKettleLoss = Properties.Settings.Default.KettleLoss;
+
             prevMashThickness = Properties.Settings.Default.MashThickness;
             prevGrainAbsorption = Properties.Settings.Default.GrainAbsorption;
-            prevPumpOffDuration = Properties.Settings.Default.PumpOffDuration;
+            prevCoolingShrinkage = Properties.Settings.Default.CooldownShrinkage;
+            prevEvaporationRate = Properties.Settings.Default.EvaporationRate;
             prevPumpOnDuration = Properties.Settings.Default.PumpOnDuration;
 
             HopList = new List<Hops>(FileInteraction.HopsFromDB());
@@ -246,14 +285,20 @@ namespace BrewUI.ViewModels
         #region UI Methods
         public void CancelSettings()
         {
+            // Equipment
             BatchSize = prevBatchSize;
             HeaterEffect = prevHeaterEffect;
-            TapTemp = prevTapTemp;
-            EquipmentLoss = prevEquipmentLoss;
+            FermenterLoss = prevFermenterLoss;
+            KettleLoss = prevKettleLoss;
+
+            // General
             MashThickness = prevMashThickness;
             GrainAbsorption = prevGrainAbsorption;
+            CoolingShrinkage = prevCoolingShrinkage;
+            EvaporationRate = prevEvaporationRate;
             PumpOnDuration = prevPumpOnDuration;
             PumpOffDuration = prevPumpOffDuration;
+
             this.TryClose();
         }
 
@@ -262,33 +307,46 @@ namespace BrewUI.ViewModels
             MessageBoxResult answer = MessageBox.Show("This will delete all settings and restore them to default. Continue?", "Caution", MessageBoxButton.YesNo);
             if (answer == MessageBoxResult.Yes)
             {
+                // Equipment
                 BatchSize = Properties.Settings.Default.STD_BatchSize;
                 HeaterEffect = Properties.Settings.Default.STD_HeaterEffect;
-                TapTemp = Properties.Settings.Default.STD_TapTemp;
-                EquipmentLoss = Properties.Settings.Default.STD_EquipmentLoss;
+                FermenterLoss = Properties.Settings.Default.STD_FermenterLoss;
+                KettleLoss = Properties.Settings.Default.STD_KettleLoss;
+
+                // General
                 MashThickness = Properties.Settings.Default.STD_MashThickness;
                 GrainAbsorption = Properties.Settings.Default.STD_GrainAbsorption;
+                CoolingShrinkage = Properties.Settings.Default.STD_CooldownShrinkage;
+                EvaporationRate = Properties.Settings.Default.STD_EvaporationRate;
                 PumpOnDuration = Properties.Settings.Default.STD_PumpOnDuration;
-                PumpOffDuration = Properties.Settings.Default.STD_PumpOffDuration;
 
+                // Equipment
                 Properties.Settings.Default.BatchSize = BatchSize;
                 Properties.Settings.Default.HeaterEffect = HeaterEffect;
-                Properties.Settings.Default.TapTemp = TapTemp;
-                Properties.Settings.Default.EquipmentLoss = EquipmentLoss;
+                Properties.Settings.Default.FermentertLoss = FermenterLoss;
+                Properties.Settings.Default.KettleLoss = KettleLoss;
+
+                // General
                 Properties.Settings.Default.MashThickness = MashThickness;
                 Properties.Settings.Default.GrainAbsorption = GrainAbsorption;
+                Properties.Settings.Default.CooldownShrinkage = CoolingShrinkage;
+                Properties.Settings.Default.EvaporationRate = EvaporationRate;
                 Properties.Settings.Default.PumpOnDuration = PumpOnDuration;
-                Properties.Settings.Default.PumpOffDuration = PumpOffDuration;
                 Properties.Settings.Default.Save();
+                Properties.Settings.Default.Reload();
 
+                // Equipment
                 prevBatchSize = Properties.Settings.Default.BatchSize;
                 prevHeaterEffect = Properties.Settings.Default.HeaterEffect;
-                prevTapTemp = Properties.Settings.Default.TapTemp;
-                prevEquipmentLoss = Properties.Settings.Default.EquipmentLoss;
+                prevFermenterLoss = Properties.Settings.Default.FermentertLoss;
+                prevKettleLoss = Properties.Settings.Default.KettleLoss;
+
+                // General
                 prevMashThickness = Properties.Settings.Default.MashThickness;
                 prevGrainAbsorption = Properties.Settings.Default.GrainAbsorption;
+                prevCoolingShrinkage = Properties.Settings.Default.CooldownShrinkage;
+                prevEvaporationRate = Properties.Settings.Default.EvaporationRate;
                 prevPumpOnDuration = Properties.Settings.Default.PumpOnDuration;
-                prevPumpOffDuration = Properties.Settings.Default.PumpOffDuration;
 
                 MessageBox.Show("All settings have been reset to their default values.");
 
@@ -298,14 +356,18 @@ namespace BrewUI.ViewModels
 
         public void ApplySettings()
         {
+            // Equipment
             Properties.Settings.Default.BatchSize = BatchSize;
             Properties.Settings.Default.HeaterEffect = HeaterEffect;
-            Properties.Settings.Default.TapTemp = TapTemp;
-            Properties.Settings.Default.EquipmentLoss = EquipmentLoss;
+            Properties.Settings.Default.FermentertLoss = FermenterLoss;
+            Properties.Settings.Default.KettleLoss = KettleLoss;
+
+            // General
             Properties.Settings.Default.MashThickness = MashThickness;
             Properties.Settings.Default.GrainAbsorption = GrainAbsorption;
+            Properties.Settings.Default.CooldownShrinkage = CoolingShrinkage;
+            Properties.Settings.Default.EvaporationRate = EvaporationRate;
             Properties.Settings.Default.PumpOnDuration = PumpOnDuration;
-            Properties.Settings.Default.PumpOffDuration = PumpOffDuration;
 
             if (sessionRunning)
             {
@@ -340,6 +402,7 @@ namespace BrewUI.ViewModels
             }
             
             Properties.Settings.Default.Save();
+            Properties.Settings.Default.Reload();
             MessageBox.Show("Settings saved!");
             _events.PublishOnUIThread(new SettingsUpdatedEvent { brewerySettings = new BrewerySettings()});
             this.TryClose();

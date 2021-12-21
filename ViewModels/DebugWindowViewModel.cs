@@ -137,8 +137,6 @@ namespace BrewUI.ViewModels
             }
         }
 
-        private static WifiUDPConnector wifiUDPConnector;
-
         public DebugWindowViewModel(IEventAggregator events)
         {
             // Subscribe to events

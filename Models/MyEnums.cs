@@ -16,5 +16,11 @@ namespace BrewUI.Models
             Connected,
             Reconnecting
         }
+
+        public enum Sound
+        {
+            Finished,
+            Error
+        }
     }
 }

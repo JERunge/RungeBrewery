@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace BrewUI.Views
 {
@@ -21,9 +22,24 @@ namespace BrewUI.Views
     /// </summary>
     public partial class SessionView : UserControl
     {
+        DispatcherTimer timer;
+
         public SessionView()
         {
             InitializeComponent();
+        }
+
+        private void StartMash_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (StartMash.IsEnabled)
+            {
+                MashExpander.IsExpanded = true;
+            }
+            else
+            {
+                MashExpander.IsExpanded = false;
+                SpargeExpander.IsExpanded = true;
+            }
         }
     }
 }

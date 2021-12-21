@@ -12,7 +12,7 @@ namespace BrewUI.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.8.1.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.10.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -47,51 +47,30 @@ namespace BrewUI.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("12")]
-        public double TapTemp {
-            get {
-                return ((double)(this["TapTemp"]));
-            }
-            set {
-                this["TapTemp"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("16")]
         public double STD_BatchSize {
             get {
                 return ((double)(this["STD_BatchSize"]));
             }
-            set {
-                this["STD_BatchSize"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public double STD_HeaterEffect {
             get {
                 return ((double)(this["STD_HeaterEffect"]));
             }
-            set {
-                this["STD_HeaterEffect"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("12")]
         public double STD_TapTemp {
             get {
                 return ((double)(this["STD_TapTemp"]));
-            }
-            set {
-                this["STD_TapTemp"] = value;
             }
         }
         
@@ -109,7 +88,7 @@ namespace BrewUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.7")]
         public double GrainAbsorption {
             get {
                 return ((double)(this["GrainAbsorption"]));
@@ -119,27 +98,21 @@ namespace BrewUI.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2.5")]
         public double STD_MashThickness {
             get {
                 return ((double)(this["STD_MashThickness"]));
             }
-            set {
-                this["STD_MashThickness"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1.1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.7")]
         public double STD_GrainAbsorption {
             get {
                 return ((double)(this["STD_GrainAbsorption"]));
-            }
-            set {
-                this["STD_GrainAbsorption"] = value;
             }
         }
         
@@ -155,15 +128,12 @@ namespace BrewUI.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public double STD_PumpOnDuration {
             get {
                 return ((double)(this["STD_PumpOnDuration"]));
-            }
-            set {
-                this["STD_PumpOnDuration"] = value;
             }
         }
         
@@ -179,15 +149,12 @@ namespace BrewUI.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("30")]
         public double STD_PumpOffDuration {
             get {
                 return ((double)(this["STD_PumpOffDuration"]));
-            }
-            set {
-                this["STD_PumpOffDuration"] = value;
             }
         }
         
@@ -202,37 +169,31 @@ namespace BrewUI.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
-        public double EquipmentLoss {
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        public double FermentertLoss {
             get {
-                return ((double)(this["EquipmentLoss"]));
+                return ((double)(this["FermentertLoss"]));
             }
             set {
-                this["EquipmentLoss"] = value;
+                this["FermentertLoss"] = value;
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
-        public double STD_EquipmentLoss {
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        public double STD_FermenterLoss {
             get {
-                return ((double)(this["STD_EquipmentLoss"]));
-            }
-            set {
-                this["STD_EquipmentLoss"] = value;
+                return ((double)(this["STD_FermenterLoss"]));
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2.7")]
         public double STD_MashRatio {
             get {
                 return ((double)(this["STD_MashRatio"]));
-            }
-            set {
-                this["STD_MashRatio"] = value;
             }
         }
         
@@ -287,6 +248,102 @@ namespace BrewUI.Properties {
         public int receivePort {
             get {
                 return ((int)(this["receivePort"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        public double BoilLoss {
+            get {
+                return ((double)(this["BoilLoss"]));
+            }
+            set {
+                this["BoilLoss"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public double CooldownShrinkage {
+            get {
+                return ((double)(this["CooldownShrinkage"]));
+            }
+            set {
+                this["CooldownShrinkage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public double STD_CooldownShrinkage {
+            get {
+                return ((double)(this["STD_CooldownShrinkage"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public double EvaporationRate {
+            get {
+                return ((double)(this["EvaporationRate"]));
+            }
+            set {
+                this["EvaporationRate"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        public double KettleLoss {
+            get {
+                return ((double)(this["KettleLoss"]));
+            }
+            set {
+                this["KettleLoss"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.5")]
+        public double STD_KettleLoss {
+            get {
+                return ((double)(this["STD_KettleLoss"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public double STD_EvaporationRate {
+            get {
+                return ((double)(this["STD_EvaporationRate"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastFile {
+            get {
+                return ((string)(this["LastFile"]));
+            }
+            set {
+                this["LastFile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".\\Database\\Recipes\\New session.br")]
+        public string NewRecipePath {
+            get {
+                return ((string)(this["NewRecipePath"]));
             }
         }
     }

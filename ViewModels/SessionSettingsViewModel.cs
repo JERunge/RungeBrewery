@@ -26,7 +26,7 @@ namespace BrewUI.ViewModels
         #region Private variables
 
         private string _sessionName;
-        private StringListItem _selectedBrewMethod;
+        private BrewMethod _selectedBrewMethod;
         private BeerStyle _selectedBeerStyle;
 
         #endregion
@@ -171,10 +171,10 @@ namespace BrewUI.ViewModels
         public static SessionInfo SessionInfoList { get; set; } = new SessionInfo();
         public static ObservableCollection<MashStep> MashList { get; set; } = new ObservableCollection<MashStep>();
 
-        public static BindingList<StringListItem> BrewMethods { get; set; } = new BindingList<StringListItem>();
+        public static List<BrewMethod> BrewMethods { get; set; } = new List<BrewMethod>();
         public static ObservableCollection<BeerStyle> StyleList { get; set; } = new ObservableCollection<BeerStyle>();
 
-        public StringListItem SelectedBrewMethod
+        public BrewMethod SelectedBrewMethod
         {
             get 
             { 
@@ -230,6 +230,17 @@ namespace BrewUI.ViewModels
             { 
                 _spargeWaterAmount = value;
                 NotifyOfPropertyChange(() => SpargeWaterAmount);
+            }
+        }
+
+        private int _spargeDur;
+        public int SpargeDur
+        {
+            get { return _spargeDur; }
+            set
+            {
+                _spargeDur = value;
+                NotifyOfPropertyChange(() => SpargeDur);
             }
         }
 
@@ -439,9 +450,7 @@ namespace BrewUI.ViewModels
 
             #region Start values
 
-            BrewMethods.Add(new StringListItem() { StringItem = "All grain" });
-            BrewMethods.Add(new StringListItem() { StringItem = "Extract" });
-            BrewMethods.Add(new StringListItem() { StringItem = "BIAB" });
+            BrewMethods = SQLiteAcces.LoadBrewMethods();
 
             StyleList = new ObservableCollection<BeerStyle>(FileInteraction.StylesFromDB());
 
@@ -481,6 +490,11 @@ namespace BrewUI.ViewModels
             CDTargetTemp = 20.0;
 
             SessionNameBorder = false;
+
+            if(Properties.Settings.Default.LastFile.Length > 1)
+            {
+                _events.PublishOnUIThread(new RecipeOpened { openedRecipe = FileInteraction.OpenRecipe(Properties.Settings.Default.LastFile) });
+            }
             #endregion
         }
 
@@ -657,7 +671,7 @@ namespace BrewUI.ViewModels
         {
             SessionInfoList.BatchSize = BatchSize;
             SessionInfoList.style = SelectedBeerStyle;
-            SessionInfoList.BrewMethod = SelectedBrewMethod.StringItem;
+            SessionInfoList.BrewMethod = SelectedBrewMethod.Name;
             SessionInfoList.sessionName = SessionName;
         }
 
@@ -694,7 +708,7 @@ namespace BrewUI.ViewModels
             br.grainList = AddedGrains;
             SpargeStep spargeStep = new SpargeStep();
             spargeStep.spargeTemp = SpargeTemp;
-            spargeStep.spargeWaterAmount = SpargeWaterAmount;
+            spargeStep.spargeDur = SpargeDur;
             br.spargeStep = spargeStep;
             br.hopsList = AddedHops;
             foreach(MashStep step in br.mashSteps)
@@ -703,10 +717,7 @@ namespace BrewUI.ViewModels
             }
             br.hopsList = AddedHops;
 
-            if (RunCooldown)
-            {
-                br.cooldownTargetTemp = CDTargetTemp;
-            }
+            br.cooldownTargetTemp = CDTargetTemp;
 
             return br;
         }
@@ -719,9 +730,9 @@ namespace BrewUI.ViewModels
             BatchSize = breweryRecipe.sessionInfo.BatchSize;
 
             bool newMethod = true;
-            foreach(StringListItem item in BrewMethods)
+            foreach(BrewMethod item in BrewMethods)
             {
-                if(item.StringItem == breweryRecipe.sessionInfo.BrewMethod)
+                if(item.Name == breweryRecipe.sessionInfo.BrewMethod)
                 {
                     SelectedBrewMethod = item;
                     newMethod = false;
@@ -729,24 +740,32 @@ namespace BrewUI.ViewModels
             }
             if (newMethod)
             {
-                BrewMethods.Add(new StringListItem() { StringItem = breweryRecipe.sessionInfo.BrewMethod });
+                BrewMethods.Add(new BrewMethod() { Name = breweryRecipe.sessionInfo.BrewMethod });
             }
 
             bool newStyle = true;
+            int i = 0;
             foreach(BeerStyle beerStyle in StyleList)
             {
-                if(beerStyle.Name == breweryRecipe.sessionInfo.style.Name)
+                if (beerStyle.Name == breweryRecipe.sessionInfo.style.Name)
                 {
-                    SelectedBeerStyle = beerStyle;
                     newStyle = false;
+                    break;
                 }
+                i++;
             }
             if (newStyle)
             {
                 StyleList.Add(breweryRecipe.sessionInfo.style);
+                SelectedBeerStyle = breweryRecipe.sessionInfo.style;
             }
+            else
+            {
+                SelectedBeerStyle = StyleList[i];
+            }
+            
 
-            SelectedBeerStyle = breweryRecipe.sessionInfo.style;
+            
 
             #endregion
 
@@ -788,6 +807,7 @@ namespace BrewUI.ViewModels
             #region Sparge step
             SpargeTemp = breweryRecipe.spargeStep.spargeTemp;
             SpargeWaterAmount = breweryRecipe.spargeStep.spargeWaterAmount;
+            SpargeDur = breweryRecipe.spargeStep.spargeDur;
             #endregion
 
             #region Hops list
@@ -796,6 +816,12 @@ namespace BrewUI.ViewModels
             {
                 AddedHops.Add(hops);
             }
+
+            #endregion
+
+            #region Cooldown
+
+            CDTargetTemp = breweryRecipe.cooldownTargetTemp;
 
             #endregion
         }

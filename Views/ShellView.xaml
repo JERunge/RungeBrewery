@@ -113,20 +113,11 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Button x:Name="LoadManual">
-                <Button.Style>
-                    <Style TargetType="Button" BasedOn="{StaticResource MenuButton}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ActiveWindow}" Value="ManualVM">
-                                <Setter Property="Background" Value="{StaticResource ButtonSelected}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
+            <Button x:Name="NewRecipe" Style="{StaticResource MenuButton}">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Screwdriver" Margin="0 0 10 0" VerticalAlignment="Center"/>
-                        <TextBlock Text="Manual"/>
+                        <materialDesign:PackIcon Kind="NotePlus" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                        <TextBlock Text="New recipe"/>
                     </StackPanel>
                 </Button.Content>
             </Button>
@@ -146,11 +137,28 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Button x:Name="ImportRecipe" Style="{StaticResource MenuButton}" BorderThickness="0 1 0 0">
+            <Button x:Name="ImportRecipe" Style="{StaticResource MenuButton}" BorderThickness="0 0 0 1">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Import" Margin="0 0 10 0" VerticalAlignment="Center"/>
                         <TextBlock Text="Import recipe"/>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button x:Name="LoadManual">
+                <Button.Style>
+                    <Style TargetType="Button" BasedOn="{StaticResource MenuButton}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ActiveWindow}" Value="ManualVM">
+                                <Setter Property="Background" Value="{StaticResource ButtonSelected}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Screwdriver" Margin="0 0 10 0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Manual"/>
                     </StackPanel>
                 </Button.Content>
             </Button>

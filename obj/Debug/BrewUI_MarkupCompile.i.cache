@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Jan-Erik\Google Drive\Hobby\BrewSystem 2020\BrewUI\App.xaml
-81989150403
-2116009437
-62-540783325
+11-1776910514
+4720615259
+69-1642118548
 142-1086636345
-UserControls\AutoSearchBox.xaml;Views\AddGrainsView.xaml;Views\BrewerySettingsView.xaml;Views\DebugWindowView.xaml;Views\SessionSettingsView.xaml;Views\ManualView.xaml;Views\SessionView.xaml;Views\ShellView.xaml;
+UserControls\AutoSearchBox.xaml;UserControls\StepConfirmationWindow.xaml;UserControls\TextBlockWithUnit.xaml;UserControls\TextBoxWithUnit.xaml;Views\AddGrainsView.xaml;Views\BrewerySettingsView.xaml;Views\DebugWindowView.xaml;Views\SessionSettingsView.xaml;Views\ManualView.xaml;Views\SessionView.xaml;Views\ShellView.xaml;
 
 False
 
