@@ -593,6 +593,13 @@ namespace BrewUI.ViewModels
         public DateTime startTime { get; set; }
         private DateTime chartStartTime;
 
+
+        #region Process cancellation
+        private static CancellationTokenSource sessionCTS = new CancellationTokenSource();
+        private static CancellationTokenSource mashCTS = CancellationTokenSource.CreateLinkedTokenSource(sessionCTS.Token);
+        private static CancellationTokenSource boilCTS = CancellationTokenSource.CreateLinkedTokenSource(sessionCTS.Token);
+        #endregion
+
         #endregion
 
         public SessionViewModel(IEventAggregator events)
@@ -684,56 +691,18 @@ namespace BrewUI.ViewModels
                 }
             }
 
-            //double waterAmount = Math.Round(Calculations.MashWater(grainWeight), 1);
-
-            // Add strike water and heat to strike temp
-            //if (!strikeWaterAdded)
-            //{
-            //    double strikeTemp = Math.Round(Calculations.StrikeTemp(MashWater, MashSteps[0].stepTemp, grainWeight), 1);
-            //    //MessageBoxResult answer = MessageBox.Show(string.Format("Strike temperature calculated to {0}°C.\n\nAdd {1}L of water and press OK.", strikeTemp, waterAmount), "Add strike water", MessageBoxButton.OKCancel);
-            //    MessageBoxResult answer = MessageBox.Show(string.Format("Strike temperature calculated to {0}°C.\n\nAdd {1}L of water and press OK.", strikeTemp, MashWater), "Add strike water", MessageBoxButton.OKCancel);
-
-            //    if (answer == MessageBoxResult.Cancel)
-            //    {
-            //        MessageBoxResult messageBoxResult = MessageBox.Show("This will abort the mash. Do you want to proceed?", "Warning", MessageBoxButton.YesNo);
-            //        if (messageBoxResult == MessageBoxResult.Yes)
-            //        {
-            //            CloseMash();
-            //            return;
-            //        }
-            //    }
-            //}
-            //strikeWaterAdded = true;
-
             double strikeTemp = Math.Round(Calculations.StrikeTemp(MashWater, MashSteps[0].stepTemp, grainWeight), 1);
 
             startTime = DateTime.Now;
             continueTask = false;
             TargetTemp = strikeTemp;
 
-            CancellationTokenSource source = new CancellationTokenSource();
-            source.CancelAfter(TimeSpan.FromSeconds(1));
             MashStatus = "Preheating";
-            Task heatAndKeep = Task.Run(() => HeatAndKeepAsync(TimeSpan.Zero), source.Token);
-            await heatAndKeep;
-
-            MashStep ms = MashSteps[0]; // Create this to have something to give to MashStepCancelled
-            
-            while (!continueTask)
+            try
             {
-                // Check if process is exited
-                if (MashStepCancelled(ms))
-                {
-                    CloseMash();
-                    return;
-                }
-                await Task.Delay(100);
+                await HeatAndKeepAsync(TimeSpan.Zero, mashCTS.Token);
             }
-
-            continueTask = false;
-
-            // Check again if mash is cancelled
-            if (MashStepCancelled(ms))
+            catch (OperationCanceledException)
             {
                 CloseMash();
                 return;
@@ -789,11 +758,13 @@ namespace BrewUI.ViewModels
                 item.Status = "Preheating";
                 MashStatus = item.Status;
 
-                await HeatAndKeepAsync(TimeSpan.Zero);
-
-                // Check again if mash is cancelled
-                if (MashStepCancelled(item, "Waiting"))
+                try
                 {
+                    await HeatAndKeepAsync(TimeSpan.Zero, mashCTS.Token);
+                }
+                catch (OperationCanceledException)
+                {
+                    item.stepTimer.Stop();
                     CloseMash();
                     return;
                 }
@@ -809,26 +780,24 @@ namespace BrewUI.ViewModels
                 item.stepTimer.Start();
 
                 List<Task> tasks = new List<Task>();
-                tasks.Add(Task.Run(() => HeatAndKeepAsync(item.endTime - item.startTime)));
+                tasks.Add(Task.Run(() => HeatAndKeepAsync(item.endTime - item.startTime, mashCTS.Token)));
                 tasks.Add(Task.Run(() =>
                 {
-                    // Check if process is exited
-                    if (!SessionRunning || CurrentProcess.Length < 1 || MashStepCancelled(item, "Waiting"))
+                    while(item.endTime > DateTime.Now)
                     {
-                        foreach (MashStep step in MashSteps)
+                        // Check if process is exited
+                        if (mashCTS.Token.IsCancellationRequested)
                         {
-                            if (step.Status == "Mashing")
-                            {
-                                step.Status = "Paused";
-                                MashStatus = "Paused";
-                                step.stepTimer.Stop();
-                                step.timeLeft = item.endTime.Subtract(DateTime.Now);
-                            }
+                            item.Status = "Paused";
+                            MashStatus = "Paused";
+                            item.stepTimer.Stop();
+                            item.timeLeft = item.endTime.Subtract(DateTime.Now);
+                            CloseMash();
+                            return;
                         }
-                        CloseMash();
-                        return;
+
+                        Task.Delay(100).Wait();
                     }
-                    Task.Delay(100).Wait();
                 }));
 
                 await Task.WhenAll(tasks);
@@ -867,22 +836,6 @@ namespace BrewUI.ViewModels
             SendToArduino('p', SessionProgress.ToString());
         }
 
-        private bool MashStepCancelled(MashStep ms, String itemStatus = "")
-        {
-            if (!SessionRunning || MashRunning == false)
-            {
-                if (itemStatus != "")
-                {
-                    ms.Status = itemStatus;
-                }
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public async void StartMash()
         {
             // Cancel mash
@@ -891,30 +844,9 @@ namespace BrewUI.ViewModels
                 MessageBoxResult result = MessageBox.Show("This will abort the current mash process. Continue?", "Warning", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                    CloseMash();
+                    mashCTS.Cancel();
                 }
                 return;
-            }
-
-            // Check if mash was paused previously
-            foreach (MashStep step in MashSteps)
-            {
-                if (step.Status == "Paused" | step.Status == "Finished")
-                {
-                    MessageBoxResult answer_continue = MessageBox.Show("The mash was previously paused. Press Yes to proceed with the paused mash, or press No to restart.", "Warning", MessageBoxButton.YesNoCancel);
-                    if (answer_continue == MessageBoxResult.No)
-                    {
-                        foreach (MashStep item in MashSteps)
-                        {
-                            item.Status = "Waiting";
-                            item.TimerText = step.stepDuration.ToString("hh\\:mm\\:ss");
-                        }
-                    }
-                    else if (answer_continue == MessageBoxResult.Cancel)
-                    {
-                        return;
-                    }
-                }
             }
 
             Mash();
@@ -952,20 +884,15 @@ namespace BrewUI.ViewModels
             TargetTemp = SpargeTemp;
 
             // Preheat
-            Task heatAndKeep = Task.Run(() => HeatAndKeepAsync(TimeSpan.Zero), source.Token);
-            await heatAndKeep;
-
-            while (!continueTask)
+            try
             {
-                // Check if process is exited
-                if (!SessionRunning || CurrentProcess.Length < 1)
-                {
-                    CloseSparge();
-                    return;
-                }
-                await Task.Delay(100);
+                await HeatAndKeepAsync(TimeSpan.Zero, source.Token);
             }
-            continueTask = false;
+            catch (OperationCanceledException)
+            {
+                CloseSparge();
+                return;
+            }
 
             FileInteraction.PlaySound(Sound.Finished);
 
@@ -989,18 +916,15 @@ namespace BrewUI.ViewModels
             SpargeTimer.Start();
 
             SendToArduino('P', "1");
-            Task heaterController = Task.Run(() => HeaterController(spargeDur, source.Token));
-            await heaterController;
-
-            while (!continueTask)
+            try
             {
-                // Check if process is exited
-                if (!SessionRunning || CurrentProcess.Length < 1)
-                {
-                    CloseSparge();
-                    return;
-                }
-                await Task.Delay(100);
+                Task heaterController = Task.Run(() => HeaterController(spargeDur, source.Token));
+                await heaterController;
+            }
+            catch (OperationCanceledException)
+            {
+                CloseSparge();
+                return;
             }
 
             SendToArduino('P', "0");
@@ -1068,17 +992,6 @@ namespace BrewUI.ViewModels
             cts.CancelAfter(TimeSpan.FromSeconds(1));
             await Task.Run(() => HeaterController(TimeSpan.Zero, cts.Token));
 
-            while (!continueTask)
-            {
-                // Check if process is exited
-                if (!SessionRunning || CurrentProcess.Length < 1)
-                {
-                    CloseBoil();
-                    return;
-                }
-                Task.Delay(100).Wait();
-            }
-            continueTask = false;
             SendToArduino('P', "0");
 
             #region Perform boil steps
@@ -1210,6 +1123,10 @@ namespace BrewUI.ViewModels
             SendToArduino('P', "0");
             MashRunning = false;
             continueTask = false;
+
+            MessageBox.Show("Mash cancelled");
+            mashCTS.Dispose();
+            mashCTS = CancellationTokenSource.CreateLinkedTokenSource(sessionCTS.Token);
         }
 
         private void CloseSparge()
@@ -1270,19 +1187,17 @@ namespace BrewUI.ViewModels
 
         #region Methods
 
-        private async Task HeatAndKeepAsync(TimeSpan duration)
+        private async Task HeatAndKeepAsync(TimeSpan duration, CancellationToken ct)
         {
-            _events.PublishOnUIThread(new DebugDataUpdatedEvent { index = "HAKA Started", stringValue = "" });
-            CancellationTokenSource source = new CancellationTokenSource();
-            source.CancelAfter(TimeSpan.FromSeconds(1));
+            _events.PublishOnUIThread(new DebugDataUpdatedEvent { index = "HAKA ", stringValue = "started" });
 
             List<Task> tasks = new List<Task>();
 
-            tasks.Add(Task.Run(() => PumpController(duration, source.Token)));
-            tasks.Add(Task.Run(() => HeaterController(duration, source.Token)));
+            tasks.Add(Task.Run(() => PumpController(duration, ct)));
+            tasks.Add(Task.Run(() => HeaterController(duration, ct)));
 
             await Task.WhenAll(tasks);
-            _events.PublishOnUIThread(new DebugDataUpdatedEvent { index = "HAKA Finished", stringValue = "" });
+            _events.PublishOnUIThread(new DebugDataUpdatedEvent { index = "HAKA ", stringValue = "finished" });
         }
 
         private void PumpController(TimeSpan duration, CancellationToken cancellationToken)
@@ -1296,46 +1211,39 @@ namespace BrewUI.ViewModels
             arduinoMessage.AIndex = 'P';
 
             // Preheating
-            try
+            while (CurrentTemp <= TargetTemp - 0.5)
             {
-                while (CurrentTemp <= TargetTemp - 0.5)
+                // Check if session has been aborted
+                if (cancellationToken.IsCancellationRequested)
                 {
-                    // Check if session has been aborted
-                    if (!SessionRunning || CurrentProcess.Length < 1)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                    }
-
-                    if (now >= pumpEnd)
-                    {
-                        sendMessage = true;
-                    }
-
-                    if (!pumpOn && sendMessage)
-                    {
-                        arduinoMessage.AMessage = "1";
-                        _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
-                        pumpEnd = now + TimeSpan.FromSeconds(Properties.Settings.Default.PumpOnDuration);
-                        sendMessage = false;
-                        pumpOn = !pumpOn;
-                    }
-
-                    if (pumpOn && sendMessage)
-                    {
-                        arduinoMessage.AMessage = "0";
-                        _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
-                        pumpEnd = now + TimeSpan.FromSeconds(Properties.Settings.Default.PumpOffDuration);
-                        sendMessage = false;
-                        pumpOn = !pumpOn;
-                    }
-
-                    now = DateTime.Now;
-                    Task.Delay(300).Wait();
+                    cancellationToken.ThrowIfCancellationRequested();
                 }
-            }
-            catch (OperationCanceledException)
-            {
-                return;
+
+                if (now >= pumpEnd)
+                {
+                    sendMessage = true;
+                }
+
+                if (!pumpOn && sendMessage)
+                {
+                    arduinoMessage.AMessage = "1";
+                    _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
+                    pumpEnd = now + TimeSpan.FromSeconds(Properties.Settings.Default.PumpOnDuration);
+                    sendMessage = false;
+                    pumpOn = !pumpOn;
+                }
+
+                if (pumpOn && sendMessage)
+                {
+                    arduinoMessage.AMessage = "0";
+                    _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
+                    pumpEnd = now + TimeSpan.FromSeconds(Properties.Settings.Default.PumpOffDuration);
+                    sendMessage = false;
+                    pumpOn = !pumpOn;
+                }
+
+                now = DateTime.Now;
+                Task.Delay(300).Wait();
             }
 
             _events.PublishOnUIThread(new DebugDataUpdatedEvent { index = "DUR", stringValue = duration.TotalSeconds.ToString() });
@@ -1347,46 +1255,39 @@ namespace BrewUI.ViewModels
 
             // Keeping temp for duration
             DateTime endTime = now + duration;
-            try
+            while (now < endTime)
             {
-                while (now < endTime)
+                // Check if session has been aborted
+                if (cancellationToken.IsCancellationRequested)
                 {
-                    // Check if session has been aborted
-                    if (!SessionRunning || CurrentProcess.Length < 1)
-                    {
-                        cancellationToken.ThrowIfCancellationRequested();
-                    }
-
-                    if (now >= pumpEnd)
-                    {
-                        sendMessage = true;
-                    }
-
-                    if (!pumpOn && sendMessage)
-                    {
-                        arduinoMessage.AMessage = "1";
-                        _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
-                        pumpEnd = now + TimeSpan.FromSeconds(Properties.Settings.Default.PumpOnDuration);
-                        sendMessage = false;
-                        pumpOn = !pumpOn;
-                    }
-
-                    if (pumpOn && sendMessage)
-                    {
-                        arduinoMessage.AMessage = "0";
-                        _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
-                        pumpEnd = now + TimeSpan.FromSeconds(Properties.Settings.Default.PumpOffDuration);
-                        sendMessage = false;
-                        pumpOn = !pumpOn;
-                    }
-
-                    now = DateTime.Now;
-                    Task.Delay(300).Wait();
+                    cancellationToken.ThrowIfCancellationRequested();
                 }
-            }
-            catch (OperationCanceledException)
-            {
-                return;
+
+                if (now >= pumpEnd)
+                {
+                    sendMessage = true;
+                }
+
+                if (!pumpOn && sendMessage)
+                {
+                    arduinoMessage.AMessage = "1";
+                    _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
+                    pumpEnd = now + TimeSpan.FromSeconds(Properties.Settings.Default.PumpOnDuration);
+                    sendMessage = false;
+                    pumpOn = !pumpOn;
+                }
+
+                if (pumpOn && sendMessage)
+                {
+                    arduinoMessage.AMessage = "0";
+                    _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
+                    pumpEnd = now + TimeSpan.FromSeconds(Properties.Settings.Default.PumpOffDuration);
+                    sendMessage = false;
+                    pumpOn = !pumpOn;
+                }
+
+                now = DateTime.Now;
+                Task.Delay(300).Wait();
             }
 
             // Turn pump off when finished
@@ -1407,9 +1308,9 @@ namespace BrewUI.ViewModels
             while (CurrentTemp <= TargetTemp - 0.5)
             {
                 // Check if session has been aborted
-                if (!SessionRunning || CurrentProcess.Length < 1)
+                if (cancellationToken.IsCancellationRequested)
                 {
-                    return;
+                    cancellationToken.ThrowIfCancellationRequested();
                 }
 
                 if (sendMessage == false)
@@ -1455,9 +1356,9 @@ namespace BrewUI.ViewModels
             while (now < endTime)
             {
                 // Check if session has been aborted
-                if (!SessionRunning || CurrentProcess.Length < 1)
+                if (cancellationToken.IsCancellationRequested)
                 {
-                    return;
+                    cancellationToken.ThrowIfCancellationRequested();
                 }
 
                 if (sendMessage == false)
@@ -1551,13 +1452,17 @@ namespace BrewUI.ViewModels
         {
             if (message.SessionRunning == true)
             {
+                // Initialize new cancellation tokens
+                sessionCTS = new CancellationTokenSource();
+                mashCTS = CancellationTokenSource.CreateLinkedTokenSource(sessionCTS.Token);
+
                 SessionRunning = true;
                 currentRecipe = message.BreweryRecipe;
-                _brewMethod = message.BreweryRecipe.sessionInfo.BrewMethod;
-                _sessionName = message.BreweryRecipe.sessionInfo.sessionName;
-                _beerStyle = message.BreweryRecipe.sessionInfo.style.Name;
-                _batchSize = message.BreweryRecipe.sessionInfo.BatchSize;
-                MashSteps = message.BreweryRecipe.mashSteps;
+                _brewMethod = currentRecipe.sessionInfo.BrewMethod;
+                _sessionName = currentRecipe.sessionInfo.sessionName;
+                _beerStyle = currentRecipe.sessionInfo.style.Name;
+                _batchSize = currentRecipe.sessionInfo.BatchSize;
+                MashSteps = currentRecipe.mashSteps;
 
                 // Status for all processes
                 MashStatus = "Waiting";
@@ -1576,15 +1481,15 @@ namespace BrewUI.ViewModels
 
                 MashBaskedLifted = false;
 
-                GrainList = message.BreweryRecipe.grainList;
-                spargeStep = message.BreweryRecipe.spargeStep;
+                GrainList = new ObservableCollection<Grain>(currentRecipe.grainList);
+                spargeStep = currentRecipe.spargeStep;
                 SpargeWaterAmount = spargeStep.spargeWaterAmount;
                 SpargeTemp = spargeStep.spargeTemp;
                 SpargeDur = spargeStep.spargeDur;
                 SpargeTimerText = TimeSpan.FromMinutes(SpargeDur).ToString("hh\\:mm\\:ss");
 
                 // Retrieve hops list and create boil steps
-                foreach (Hops hops in message.BreweryRecipe.hopsList)
+                foreach (Hops hops in currentRecipe.hopsList)
                 {
                     HopsList.Add(hops);
                 }
@@ -1609,7 +1514,7 @@ namespace BrewUI.ViewModels
                 }
 
                 // Cooldown 
-                CDTargetTemp = message.BreweryRecipe.cooldownTargetTemp;
+                CDTargetTemp = currentRecipe.cooldownTargetTemp;
                 if (CDTargetTemp > 0)
                 {
                     RunCooldown = true;
@@ -1643,6 +1548,8 @@ namespace BrewUI.ViewModels
             }
             else
             {
+                sessionCTS.Cancel(); // Request cancellation of session cancellation token
+
                 SessionRunning = false;
                 MashRunning = false;
                 SpargeRunning = false;
