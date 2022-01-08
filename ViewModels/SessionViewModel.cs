@@ -33,8 +33,6 @@ namespace BrewUI.ViewModels
 
         private IEventAggregator _events;
 
-        private bool continueTask;
-
         // Process tracking data
         private string _currentProcess;
         public string CurrentProcess
@@ -651,11 +649,30 @@ namespace BrewUI.ViewModels
 
         public async Task Mash()
         {
-            //if (!MashWaterAdded)
-            //{
-            //    MessageBox.Show("Please add mash water before starting.");
-            //    return;
-            //}
+            foreach(MashStep ms in MashSteps)
+            {
+                if(ms.Status == "Paused")
+                {
+                    MessageBoxResult answer = MessageBox.Show("Mash was paused previously. Press Yes to resume or No to restart the mash process.", "Mash paused previously", MessageBoxButton.YesNoCancel);
+
+                    if(answer == MessageBoxResult.Yes)
+                    {
+                        CurrentProcess = "Mash";
+                        chartStartTime = DateTime.Now;
+                        goto Perform_mash_steps;
+                    }
+                    if(answer == MessageBoxResult.No)
+                    {
+                        foreach(MashStep m in MashSteps)
+                        {
+                            m.Status = "Waiting";
+                            m.timeLeft = TimeSpan.FromSeconds(0);
+                        }
+                        break;
+                    }
+                    return;
+                }
+            }
 
             List<StepConfirmation> mashConfirmations = new List<StepConfirmation>();
             mashConfirmations.Add(new StepConfirmation { Name = "Mount mash basket in brewery" });
@@ -694,7 +711,6 @@ namespace BrewUI.ViewModels
             double strikeTemp = Math.Round(Calculations.StrikeTemp(MashWater, MashSteps[0].stepTemp, grainWeight), 1);
 
             startTime = DateTime.Now;
-            continueTask = false;
             TargetTemp = strikeTemp;
 
             MashStatus = "Preheating";
@@ -733,6 +749,8 @@ namespace BrewUI.ViewModels
             #region Perform mash steps
             startTime = DateTime.Now;
 
+            Perform_mash_steps:
+
             foreach (MashStep item in MashSteps)
             {
                 // Check if any steps are already finished. If so, exit step and go to next.
@@ -745,7 +763,7 @@ namespace BrewUI.ViewModels
                 TargetTemp = item.stepTemp;
                 CurrentStep = item.stepName;
 
-                if (item.Status == "Paused")
+                if (item.Status == "Paused" && item.timeLeft.TotalMinutes > 0)
                 {
                     TargetDuration = item.timeLeft.TotalMinutes;
                 }
@@ -765,11 +783,12 @@ namespace BrewUI.ViewModels
                 catch (OperationCanceledException)
                 {
                     item.stepTimer.Stop();
+                    item.Status = "Paused";
+                    MashStatus = "Paused";
                     CloseMash();
                     return;
                 }
 
-                continueTask = false;
                 #endregion
 
                 // Keep temperature for desired duration
@@ -949,11 +968,16 @@ namespace BrewUI.ViewModels
                 MessageBoxResult answer = MessageBox.Show("This will abort the ongoing boil.\n\nContinue?", "Caution", MessageBoxButton.YesNo, MessageBoxImage.Information);
                 if (answer == MessageBoxResult.Yes)
                 {
-                    CloseBoil();
+                    boilCTS.Cancel();
                     return;
                 }
             }
 
+            Boil();
+        }
+
+        public async Task Boil()
+        {
             // Add water to reach correct boil amount
 
             foreach (Hops hops in HopsList)
@@ -988,9 +1012,15 @@ namespace BrewUI.ViewModels
 
             // Preheat
             BoilStatus = "Preheating";
-            CancellationTokenSource cts = new CancellationTokenSource();
-            cts.CancelAfter(TimeSpan.FromSeconds(1));
-            await Task.Run(() => HeaterController(TimeSpan.Zero, cts.Token));
+            try
+            {
+                await Task.Run(() => HeaterController(TimeSpan.Zero, boilCTS.Token));
+            }
+            catch (OperationCanceledException)
+            {
+                CloseBoil();
+                return;
+            }
 
             SendToArduino('P', "0");
 
@@ -1008,21 +1038,19 @@ namespace BrewUI.ViewModels
             boilTimer.Tick += BoilTimer_Tick;
             boilTimer.Start();
 
-            CancellationTokenSource source = new CancellationTokenSource();
-            source.CancelAfter(TimeSpan.FromSeconds(1));
-
             List<Task> tasks = new List<Task>();
-            tasks.Add(Task.Run(() => HeaterController(boilEndTime - boilStartTime, source.Token)));
+            tasks.Add(Task.Run(() => HeaterController(boilEndTime - boilStartTime, boilCTS.Token)));
             tasks.Add(Task.Run(() =>
             {
                 while (now < boilEndTime)
                 {
                     // Check if process is exited
-                    if (!SessionRunning || CurrentProcess.Length < 1)
+                    if (boilCTS.Token.IsCancellationRequested)
                     {
                         CloseBoil();
                         return;
                     }
+
                     Task.Delay(100).Wait();
 
                     now = DateTime.Now;
@@ -1051,22 +1079,6 @@ namespace BrewUI.ViewModels
             }));
 
             await Task.WhenAll(tasks);
-
-            bool finished = true;
-            foreach (BoilStep boilStep in BoilSteps)
-            {
-                if (boilStep.added == false)
-                {
-                    finished = false;
-                }
-            }
-
-            if (!finished)
-            {
-                MessageBox.Show("Boil aborted.");
-                CloseBoil();
-                return;
-            }
 
             FileInteraction.PlaySound(Sound.Finished);
             BoilStatus = "Finished";
@@ -1122,9 +1134,7 @@ namespace BrewUI.ViewModels
             SendToArduino('H', "0");
             SendToArduino('P', "0");
             MashRunning = false;
-            continueTask = false;
 
-            MessageBox.Show("Mash cancelled");
             mashCTS.Dispose();
             mashCTS = CancellationTokenSource.CreateLinkedTokenSource(sessionCTS.Token);
         }
@@ -1159,7 +1169,9 @@ namespace BrewUI.ViewModels
             {
 
             }
-            continueTask = false;
+
+            boilCTS.Dispose();
+            boilCTS = CancellationTokenSource.CreateLinkedTokenSource(sessionCTS.Token);
         }
 
         private void CloseCooldown()
@@ -1344,12 +1356,6 @@ namespace BrewUI.ViewModels
                 Task.Delay(300).Wait();
             }
 
-            if (duration == TimeSpan.Zero)
-            {
-                continueTask = true;
-                return;
-            }
-
             // Keep temp for duration
             now = DateTime.Now;
             DateTime endTime = now + duration;
@@ -1394,7 +1400,6 @@ namespace BrewUI.ViewModels
 
             arduinoMessage.AMessage = "0";
             _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
-            continueTask = true;
         }
 
         public void SendToArduino(char _index, string _message = "")
@@ -1439,6 +1444,11 @@ namespace BrewUI.ViewModels
             foreach (BoilStep bs in BoilSteps)
             {
                 stepCount += 1;
+            }
+
+            if (currentRecipe.runCooldown)
+            {
+                stepCount++;
             }
 
             return stepCount;
@@ -1515,7 +1525,7 @@ namespace BrewUI.ViewModels
 
                 // Cooldown 
                 CDTargetTemp = currentRecipe.cooldownTargetTemp;
-                if (CDTargetTemp > 0)
+                if (currentRecipe.runCooldown)
                 {
                     RunCooldown = true;
                 }

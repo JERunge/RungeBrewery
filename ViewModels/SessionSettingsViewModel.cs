@@ -718,6 +718,7 @@ namespace BrewUI.ViewModels
             br.hopsList = AddedHops;
 
             br.cooldownTargetTemp = CDTargetTemp;
+            br.runCooldown = RunCooldown;
 
             return br;
         }
