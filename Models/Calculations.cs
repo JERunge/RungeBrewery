@@ -18,7 +18,7 @@ namespace BrewUI.Models
         public static double StrikeTemp(double batchSize, double targetTemp, double grainWeight)
         {
             double R = batchSize / (grainWeight / 1000);
-            double T1 = 22;
+            double T1 = 22; // Grain temperature assumed to be room temperature
             double T2 = targetTemp;
             double strikeTemp = (0.41/R) * (T2-T1) + T2;
 
@@ -69,12 +69,6 @@ namespace BrewUI.Models
             }
             double tmw = boilVolume + grainBill/1000 * grainAbsorption;
             return tmw;
-        }
-
-        public static double MashWater(double grainBill)
-        {
-            double ms = Properties.Settings.Default.MashRatio * grainBill / 1000;
-            return ms;
         }
 
         public static double SpargeWater(double grainBill)

@@ -54,13 +54,11 @@ namespace BrewUI.Models
             sendTimer.Tick += SendTimer_Tick;
         }
 
-        private void SendTimer_Tick(object sender, EventArgs e)
+        private async void SendTimer_Tick(object sender, EventArgs e)
         {
             if(sendBuffer.Count > 0)
             {
-                //SendToArduino(sendBuffer[0]);
-                SendWithVerification(sendBuffer[0]);
-                //sendBuffer.RemoveAt(0);
+                await SendWithVerification(sendBuffer[0]);
             }
         }
 
@@ -78,12 +76,12 @@ namespace BrewUI.Models
                 else // Verification received
                 {
                     dataVerified = false;
-                    sendBuffer.Clear();
+                    sendBuffer.RemoveAt(0);
                     sendTimer.Start();
                     return; 
                 }
 
-                await Task.Delay(2000);
+                await Task.Delay(1000);
             }
 
             sendTimer.Start();

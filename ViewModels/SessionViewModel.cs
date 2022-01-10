@@ -27,7 +27,8 @@ namespace BrewUI.ViewModels
         IHandle<CurrentProcessUpdatedEvent>,
         IHandle<AddingGrainsEvent>,
         IHandle<ConnectionEvent>,
-        IHandle<RecipeOpened>
+        IHandle<RecipeOpened>,
+        IHandle<SerialToSendEvent>
     {
         #region Variables
 
@@ -106,7 +107,6 @@ namespace BrewUI.ViewModels
         }
 
         private bool _spargeCanStart;
-
         public bool SpargeCanStart
         {
             get { return _spargeCanStart; }
@@ -114,6 +114,28 @@ namespace BrewUI.ViewModels
             {
                 _spargeCanStart = value;
                 NotifyOfPropertyChange(() => SpargeCanStart);
+            }
+        }
+
+        private bool _canTogglePump;
+        public bool  CanTogglePump
+        {
+            get { return _canTogglePump; }
+            set 
+            {
+                _canTogglePump = value;
+                NotifyOfPropertyChange(() => CanTogglePump);
+            }
+        }
+
+        private bool _pumpOn;
+        public bool PumpOn
+        {
+            get { return _pumpOn; }
+            set
+            { 
+                _pumpOn = value;
+                NotifyOfPropertyChange(() => PumpOn);
             }
         }
 
@@ -595,6 +617,7 @@ namespace BrewUI.ViewModels
         #region Process cancellation
         private static CancellationTokenSource sessionCTS = new CancellationTokenSource();
         private static CancellationTokenSource mashCTS = CancellationTokenSource.CreateLinkedTokenSource(sessionCTS.Token);
+        private static CancellationTokenSource spargeCTS = CancellationTokenSource.CreateLinkedTokenSource(sessionCTS.Token);
         private static CancellationTokenSource boilCTS = CancellationTokenSource.CreateLinkedTokenSource(sessionCTS.Token);
         #endregion
 
@@ -873,10 +896,6 @@ namespace BrewUI.ViewModels
 
         public async void StartSparge()
         {
-            // Initiate cancellation token for async tasks
-            CancellationTokenSource source = new CancellationTokenSource();
-            source.CancelAfter(TimeSpan.FromSeconds(1));
-
             // Cancel sparge if ongoing
             if (SpargeRunning)
             {
@@ -895,9 +914,6 @@ namespace BrewUI.ViewModels
 
             spargeStep = currentRecipe.spargeStep;
             SpargeStatus = "Preheating";
-            spargeDur = TimeSpan.FromMinutes(spargeStep.spargeDur);
-            spargeEndTime = DateTime.Now + spargeDur;
-            SpargeTemp = spargeStep.spargeTemp;
 
             TargetDuration = spargeDur.TotalMinutes;
             TargetTemp = SpargeTemp;
@@ -905,7 +921,7 @@ namespace BrewUI.ViewModels
             // Preheat
             try
             {
-                await HeatAndKeepAsync(TimeSpan.Zero, source.Token);
+                await HeatAndKeepAsync(TimeSpan.Zero, spargeCTS.Token);
             }
             catch (OperationCanceledException)
             {
@@ -929,16 +945,40 @@ namespace BrewUI.ViewModels
 
             SpargeStatus = "Sparging";
 
+            // Set sparge timer
+            spargeDur = TimeSpan.FromMinutes(spargeStep.spargeDur);
+            spargeEndTime = DateTime.Now + spargeDur;
+            SpargeTemp = spargeStep.spargeTemp;
+
             // Initialize sparge timer
             SpargeTimer.Interval = TimeSpan.FromSeconds(1);
             SpargeTimer.Tick += SpargeTimer_Tick;
             SpargeTimer.Start();
 
-            SendToArduino('P', "1");
+            CanTogglePump = true;
+
             try
             {
-                Task heaterController = Task.Run(() => HeaterController(spargeDur, source.Token));
-                await heaterController;
+                List<Task> tasks = new List<Task>();
+                tasks.Add(Task.Run(() => HeaterController(spargeDur, spargeCTS.Token)));
+                tasks.Add(Task.Run(() =>
+                {
+                    DateTime now = DateTime.Now;
+                    while (SpargeRunning && now < spargeEndTime)
+                    {
+                        if (PumpOn && !SpargeTimer.IsEnabled)
+                        {
+                            SpargeTimer.Start();
+                        }
+                        else if(!PumpOn && SpargeTimer.IsEnabled)
+                        {
+                            SpargeTimer.Stop();
+                        }
+
+                        now = DateTime.Now;
+                    }
+                }));
+                await Task.WhenAll(tasks);
             }
             catch (OperationCanceledException)
             {
@@ -953,11 +993,25 @@ namespace BrewUI.ViewModels
             FileInteraction.PlaySound(Sound.Finished);
             MessageBox.Show("Sparge finished!");
             SpargeFinished = true;
+            SpargeRunning = false;
             CurrentProcess = "";
+            CanTogglePump = false;
 
             //SessionProgressTimer.Stop();
             UpdateProgressionBar();
             ProcessFinishedTime = DateTime.Now;
+        }
+
+        public void TogglePump()
+        {
+            if (PumpOn)
+            {
+                SendToArduino('P', "0");
+            }
+            else
+            {
+                SendToArduino('P', "1");
+            }
         }
 
         public async void StartBoil()
@@ -978,37 +1032,23 @@ namespace BrewUI.ViewModels
 
         public async Task Boil()
         {
-            // Add water to reach correct boil amount
-
-            foreach (Hops hops in HopsList)
+            // Check if boil was paused previously
+            foreach(BoilStep bs in BoilSteps)
             {
-                if (hops.BoilTime.TotalMinutes > TargetDuration)
+                if (bs.added)
                 {
-                    TargetDuration = hops.BoilTime.TotalMinutes;
+                    foreach(BoilStep b in BoilSteps)
+                    {
+                        b.added = false;
+                    }
+                    break;
                 }
             }
-
-            double grainBill = 0;
-
-            foreach (Grain grain in GrainList)
-            {
-                grainBill += grain.amount;
-            }
-
-            //BoilWaterAddition = Math.Round(Calculations.TotalWater(grainBill, BatchSize, TimeSpan.FromMinutes(TargetDuration)) - Calculations.MashWater(grainBill) - SpargeWaterAmount, 1);
 
             CurrentProcess = "Boil";
             chartStartTime = DateTime.Now;
 
             TargetTemp = 100;
-
-            //MessageBoxResult messageBoxResult = MessageBox.Show($"Add {BoilWaterAddition} liter of water to the vort and press OK", "Add water", MessageBoxButton.OKCancel);
-
-            //if (messageBoxResult != MessageBoxResult.OK)
-            //{
-            //    CloseBoil();
-            //    return;
-            //}
 
             // Preheat
             BoilStatus = "Preheating";
@@ -1022,14 +1062,13 @@ namespace BrewUI.ViewModels
                 return;
             }
 
-            SendToArduino('P', "0");
-
             #region Perform boil steps
 
             BoilStatus = "Boiling";
 
             DateTime now = DateTime.Now;
             boilStartTime = now;
+            TargetDuration = BoilSteps[0].boilTime.TotalMinutes;
             boilEndTime = boilStartTime + TimeSpan.FromMinutes(TargetDuration);
             TimeSpan timeLeft = TimeSpan.FromMinutes(TargetDuration);
 
@@ -1149,6 +1188,10 @@ namespace BrewUI.ViewModels
             TargetDuration = 0;
             SendToArduino('H', "0");
             SendToArduino('P', "0");
+            CanTogglePump = false;
+
+            spargeCTS.Dispose();
+            spargeCTS = CancellationTokenSource.CreateLinkedTokenSource(sessionCTS.Token);
         }
 
         private void CloseBoil()
@@ -1161,6 +1204,7 @@ namespace BrewUI.ViewModels
             SendToArduino('H', "0");
             SendToArduino('P', "0");
             BoilStatus = "-";
+            BoilTimerText = "00:00:00";
             try
             {
                 boilTimer.Stop();
@@ -1316,8 +1360,20 @@ namespace BrewUI.ViewModels
             ArduinoMessage arduinoMessage = new ArduinoMessage();
             arduinoMessage.AIndex = 'H';
 
+            // Create temp offset value
+            double tempOffset; // Offset needed for system delay when mashing
+            if (TargetTemp >= 100)
+            {
+                tempOffset = 0;
+            }
+            else
+            {
+                tempOffset = 0.5;
+            }
+
             // Preheating
-            while (CurrentTemp <= TargetTemp - 0.5)
+
+            while (CurrentTemp < TargetTemp - tempOffset)
             {
                 // Check if session has been aborted
                 if (cancellationToken.IsCancellationRequested)
@@ -1327,11 +1383,11 @@ namespace BrewUI.ViewModels
 
                 if (sendMessage == false)
                 {
-                    if (heating == false && CurrentTemp < TargetTemp - 0.5) // Heater off and temp too low
+                    if (heating == false && CurrentTemp < TargetTemp - tempOffset) // Heater off and temp too low
                     {
                         sendMessage = true;
                     }
-                    else if (heating == true && CurrentTemp >= TargetTemp - 0.5) // Heater on and temp reach target
+                    else if (heating == true && CurrentTemp >= TargetTemp - tempOffset) // Heater on and temp reach target
                     {
                         sendMessage = true;
                     }
@@ -1369,11 +1425,11 @@ namespace BrewUI.ViewModels
 
                 if (sendMessage == false)
                 {
-                    if (heating == false && CurrentTemp < TargetTemp - 0.5) // Heater off and temp too low
+                    if (heating == false && CurrentTemp < TargetTemp - tempOffset) // Heater off and temp too low
                     {
                         sendMessage = true;
                     }
-                    else if (heating == true && CurrentTemp >= TargetTemp - 0.5) // Heater on and temp reach target
+                    else if (heating == true && CurrentTemp >= TargetTemp - tempOffset) // Heater on and temp reach target
                     {
                         sendMessage = true;
                     }
@@ -1660,6 +1716,21 @@ namespace BrewUI.ViewModels
         public void Handle(RecipeOpened message)
         {
             _events.PublishOnUIThread(new SessionRunningEvent { SessionRunning = false });
+        }
+
+        public void Handle(SerialToSendEvent message)
+        {
+            if(message.arduinoMessage.AIndex == 'P')
+            {
+                if(message.arduinoMessage.AMessage == "0")
+                {
+                    PumpOn = false;
+                }
+                if (message.arduinoMessage.AMessage == "1")
+                {
+                    PumpOn = true;
+                }
+            }
         }
 
 
