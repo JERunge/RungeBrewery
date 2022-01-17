@@ -525,7 +525,7 @@
                                         <TextBox Text="{Binding Amount}" Grid.Column="3" Width="40" TextAlignment="Center"
                                                        Margin="10 0 0 0" VerticalAlignment="Center"/>
                                         <TextBlock Text="g" Grid.Column="4" VerticalAlignment="Center" Foreground="White" Margin="5 0 0 0"/>
-                                        <TextBlock Text="{Binding BoilTime}" Grid.Column="6" VerticalAlignment="Center" Foreground="White"/>
+                                        <TextBox x:Name="BoilTimeText" Text="{Binding BoilTime}" Grid.Column="6" VerticalAlignment="Center" Width="60" TextAlignment="Center" />
                                         <CheckBox IsChecked="{Binding Remove}" VerticalAlignment="Center" Grid.Column="8"/>
                                     </Grid>
                                 </DataTemplate>

@@ -22,6 +22,7 @@ using System.Collections.ObjectModel;
 using BrewUI.Items;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Windows.Input;
 
 namespace BrewUI.ViewModels
 {

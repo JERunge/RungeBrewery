@@ -329,6 +329,7 @@ namespace BrewUI.Models
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "Brewery Recipe|*.br";
             sfd.Title = "Save recipe";
+            sfd.FileName = currentRecipe.sessionInfo.sessionName;
 
             if (sfd.ShowDialog() == true)
             {
@@ -496,6 +497,11 @@ namespace BrewUI.Models
         public static List<BeerStyle> StylesFromDB()
         {
             return new List<BeerStyle>(SQLiteAcces.LoadStyles());
+        }
+
+        public static List<MashProfile> MashProfilesFromDB()
+        {
+            return new List<MashProfile>(SQLiteAcces.LoadMashProfiles());
         }
 
         public static void HopsToDB(List<Hops> hopsList)
@@ -696,6 +702,14 @@ namespace BrewUI.Models
             }
 
             return styleList;
+        }
+
+        public static List<MashProfile> ImportMashProfiles(string mashProfileText)
+        {
+            List<MashProfile> mashProfileList = new List<MashProfile>();
+
+
+            return mashProfileList;
         }
 
         public static string GetDataInbetween(string startMarker, string recipeText, string endMarker = "")

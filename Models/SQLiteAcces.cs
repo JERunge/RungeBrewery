@@ -111,6 +111,25 @@ namespace BrewUI.Models
 
         #endregion
 
+        #region Mash profiles
+        public static List<MashProfile> LoadMashProfiles()
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                var output = cnn.Query<MashProfile>("select * from MashProfiles", new DynamicParameters());
+                return output.ToList();
+            }
+        }
+
+        public static void SaveMashProfile(MashProfile mashProfile)
+        {
+            using (IDbConnection cnn = new SQLiteConnection(LoadConnectionString()))
+            {
+                cnn.Execute("insert into MashProfiles (Name) values (@Name)", mashProfile);
+            }
+        }
+        #endregion
+
         #region General functions
 
         public static bool ItemExistsInDB(string tableName, string columnName, string searchText)

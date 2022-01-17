@@ -25,6 +25,8 @@ namespace BrewUI.Views
 
         // GUI variables
 
+        public string previousContent { get; set; }
+
         public SessionSettingsView()
         {
             InitializeComponent();

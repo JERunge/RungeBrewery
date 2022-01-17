@@ -12,6 +12,8 @@ using System.Data;
 using System.Linq;
 using BrewUI.Data;
 using static BrewUI.Models.MyEnums;
+using System.Windows.Input;
+using System.Text;
 
 namespace BrewUI.ViewModels
 {
@@ -36,6 +38,17 @@ namespace BrewUI.ViewModels
 
         private bool sessionRunning;
 
+        private bool _settingsChanged;
+        public bool SettingsChanged
+        {
+            get { return _settingsChanged; }
+            set 
+            { 
+                _settingsChanged = value;
+                NotifyOfPropertyChange(() => SettingsChanged);
+            }
+        }
+
         private double _batchSize;
         public double BatchSize
         {
@@ -44,6 +57,7 @@ namespace BrewUI.ViewModels
             {
                 _batchSize = value;
                 NotifyOfPropertyChange(() => BatchSize);
+                SettingsChanged = true;
             }
         }
 
@@ -55,6 +69,7 @@ namespace BrewUI.ViewModels
             { 
                 _heaterEffect = value;
                 NotifyOfPropertyChange(() => HeaterEffect);
+                SettingsChanged = true;
             }
         }
 
@@ -65,6 +80,7 @@ namespace BrewUI.ViewModels
             set {
                 _fermenterLoss = value;
                 NotifyOfPropertyChange(() => FermenterLoss);
+                SettingsChanged = true;
             }
         }
 
@@ -75,6 +91,7 @@ namespace BrewUI.ViewModels
             set {
                 _kettleLoss = value;
                 NotifyOfPropertyChange(() => KettleLoss);
+                SettingsChanged = true;
             }
         }
 
@@ -86,6 +103,7 @@ namespace BrewUI.ViewModels
             { 
                 _equipmentLoss = value;
                 NotifyOfPropertyChange(() => EquipmentLoss);
+                SettingsChanged = true;
             }
         }
 
@@ -97,6 +115,7 @@ namespace BrewUI.ViewModels
             {
                 _mashThickness = value;
                 NotifyOfPropertyChange(() => MashThickness);
+                SettingsChanged = true;
             }
         }
 
@@ -108,6 +127,7 @@ namespace BrewUI.ViewModels
             {
                 _grainAbsorption = value;
                 NotifyOfPropertyChange(() => GrainAbsorption);
+                SettingsChanged = true;
             }
         }
 
@@ -118,6 +138,7 @@ namespace BrewUI.ViewModels
             set {
                 _coolingShrinkage = value;
                 NotifyOfPropertyChange(() => CoolingShrinkage);
+                SettingsChanged = true;
             }
         }
 
@@ -128,6 +149,7 @@ namespace BrewUI.ViewModels
             set { 
                 _evaporationRate = value;
                 NotifyOfPropertyChange(() => EvaporationRate);
+                SettingsChanged = true;
             }
         }
 
@@ -139,6 +161,7 @@ namespace BrewUI.ViewModels
             { 
                 _pumpOnDuration = value;
                 NotifyOfPropertyChange(() => PumpOnDuration);
+                SettingsChanged = true;
             }
         }
 
@@ -150,6 +173,7 @@ namespace BrewUI.ViewModels
             {
                 _pumpOffDuration = value;
                 NotifyOfPropertyChange(() => PumpOffDuration);
+                SettingsChanged = true;
             }
         }
 
@@ -234,6 +258,8 @@ namespace BrewUI.ViewModels
 
         public BrewerySettingsViewModel(IEventAggregator events)
         {
+            Mouse.OverrideCursor = Cursors.Wait;
+
             // Subscribe to events
             _events = events;
             _events.Subscribe(this);
@@ -280,6 +306,10 @@ namespace BrewUI.ViewModels
             }
 
             breweryIP = Properties.Settings.Default.breweryIP;
+
+            Mouse.OverrideCursor = Cursors.Arrow;
+
+            SettingsChanged = false;
         }
 
         #region UI Methods
@@ -403,8 +433,13 @@ namespace BrewUI.ViewModels
             
             Properties.Settings.Default.Save();
             Properties.Settings.Default.Reload();
+
+            SettingsChanged = false;
+
             MessageBox.Show("Settings saved!");
+
             _events.PublishOnUIThread(new SettingsUpdatedEvent { brewerySettings = new BrewerySettings()});
+
             this.TryClose();
         }
 
@@ -416,7 +451,9 @@ namespace BrewUI.ViewModels
 
             if (openDialog.ShowDialog() == true)
             {
-                string importText = File.ReadAllText(openDialog.FileName);
+                var enc = FileHelper.GetEncoding(openDialog.FileName);
+                MessageBox.Show($"The encoding of the selected file is {enc.ToString()}");
+                string importText = File.ReadAllText(openDialog.FileName, enc);
                 string DBText;
 
                 try

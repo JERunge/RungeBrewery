@@ -9,6 +9,7 @@ using LiveCharts.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
@@ -929,6 +930,8 @@ namespace BrewUI.ViewModels
                 return;
             }
 
+            SendToArduino('P', "0");
+
             FileInteraction.PlaySound(Sound.Finished);
 
             List<StepConfirmation> stepConfirmations = new List<StepConfirmation>();
@@ -947,13 +950,11 @@ namespace BrewUI.ViewModels
 
             // Set sparge timer
             spargeDur = TimeSpan.FromMinutes(spargeStep.spargeDur);
-            spargeEndTime = DateTime.Now + spargeDur;
             SpargeTemp = spargeStep.spargeTemp;
 
             // Initialize sparge timer
             SpargeTimer.Interval = TimeSpan.FromSeconds(1);
             SpargeTimer.Tick += SpargeTimer_Tick;
-            SpargeTimer.Start();
 
             CanTogglePump = true;
 
@@ -963,19 +964,26 @@ namespace BrewUI.ViewModels
                 tasks.Add(Task.Run(() => HeaterController(spargeDur, spargeCTS.Token)));
                 tasks.Add(Task.Run(() =>
                 {
-                    DateTime now = DateTime.Now;
-                    while (SpargeRunning && now < spargeEndTime)
+                    Stopwatch sw = new Stopwatch();
+
+                    while (SpargeRunning && sw.Elapsed < spargeDur)
                     {
+                        if (spargeCTS.IsCancellationRequested)
+                        {
+                            break;
+                        }
+
                         if (PumpOn && !SpargeTimer.IsEnabled)
                         {
+                            spargeEndTime = DateTime.Now + spargeDur - sw.Elapsed;
+                            sw.Start();
                             SpargeTimer.Start();
                         }
                         else if(!PumpOn && SpargeTimer.IsEnabled)
                         {
+                            sw.Stop();
                             SpargeTimer.Stop();
                         }
-
-                        now = DateTime.Now;
                     }
                 }));
                 await Task.WhenAll(tasks);
@@ -1272,6 +1280,8 @@ namespace BrewUI.ViewModels
                 // Check if session has been aborted
                 if (cancellationToken.IsCancellationRequested)
                 {
+                    arduinoMessage.AMessage = "0";
+                    _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
                     cancellationToken.ThrowIfCancellationRequested();
                 }
 
@@ -1316,6 +1326,8 @@ namespace BrewUI.ViewModels
                 // Check if session has been aborted
                 if (cancellationToken.IsCancellationRequested)
                 {
+                    arduinoMessage.AMessage = "0";
+                    _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
                     cancellationToken.ThrowIfCancellationRequested();
                 }
 
@@ -1378,6 +1390,8 @@ namespace BrewUI.ViewModels
                 // Check if session has been aborted
                 if (cancellationToken.IsCancellationRequested)
                 {
+                    arduinoMessage.AMessage = "0";
+                    _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
                     cancellationToken.ThrowIfCancellationRequested();
                 }
 
@@ -1420,6 +1434,8 @@ namespace BrewUI.ViewModels
                 // Check if session has been aborted
                 if (cancellationToken.IsCancellationRequested)
                 {
+                    arduinoMessage.AMessage = "0";
+                    _events.PublishOnUIThread(new SerialToSendEvent { arduinoMessage = arduinoMessage });
                     cancellationToken.ThrowIfCancellationRequested();
                 }
 

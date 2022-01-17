@@ -231,6 +231,7 @@
     <Compile Include="Items\Equipment.cs" />
     <Compile Include="Items\Grain.cs" />
     <Compile Include="Items\Hops.cs" />
+    <Compile Include="Items\MashProfile.cs" />
     <Compile Include="Items\MashStep.cs" />
     <Compile Include="Items\SpargeStep.cs" />
     <Compile Include="Items\BeerStyle.cs" />
@@ -245,6 +246,7 @@
     <Compile Include="Models\BluetoothConnection.cs" />
     <Compile Include="Models\Calculations.cs" />
     <Compile Include="Models\ConnectionHandler.cs" />
+    <Compile Include="Models\FileHelper.cs" />
     <Compile Include="Models\GUI.cs" />
     <Compile Include="Models\CustomWindowHandler.cs" />
     <Compile Include="Models\MyEnums.cs" />
