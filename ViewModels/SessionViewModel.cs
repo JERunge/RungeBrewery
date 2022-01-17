@@ -1544,7 +1544,7 @@ namespace BrewUI.ViewModels
                 _sessionName = currentRecipe.sessionInfo.sessionName;
                 _beerStyle = currentRecipe.sessionInfo.style.Name;
                 _batchSize = currentRecipe.sessionInfo.BatchSize;
-                MashSteps = currentRecipe.mashSteps;
+                MashSteps = new ObservableCollection<MashStep>(currentRecipe.mashSteps.OrderByDescending(x => -x.stepTemp));
 
                 // Status for all processes
                 MashStatus = "Waiting";

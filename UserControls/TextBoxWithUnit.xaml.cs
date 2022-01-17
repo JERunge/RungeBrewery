@@ -42,6 +42,16 @@ namespace BrewUI.UserControls
 
         public static readonly DependencyProperty BoxValueProperty = DependencyProperty.Register("BoxValue", typeof(double), typeof(TextBoxWithUnit), new PropertyMetadata(default(double)));
 
+        // BOX VALUE WIDT DP
+
+        public double BoxValueWidth
+        {
+            get { return (double)GetValue(BoxValueWidthProperty); }
+            set { SetValue(BoxValueWidthProperty, value); }
+        }
+
+        public static readonly DependencyProperty BoxValueWidthProperty = DependencyProperty.Register("BoxValueWidth", typeof(double), typeof(TextBoxWithUnit), new PropertyMetadata(default(double)));
+
         // TEXT TITLE DP
 
         public string BoxUnit
@@ -51,6 +61,16 @@ namespace BrewUI.UserControls
         }
 
         public static readonly DependencyProperty BoxUnitProperty = DependencyProperty.Register("BoxValueProperty", typeof(string), typeof(TextBoxWithUnit), new PropertyMetadata(""));
+
+        // TEXT TITLE DP
+
+        public Visibility ShowUnit
+        {
+            get { return (Visibility)GetValue(ShowUnitProperty); }
+            set { SetValue(ShowUnitProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShowUnitProperty = DependencyProperty.Register("ShowUnitProperty", typeof(Visibility), typeof(TextBoxWithUnit), new PropertyMetadata(default(Visibility)));
 
         #endregion
 

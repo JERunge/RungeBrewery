@@ -32,114 +32,36 @@ namespace BrewUI.ViewModels
         #endregion
 
         #region Public variables
-        private double _inputProteinTemp;
-        public double InputProteinTemp
+        private double _inputMashTemp;
+        public double InputMashTemp
         {
-            get
-            {
-                return _inputProteinTemp;
-            }
+            get { return _inputMashTemp; }
             set
-            {
-                _inputProteinTemp = value;
-                NotifyOfPropertyChange(() => InputProteinTemp);
+            { 
+                _inputMashTemp = value;
+                NotifyOfPropertyChange(() => InputMashTemp);
             }
         }
 
-        private double _inputProteinDur;
-        public double InputProteinDur
+        private int _inputMashDur;
+        public int InputMashDur
         {
-            get
-            {
-                return _inputProteinDur;
-            }
-            set
-            {
-                _inputProteinDur = value;
-                NotifyOfPropertyChange(() => InputProteinDur);
+            get { return _inputMashDur; }
+            set 
+            { 
+                _inputMashDur = value;
+                NotifyOfPropertyChange(() => InputMashDur);
             }
         }
 
-        private double _inputAcidTemp;
-        public double InputAcidTemp
+        private string _inputMashName;
+        public string InputMashName
         {
-            get
-            {
-                return _inputAcidTemp;
-            }
+            get { return _inputMashName; }
             set
-            {
-                _inputAcidTemp = value;
-                NotifyOfPropertyChange(() => InputAcidTemp);
-            }
-        }
-
-        private double _inputAcidDur;
-        public double InputAcidDur
-        {
-            get
-            {
-                return _inputAcidDur;
-            }
-            set
-            {
-                _inputAcidDur = value;
-                NotifyOfPropertyChange(() => InputAcidDur);
-            }
-        }
-
-        private double _inputStarchTemp;
-        public double InputStarchTemp
-        {
-            get
-            {
-                return
-                    _inputStarchTemp;
-            }
-            set
-            {
-                _inputStarchTemp = value;
-                NotifyOfPropertyChange(() => InputStarchTemp);
-            }
-        }
-
-        private double _inputStarchDur;
-        public double InputStarchDur
-        {
-            get
-            {
-                return
-                    _inputStarchDur;
-            }
-            set
-            {
-                _inputStarchDur = value;
-                NotifyOfPropertyChange(() => InputStarchDur);
-            }
-        }
-
-        private double _inputSpargeTemp;
-        public double InputSpargeTemp
-        {
-            get
-            {
-                return _inputSpargeTemp;
-            }
-            set
-            {
-                _inputSpargeTemp = value;
-                NotifyOfPropertyChange(() => InputSpargeTemp);
-            }
-        }
-
-        private double _inputSpargeDur;
-        public double InputSpargeDur
-        {
-            get { return _inputSpargeDur; }
-            set
-            {
-                _inputSpargeDur = value;
-                NotifyOfPropertyChange(() => InputSpargeDur);
+            { 
+                _inputMashName = value;
+                NotifyOfPropertyChange(() => InputMashName);
             }
         }
 
@@ -459,16 +381,6 @@ namespace BrewUI.ViewModels
             SelectedBrewMethod = BrewMethods[0];
             SelectedBeerStyle = StyleList[0];
 
-            InputAcidTemp = 43.0;
-            InputAcidDur = 15.0;
-
-            InputProteinTemp = 52.0;
-            InputProteinDur = 20.0;
-
-            StarchChecked = true;
-            InputStarchTemp = 67.0;
-            InputStarchDur = 45.0;
-
             HopsDB = FileInteraction.HopsFromDB();
             AddedHops = new ObservableCollection<Hops>();
             HopsSearchList = new List<string>();
@@ -498,64 +410,6 @@ namespace BrewUI.ViewModels
             #endregion
         }
 
-        //CHECKBOX BOOLEAN
-        #region Checkbox booleans
-
-        private bool _proteinChecked;
-        public bool ProteinChecked
-        {
-            get 
-            { 
-                return _proteinChecked; 
-            }
-            set 
-            { 
-                _proteinChecked = value;
-                NotifyOfPropertyChange(() => ProteinChecked);
-            }
-        }
-
-        private bool _acidChecked;
-        public bool AcidChecked
-        {
-            get 
-            { 
-                return _acidChecked;
-            }
-            set
-            {
-                _acidChecked = value;
-                NotifyOfPropertyChange(() => AcidChecked);
-            }
-        }
-
-        private bool _starchChecked;
-        public bool StarchChecked
-        {
-            get
-            {
-                return _starchChecked;
-            }
-            set
-            {
-                _starchChecked = value;
-                NotifyOfPropertyChange(() => StarchChecked);
-            }
-        }
-
-        private bool _spargeChecked;
-        public bool SpargeChecked
-        {
-            get { return _spargeChecked; }
-            set 
-            { 
-                _spargeChecked = value;
-                NotifyOfPropertyChange(() => SpargeChecked);
-            }
-        }
-
-
-        #endregion
 
         //GUI METHODS
         #region GUI METHODS
@@ -598,6 +452,23 @@ namespace BrewUI.ViewModels
                 if (grain.remove)
                 {
                     AddedGrains.Remove(grain);
+                }
+            }
+        }
+
+        public void AddMashStep()
+        {
+            MashStep ms = new MashStep() { stepName = InputMashName, stepTemp = InputMashTemp, stepDuration = TimeSpan.FromMinutes(InputMashDur)};
+            MashList.Add(ms);
+        }
+
+        public void RemoveMashSteps()
+        {
+            foreach(MashStep ms in MashList.ToList())
+            {
+                if (ms.remove)
+                {
+                    MashList.Remove(ms);
                 }
             }
         }
@@ -675,30 +546,8 @@ namespace BrewUI.ViewModels
             SessionInfoList.sessionName = SessionName;
         }
 
-        public void UpdateMashList()
-        {
-            MashList.Clear();
-            if (AcidChecked == true)
-            {
-                MashList.Add(new MashStep() { stepName = "Acid rest", stepDuration = TimeSpan.FromMinutes(InputAcidDur), stepTemp = InputAcidTemp });
-            }
-            if (ProteinChecked == true)
-            {
-                MashList.Add(new MashStep() { stepName = "Protein rest", stepDuration = TimeSpan.FromMinutes(InputProteinDur), stepTemp = InputProteinTemp });
-            }
-            if (StarchChecked == true)
-            {
-                MashList.Add(new MashStep() { stepName = "Starch rest", stepDuration = TimeSpan.FromMinutes(InputStarchDur), stepTemp = InputStarchTemp });
-            }
-            if (SpargeChecked == true)
-            {
-                MashList.Add(new MashStep() { stepName = "Sparge out", stepDuration = TimeSpan.FromMinutes(InputAcidDur), stepTemp = InputSpargeTemp });
-            }
-        }
-
         public BreweryRecipe UIToRecipe()
         {
-            UpdateMashList();
             UpdateSessionInfoList();
 
             BreweryRecipe br = new BreweryRecipe();
@@ -775,32 +624,10 @@ namespace BrewUI.ViewModels
             #endregion
 
             #region Mash steps
+            MashList.Clear();
             foreach(MashStep mashStep in breweryRecipe.mashSteps)
             {
-                if(mashStep.stepName == "Acid rest")
-                {
-                    AcidChecked = true;
-                    InputAcidDur = Convert.ToDouble(mashStep.stepDuration.TotalMinutes);
-                    InputAcidTemp = mashStep.stepTemp;
-                }
-                if(mashStep.stepName == "Protein rest")
-                {
-                    ProteinChecked = true;
-                    InputProteinDur = Convert.ToDouble(mashStep.stepDuration.TotalMinutes);
-                    InputProteinTemp = mashStep.stepTemp;
-                }
-                if (mashStep.stepName == "Starch rest")
-                {
-                    StarchChecked = true;
-                    InputStarchDur = Convert.ToDouble(mashStep.stepDuration.TotalMinutes);
-                    InputStarchTemp = mashStep.stepTemp;
-                }
-                if (mashStep.stepName == "Sparge out")
-                {
-                    SpargeChecked = true;
-                    InputSpargeDur = Convert.ToDouble(mashStep.stepDuration.TotalMinutes);
-                    InputSpargeTemp = mashStep.stepTemp;
-                }
+                MashList.Add(mashStep);
             }
 
             #endregion

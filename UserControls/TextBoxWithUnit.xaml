@@ -14,7 +14,7 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Text="{Binding Path=BoxLabel}" Grid.Column="0"/>
-        <TextBox Text="{Binding Path=BoxValue}" Grid.Column="2"/>
-        <TextBlock Text="{Binding Path=BoxUnit}" Style="{StaticResource UnitBlock}" Grid.Column="3"/>
+        <TextBox Text="{Binding Path=BoxValue}" Grid.Column="2" Width="{Binding BoxValueWidth}"/>
+        <TextBlock Text="{Binding Path=BoxUnit}" Style="{StaticResource UnitBlock}" Grid.Column="3" Visibility="{Binding ShowUnit}"/>
     </Grid>
 </UserControl>
